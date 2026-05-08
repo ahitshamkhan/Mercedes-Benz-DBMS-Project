@@ -1,225 +1,313 @@
-import { useState } from 'react';
-import { Star, LayoutDashboard, Warehouse, Users, FileBarChart, TrendingUp, TrendingDown, Package, ShoppingCart, DollarSign, Car, AlertTriangle, Shield, UserCog, Clock, ChevronRight } from 'lucide-react';
-
-const STATS = [
-  { label: 'Total Revenue', value: 'PKR 2.8B', change: '+12.5%', up: true, icon: <DollarSign size={20} color="#C8A97E" /> },
-  { label: 'Vehicles Sold', value: '347', change: '+8.3%', up: true, icon: <Car size={20} color="#C8A97E" /> },
-  { label: 'Active Orders', value: '42', change: '+15.1%', up: true, icon: <ShoppingCart size={20} color="#C8A97E" /> },
-  { label: 'Inventory', value: '156', change: '-3.2%', up: false, icon: <Package size={20} color="#C8A97E" /> },
-];
-
-const TOP_MODELS = [
-  { name: 'S-Class', units: 89, pct: 85 },
-  { name: 'G-Class', units: 72, pct: 70 },
-  { name: 'AMG GT', units: 58, pct: 55 },
-  { name: 'EQS', units: 45, pct: 43 },
-  { name: 'C-Class', units: 83, pct: 80 },
-];
-
-const REVENUE_MONTHS = [
-  { month: 'Jan', value: 65 }, { month: 'Feb', value: 72 }, { month: 'Mar', value: 58 },
-  { month: 'Apr', value: 80 }, { month: 'May', value: 95 }, { month: 'Jun', value: 88 },
-];
-
-const RECENT_ORDERS = [
-  { id: 'ORD-4521', customer: 'Ahmed Malik', car: 'S-Class 500', amount: 'PKR 85M', status: 'Processing', color: '#f39c12' },
-  { id: 'ORD-4520', customer: 'Fatima Zaidi', car: 'AMG GT', amount: 'PKR 120M', status: 'Confirmed', color: '#2ecc71' },
-  { id: 'ORD-4519', customer: 'Ali Hassan', car: 'G63 AMG', amount: 'PKR 150M', status: 'Shipped', color: '#C8A97E' },
-  { id: 'ORD-4518', customer: 'Sara Qureshi', car: 'EQS 580', amount: 'PKR 95M', status: 'Delivered', color: '#2ecc71' },
-];
-
-const ALERTS = [
-  { car: 'EQA 250+ Premium', level: 'Low Stock', units: 2, severity: 'high' },
-  { car: 'Maybach GLS 600', level: 'Low Stock', units: 1, severity: 'critical' },
-];
-
-const AUDIT_LOG = [
-  { action: 'Inventory updated: G-Class', user: 'Admin (Sara)', time: '2m ago', icon: <Package size={14} color="#C8A97E" /> },
-  { action: 'Successful Login', user: 'System', time: '15m ago', icon: <Shield size={14} color="#2ecc71" /> },
-  { action: 'Price adjusted: S-Class 2024', user: 'Manager (Omar)', time: '1h ago', icon: <DollarSign size={14} color="#C8A97E" /> },
-  { action: 'Failed Login Attempt', user: 'IP: 192.168.1.4', time: '4h ago', icon: <AlertTriangle size={14} color="#e74c3c" /> },
-];
-
-const SIDEBAR_LINKS = [
-  { label: 'Dashboard', icon: <LayoutDashboard size={18} />, active: true },
-  { label: 'Inventory', icon: <Warehouse size={18} />, active: false },
-  { label: 'Customers', icon: <Users size={18} />, active: false },
-  { label: 'Reports', icon: <FileBarChart size={18} />, active: false },
-];
-
 export default function AdminDashboard() {
-  const [activeLink, setActiveLink] = useState('Dashboard');
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh', display: 'flex' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* SIDEBAR */}
-      <aside style={{ width: 260, background: '#0d0d14', borderRight: '1px solid rgba(200,169,126,0.08)', padding: '28px 0', position: 'fixed', top: 0, bottom: 0, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '0 28px', marginBottom: 40 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Star size={16} color="#C8A97E" />
-            </div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
+    <>
+      {/* TopAppBar */}
+      <header className="bg-zinc-950/90 backdrop-blur-md text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase fixed top-0 w-full flex justify-between items-center px-20 h-20 z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+          <h1 className="text-xl font-bold text-[#C8A97E]">Mercedes-Benz</h1>
         </div>
-        <nav style={{ flex: 1 }}>
-          {SIDEBAR_LINKS.map((link) => (
-            <div key={link.label} onClick={() => setActiveLink(link.label)} style={{
-              display: 'flex', alignItems: 'center', gap: 12, padding: '12px 28px', cursor: 'pointer',
-              background: activeLink === link.label ? 'rgba(200,169,126,0.06)' : 'transparent',
-              borderLeft: activeLink === link.label ? '2px solid #C8A97E' : '2px solid transparent',
-              color: activeLink === link.label ? '#C8A97E' : '#5a5768', transition: 'all 0.3s',
-            }}>
-              {link.icon}
-              <span style={{ fontSize: 14, fontWeight: activeLink === link.label ? 500 : 400 }}>{link.label}</span>
-            </div>
-          ))}
+        <nav className="hidden md:flex gap-10">
+          <a className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-label-sm uppercase transition-colors duration-300" href="#">Admin Dashboard</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-label-sm uppercase" href="#">Inventory</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-label-sm uppercase" href="#">Customers</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-label-sm uppercase" href="#">Reports</a>
         </nav>
-        <div style={{ padding: '0 28px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 0', borderTop: '1px solid rgba(200,169,126,0.08)' }}>
-            <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(200,169,126,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <UserCog size={16} color="#C8A97E" />
-            </div>
-            <div>
-              <p style={{ fontSize: 13, fontWeight: 500, color: '#e4e1eb' }}>Admin Panel</p>
-              <p style={{ fontSize: 11, color: '#4e453b' }}>Super Admin</p>
-            </div>
-          </div>
+        <div className="flex items-center gap-6">
+          <button className="material-symbols-outlined hover:text-[#C8A97E] transition-colors">notifications</button>
+          <button className="bg-[#C8A97E]/10 px-4 py-2 border border-[#C8A97E]/30 text-[#C8A97E] font-label-sm uppercase tracking-widest hover:bg-[#C8A97E] hover:text-black transition-all duration-300">
+            Log Out
+          </button>
         </div>
-      </aside>
+      </header>
 
-      {/* MAIN */}
-      <main style={{ marginLeft: 260, flex: 1, padding: '32px 48px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 36 }}>
-          <div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 300, color: '#fff', marginBottom: 4 }}>Executive Overview</h1>
-            <p style={{ fontSize: 13, color: '#5a5768' }}>Global Sales & Logistics Administrative Suite</p>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 6 }}>
-            <Clock size={14} color="#5a5768" />
-            <span style={{ fontSize: 12, color: '#6b6880' }}>Last updated: Just now</span>
-          </div>
+      <main className="pt-32 pb-20 px-20 max-w-[1440px] mx-auto min-h-screen">
+        {/* Heading */}
+        <div className="mb-12">
+          <h2 className="font-headline-h1 text-headline-h1 text-[#C8A97E] mb-2">Executive Overview</h2>
+          <p className="font-body-lg text-body-lg text-zinc-500">Global Sales &amp; Logistics Administrative Suite</p>
         </div>
 
-        {/* STATS */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
-          {STATS.map((s) => (
-            <div key={s.label} style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(200,169,126,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{s.icon}</div>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 12, fontWeight: 500, color: s.up ? '#2ecc71' : '#e74c3c' }}>
-                  {s.up ? <TrendingUp size={14} /> : <TrendingDown size={14} />} {s.change}
-                </span>
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+          <div className="glass-card p-8 flex flex-col gap-2 relative overflow-hidden group">
+            <div className="absolute right-0 top-0 p-4 opacity-10">
+              <span className="material-symbols-outlined text-6xl">shopping_cart</span>
+            </div>
+            <span className="font-label-sm text-zinc-500 uppercase">Total Orders</span>
+            <span className="font-headline-h2 text-headline-h3 text-white">1,284</span>
+            <span className="text-emerald-500 text-sm font-label-sm flex items-center gap-1">
+              <span className="material-symbols-outlined text-xs">trending_up</span> +12.5% vs Last Month
+            </span>
+          </div>
+          <div className="glass-card p-8 flex flex-col gap-2 relative overflow-hidden group">
+            <div className="absolute right-0 top-0 p-4 opacity-10">
+              <span className="material-symbols-outlined text-6xl">payments</span>
+            </div>
+            <span className="font-label-sm text-zinc-500 uppercase">Revenue (PKR)</span>
+            <span className="font-headline-h2 text-headline-h3 text-white">74.2M</span>
+            <span className="text-emerald-500 text-sm font-label-sm flex items-center gap-1">
+              <span className="material-symbols-outlined text-xs">trending_up</span> +8.2% vs Last Month
+            </span>
+          </div>
+          <div className="glass-card p-8 flex flex-col gap-2 relative overflow-hidden group">
+            <div className="absolute right-0 top-0 p-4 opacity-10">
+              <span className="material-symbols-outlined text-6xl">group</span>
+            </div>
+            <span className="font-label-sm text-zinc-500 uppercase">Active Customers</span>
+            <span className="font-headline-h2 text-headline-h3 text-white">3,109</span>
+            <span className="text-zinc-500 text-sm font-label-sm flex items-center gap-1">
+              <span className="material-symbols-outlined text-xs">remove</span> Stable
+            </span>
+          </div>
+          <div className="glass-card p-8 flex flex-col gap-2 relative overflow-hidden group">
+            <div className="absolute right-0 top-0 p-4 opacity-10">
+              <span className="material-symbols-outlined text-6xl">directions_car</span>
+            </div>
+            <span className="font-label-sm text-zinc-500 uppercase">Delivered Cars</span>
+            <span className="font-headline-h2 text-headline-h3 text-white">142</span>
+            <span className="text-emerald-500 text-sm font-label-sm flex items-center gap-1">
+              <span className="material-symbols-outlined text-xs">trending_up</span> +5.1% vs Last Month
+            </span>
+          </div>
+        </div>
+
+        {/* Charts Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {/* Top Selling Models */}
+          <div className="glass-card p-8">
+            <div className="flex justify-between items-end mb-8">
+              <div>
+                <h3 className="font-headline-h3 text-[#C8A97E]">Top Selling Models</h3>
+                <p className="text-zinc-500 text-sm">Units sold per model class</p>
               </div>
-              <p style={{ fontSize: 28, fontWeight: 600, color: '#fff', marginBottom: 4 }}>{s.value}</p>
-              <p style={{ fontSize: 12, color: '#5a5768', letterSpacing: '0.05em' }}>{s.label}</p>
+              <button className="text-xs font-label-sm text-[#C8A97E] uppercase border-b border-[#C8A97E]/30 pb-1 hover:text-white hover:border-white transition-colors">View Details</button>
             </div>
-          ))}
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>
-          {/* TOP MODELS */}
-          <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px' }}>
-            <h3 style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 4 }}>Top Selling Models</h3>
-            <p style={{ fontSize: 11, color: '#4e453b', marginBottom: 20 }}>Units sold per model class</p>
-            {TOP_MODELS.map((m) => (
-              <div key={m.name} style={{ marginBottom: 14 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                  <span style={{ fontSize: 13, color: '#9a97a5' }}>{m.name}</span>
-                  <span style={{ fontSize: 12, color: '#C8A97E', fontWeight: 500 }}>{m.units} units</span>
-                </div>
-                <div style={{ height: 6, background: '#1f1f26', borderRadius: 3, overflow: 'hidden' }}>
-                  <div style={{ width: `${m.pct}%`, height: '100%', background: 'linear-gradient(90deg, #C8A97E, #e5c497)', borderRadius: 3, transition: 'width 1s ease' }} />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* REVENUE CHART */}
-          <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px' }}>
-            <h3 style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 4 }}>Monthly Revenue</h3>
-            <p style={{ fontSize: 11, color: '#4e453b', marginBottom: 20 }}>Total gross revenue across all sectors</p>
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16, height: 160 }}>
-              {REVENUE_MONTHS.map((m) => (
-                <div key={m.month} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                  <div style={{ width: '100%', height: `${m.value * 1.5}px`, background: 'linear-gradient(to top, #C8A97E, rgba(200,169,126,0.3))', borderRadius: '4px 4px 0 0', transition: 'height 0.8s ease' }} />
-                  <span style={{ fontSize: 11, color: '#5a5768' }}>{m.month}</span>
+            <div className="flex items-end gap-4 h-64 w-full px-4">
+              {[
+                { name: 'S-Class', height: '80%', value: 42 },
+                { name: 'G-Wagon', height: '65%', value: 34 },
+                { name: 'EQS SUV', height: '95%', value: 51 },
+                { name: 'GLE', height: '50%', value: 22 },
+                { name: 'GT Coupe', height: '75%', value: 38 },
+              ].map((model) => (
+                <div key={model.name} className="flex-1 flex flex-col items-center gap-3">
+                  <div className="w-full bg-[#C8A97E]/20 relative group cursor-pointer hover:bg-[#C8A97E] transition-colors duration-300" style={{ height: model.height }}>
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-label-sm opacity-0 group-hover:opacity-100 transition-opacity">{model.value}</div>
+                  </div>
+                  <span className="text-[10px] font-label-sm text-zinc-400 uppercase tracking-tighter">{model.name}</span>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Monthly Revenue */}
+          <div className="glass-card p-8">
+            <div className="flex justify-between items-end mb-8">
+              <div>
+                <h3 className="font-headline-h3 text-[#C8A97E]">Monthly Revenue</h3>
+                <p className="text-zinc-500 text-sm">Total gross revenue across all sectors</p>
+              </div>
+              <select className="bg-transparent border-none text-xs font-label-sm text-[#C8A97E] focus:ring-0 cursor-pointer uppercase">
+                <option>Last 6 Months</option>
+                <option>Current Year</option>
+              </select>
+            </div>
+            <div className="h-64 w-full flex items-center justify-center relative">
+              <svg className="w-full h-full" viewBox="0 0 400 200">
+                <defs>
+                  <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style={{ stopColor: '#C8A97E', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#C8A97E', stopOpacity: 0 }} />
+                  </linearGradient>
+                </defs>
+                <path d="M 0 160 Q 50 140 100 150 T 200 80 T 300 90 T 400 40" fill="none" stroke="#C8A97E" strokeWidth="2" />
+                <path d="M 0 160 Q 50 140 100 150 T 200 80 T 300 90 T 400 40 V 200 H 0 Z" fill="url(#grad)" opacity="0.2" />
+                <circle cx="100" cy="150" fill="#C8A97E" r="4" />
+                <circle cx="200" cy="80" fill="#C8A97E" r="4" />
+                <circle cx="400" cy="40" fill="#C8A97E" r="4" />
+              </svg>
+              <div className="absolute bottom-0 w-full flex justify-between px-2 text-[10px] font-label-sm text-zinc-600">
+                <span>JAN</span><span>FEB</span><span>MAR</span><span>APR</span><span>MAY</span><span>JUN</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 16 }}>
-          {/* RECENT ORDERS */}
-          <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-              <h3 style={{ fontSize: 15, fontWeight: 500, color: '#fff' }}>Recent Orders</h3>
-              <a href="#" style={{ fontSize: 12, color: '#C8A97E', display: 'flex', alignItems: 'center', gap: 4 }}>View All <ChevronRight size={14} /></a>
+        {/* Orders Table + Sidebar */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Recent Orders */}
+          <div className="lg:col-span-2 glass-card overflow-hidden">
+            <div className="p-8 border-b border-[#C8A97E]/10 flex justify-between items-center">
+              <h3 className="font-headline-h3 text-white text-2xl">Recent Orders</h3>
+              <button className="text-xs font-label-sm text-[#C8A97E] uppercase tracking-widest px-4 py-2 hover:bg-[#C8A97E]/10 transition-colors">Export CSV</button>
             </div>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  {['Order', 'Customer', 'Vehicle', 'Amount', 'Status'].map((h) => (
-                    <th key={h} style={{ textAlign: 'left', fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b', paddingBottom: 12, borderBottom: '1px solid rgba(200,169,126,0.06)' }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {RECENT_ORDERS.map((o) => (
-                  <tr key={o.id}>
-                    <td style={{ padding: '12px 0', fontSize: 13, color: '#C8A97E', fontWeight: 500 }}>{o.id}</td>
-                    <td style={{ padding: '12px 0', fontSize: 13, color: '#9a97a5' }}>{o.customer}</td>
-                    <td style={{ padding: '12px 0', fontSize: 13, color: '#9a97a5' }}>{o.car}</td>
-                    <td style={{ padding: '12px 0', fontSize: 13, color: '#e4e1eb', fontWeight: 500 }}>{o.amount}</td>
-                    <td style={{ padding: '12px 0' }}>
-                      <span style={{ padding: '3px 10px', background: `${o.color}15`, border: `1px solid ${o.color}30`, borderRadius: 20, fontSize: 11, color: o.color }}>{o.status}</span>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="text-zinc-500 font-label-sm text-[11px] uppercase tracking-tighter border-b border-[#C8A97E]/5">
+                    <th className="p-6 font-medium">Order ID</th>
+                    <th className="p-6 font-medium">Model</th>
+                    <th className="p-6 font-medium">Customer</th>
+                    <th className="p-6 font-medium text-right">Amount</th>
+                    <th className="p-6 font-medium">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="text-sm">
+                  <tr className="border-b border-[#C8A97E]/5 hover:bg-white/[0.02] transition-colors">
+                    <td className="p-6 text-[#C8A97E]">#MB-2024-001</td>
+                    <td className="p-6 text-white">EQS 580 4MATIC</td>
+                    <td className="p-6 text-zinc-400">Ahmed Khan</td>
+                    <td className="p-6 text-right text-white">₨ 42,500,000</td>
+                    <td className="p-6"><span className="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-label-sm rounded-sm">DELIVERED</span></td>
+                  </tr>
+                  <tr className="border-b border-[#C8A97E]/5 hover:bg-white/[0.02] transition-colors">
+                    <td className="p-6 text-[#C8A97E]">#MB-2024-002</td>
+                    <td className="p-6 text-white">G-Class G63 AMG</td>
+                    <td className="p-6 text-zinc-400">Zainab Malik</td>
+                    <td className="p-6 text-right text-white">₨ 85,000,000</td>
+                    <td className="p-6"><span className="px-2 py-1 bg-blue-500/10 text-blue-500 text-[10px] font-label-sm rounded-sm">IN TRANSIT</span></td>
+                  </tr>
+                  <tr className="border-b border-[#C8A97E]/5 hover:bg-white/[0.02] transition-colors">
+                    <td className="p-6 text-[#C8A97E]">#MB-2024-003</td>
+                    <td className="p-6 text-white">S-Class S450</td>
+                    <td className="p-6 text-zinc-400">Tariq Jameel</td>
+                    <td className="p-6 text-right text-white">₨ 58,200,000</td>
+                    <td className="p-6"><span className="px-2 py-1 bg-amber-500/10 text-amber-500 text-[10px] font-label-sm rounded-sm">PREPARING</span></td>
+                  </tr>
+                  <tr className="border-b border-[#C8A97E]/5 hover:bg-white/[0.02] transition-colors">
+                    <td className="p-6 text-[#C8A97E]">#MB-2024-004</td>
+                    <td className="p-6 text-white">AMG GT 4-Door</td>
+                    <td className="p-6 text-zinc-400">Haris Butt</td>
+                    <td className="p-6 text-right text-white">₨ 49,900,000</td>
+                    <td className="p-6"><span className="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-label-sm rounded-sm">DELIVERED</span></td>
+                  </tr>
+                  <tr className="border-b border-[#C8A97E]/5 hover:bg-white/[0.02] transition-colors">
+                    <td className="p-6 text-[#C8A97E]">#MB-2024-005</td>
+                    <td className="p-6 text-white">GLS 450 4MATIC</td>
+                    <td className="p-6 text-zinc-400">Sami Ibrahim</td>
+                    <td className="p-6 text-right text-white">₨ 38,400,000</td>
+                    <td className="p-6"><span className="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-label-sm rounded-sm">DELIVERED</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          {/* RIGHT COLUMN */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {/* ALERTS */}
-            <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px' }}>
-              <h3 style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 16 }}>Inventory Alerts</h3>
-              {ALERTS.map((a) => (
-                <div key={a.car} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: a.severity === 'critical' ? 'rgba(231,76,60,0.06)' : 'rgba(243,156,18,0.06)', border: `1px solid ${a.severity === 'critical' ? 'rgba(231,76,60,0.15)' : 'rgba(243,156,18,0.15)'}`, borderRadius: 6, marginBottom: 10 }}>
-                  <AlertTriangle size={16} color={a.severity === 'critical' ? '#e74c3c' : '#f39c12'} />
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 13, fontWeight: 500, color: '#e4e1eb' }}>{a.car}</p>
-                    <p style={{ fontSize: 11, color: '#5a5768' }}>{a.units} units remaining</p>
+          {/* Sidebar: Alerts + Audit */}
+          <div className="flex flex-col gap-8">
+            {/* Inventory Alerts */}
+            <div className="glass-card p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="material-symbols-outlined text-amber-500">warning</span>
+                <h3 className="font-headline-h3 text-white text-xl">Inventory Alerts</h3>
+              </div>
+              <div className="space-y-4">
+                <div className="p-4 bg-amber-500/5 border-l-2 border-amber-500">
+                  <p className="text-sm text-white font-medium">EQA 250+ Premium</p>
+                  <div className="flex justify-between items-center mt-1">
+                    <span className="text-xs text-zinc-400">Stock level critical</span>
+                    <span className="text-xs font-bold text-amber-500">1 Unit Left</span>
                   </div>
                 </div>
-              ))}
-              <p style={{ fontSize: 11, color: '#3a3748', marginTop: 4 }}>All other stock levels stable</p>
+                <div className="p-4 bg-amber-500/5 border-l-2 border-amber-500">
+                  <p className="text-sm text-white font-medium">Maybach GLS 600</p>
+                  <div className="flex justify-between items-center mt-1">
+                    <span className="text-xs text-zinc-400">Stock level critical</span>
+                    <span className="text-xs font-bold text-amber-500">2 Units Left</span>
+                  </div>
+                </div>
+                <div className="p-4 bg-zinc-800/20 border-l-2 border-zinc-700">
+                  <p className="text-sm text-zinc-300 font-medium italic">All other stock levels stable</p>
+                </div>
+              </div>
             </div>
 
-            {/* AUDIT LOG */}
-            <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px' }}>
-              <h3 style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 16 }}>Audit Log</h3>
-              {AUDIT_LOG.map((log, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 14 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'rgba(200,169,126,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 2, flexShrink: 0 }}>{log.icon}</div>
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 13, color: '#9a97a5' }}>{log.action}</p>
-                    <p style={{ fontSize: 11, color: '#3a3748' }}>{log.user} • {log.time}</p>
+            {/* Audit Log */}
+            <div className="glass-card p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="material-symbols-outlined text-[#C8A97E]">history</span>
+                <h3 className="font-headline-h3 text-white text-xl">Audit Log</h3>
+              </div>
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="w-2 h-2 mt-1.5 rounded-full bg-[#C8A97E]"></div>
+                  <div>
+                    <p className="text-xs text-white">Inventory updated: G-Class</p>
+                    <p className="text-[10px] text-zinc-500 uppercase mt-0.5">Admin (Sara) • 2m ago</p>
                   </div>
                 </div>
-              ))}
+                <div className="flex gap-4">
+                  <div className="w-2 h-2 mt-1.5 rounded-full bg-zinc-700"></div>
+                  <div>
+                    <p className="text-xs text-white">Successful Login</p>
+                    <p className="text-[10px] text-zinc-500 uppercase mt-0.5">System • 15m ago</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="w-2 h-2 mt-1.5 rounded-full bg-[#C8A97E]"></div>
+                  <div>
+                    <p className="text-xs text-white">Price adjusted: S-Class 2024</p>
+                    <p className="text-[10px] text-zinc-500 uppercase mt-0.5">Manager (Omar) • 1h ago</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="w-2 h-2 mt-1.5 rounded-full bg-red-500"></div>
+                  <div>
+                    <p className="text-xs text-white">Failed Login Attempt</p>
+                    <p className="text-[10px] text-zinc-500 uppercase mt-0.5">IP: 192.168.1.4 • 4h ago</p>
+                  </div>
+                </div>
+              </div>
+              <button className="w-full mt-8 py-3 border border-[#C8A97E]/20 text-[#C8A97E] font-label-sm uppercase hover:bg-[#C8A97E] hover:text-black transition-all">Full Audit Trace</button>
             </div>
           </div>
         </div>
       </main>
-    </div>
+
+      {/* Footer */}
+      <footer className="bg-[#050508] text-[#C8A97E] font-['Playfair_Display'] text-sm tracking-tight w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-[#C8A97E]/10">
+        <div className="flex flex-col gap-6">
+          <span className="text-lg font-semibold text-white">Mercedes-Benz</span>
+          <p className="text-zinc-500 text-xs leading-relaxed max-w-xs">
+            The technical administrative portal for Mercedes-Benz Pakistan operations. Secure executive access for fleet management, customer relations, and high-precision logistics.
+          </p>
+          <span className="text-xs text-zinc-600">© 2024 Mercedes-Benz Pakistan. All rights reserved.</span>
+        </div>
+        <div className="grid grid-cols-2 gap-8">
+          <div className="flex flex-col gap-4">
+            <span className="text-white uppercase font-bold text-xs tracking-widest mb-2">Systems</span>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Cars</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">My Orders</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Wishlist</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Test Drive</a>
+          </div>
+          <div className="flex flex-col gap-4">
+            <span className="text-white uppercase font-bold text-xs tracking-widest mb-2">Corporate</span>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Service</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-[#C8A97E]" href="#">Admin</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Contact</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Legal</a>
+          </div>
+        </div>
+        <div className="flex flex-col gap-6 items-start md:items-end">
+          <div className="glass-card p-6 w-full md:w-auto min-w-[280px]">
+            <span className="text-white font-bold block mb-4 uppercase text-xs">Security Protocol</span>
+            <div className="flex items-center gap-3 text-emerald-500 text-xs">
+              <span className="material-symbols-outlined text-sm">verified_user</span>
+              <span>Encrypted Connection Active</span>
+            </div>
+            <div className="mt-4 flex gap-3">
+              <div className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-[#C8A97E] hover:text-black transition-colors cursor-pointer">
+                <span className="material-symbols-outlined text-sm">shield</span>
+              </div>
+              <div className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:bg-[#C8A97E] hover:text-black transition-colors cursor-pointer">
+                <span className="material-symbols-outlined text-sm">lock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </>
   );
 }

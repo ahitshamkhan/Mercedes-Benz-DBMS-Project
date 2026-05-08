@@ -1,249 +1,164 @@
-import { useState } from 'react';
-import { Star, Droplets, CircleDot, ClipboardCheck, Wrench, ShieldCheck, MapPin, Calendar, Clock, ChevronRight, Check, Info } from 'lucide-react';
-
-const SERVICES = [
-  { id: 'oil', icon: <Droplets size={22} color="#C8A97E" />, title: 'Oil & Filter Change', desc: 'Synthetic oil and filter replacement', price: 'PKR 35,000', duration: '1 hour' },
-  { id: 'tires', icon: <CircleDot size={22} color="#C8A97E" />, title: 'Tire Service', desc: 'Alignment, rotation, and balance', price: 'PKR 25,000', duration: '1.5 hours' },
-  { id: 'inspect', icon: <ClipboardCheck size={22} color="#C8A97E" />, title: 'Full Inspection', desc: 'Comprehensive multi-point health check', price: 'PKR 15,000', duration: '2 hours' },
-  { id: 'repair', icon: <Wrench size={22} color="#C8A97E" />, title: 'Repair & Diagnostics', desc: 'Mechanical or technical diagnostic', price: 'PKR 20,000', duration: '2-4 hours' },
-  { id: 'premium', icon: <ShieldCheck size={22} color="#C8A97E" />, title: 'Premium Care Package', desc: 'The ultimate maintenance package', price: 'PKR 95,000', duration: '4 hours' },
-];
-
-const DEALERS = [
-  { name: 'Lahore — Central Branch', address: 'Main Boulevard, Gulberg III' },
-  { name: 'Karachi — DHA Phase VI', address: 'Khayaban-e-Ittehad' },
-  { name: 'Islamabad — Blue Area', address: 'Jinnah Avenue' },
-];
-
-const TIME_SLOTS = ['08:00 AM', '09:30 AM', '11:00 AM', '01:00 PM', '02:30 PM', '04:00 PM'];
-
 export default function ServiceBooking() {
-  const [selectedServices, setSelectedServices] = useState([]);
-  const [selectedDealer, setSelectedDealer] = useState(null);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [vehicleReg, setVehicleReg] = useState('');
-  const [notes, setNotes] = useState('');
-
-  const toggleService = (id) => {
-    setSelectedServices((prev) =>
-      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
-    );
-  };
-
-  const totalPrice = selectedServices.reduce((sum, id) => {
-    const svc = SERVICES.find((s) => s.id === id);
-    return sum + (svc ? parseInt(svc.price.replace(/[^\d]/g, '')) : 0);
-  }, 0);
-
-  const inputStyle = {
-    width: '100%', padding: '14px 16px', background: '#111118',
-    border: '1px solid rgba(200,169,126,0.12)', borderRadius: 6, color: '#e4e1eb',
-    fontSize: 14, fontFamily: "'DM Sans', sans-serif", outline: 'none', transition: 'border 0.3s',
-  };
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        input:focus, textarea:focus { border-color:#C8A97E !important; }
-        input::placeholder, textarea::placeholder { color:#3a3748; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Star size={16} color="#C8A97E" />
-            </div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <div style={{ display: 'flex', gap: 36 }}>
-            {['Service', 'Cars', 'Experience'].map((l) => (
-              <a key={l} href="#" style={{ fontSize: 13, fontWeight: l === 'Service' ? 500 : 300, color: l === 'Service' ? '#C8A97E' : '#b0adb8', letterSpacing: '0.05em' }}>{l}</a>
-            ))}
-          </div>
-          <button className="gold-btn" style={{ padding: '8px 22px', fontSize: 11 }}>My Account</button>
+    <>
+      {/* TopAppBar */}
+      <nav className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E] text-2xl">star</span>
+          <span className="font-['Playfair_Display'] tracking-widest uppercase text-xl font-bold text-[#C8A97E]">Mercedes-Benz</span>
         </div>
+        <div className="hidden md:flex gap-10 items-center">
+          <a className="font-['Playfair_Display'] tracking-tight text-[#C8A97E] border-b border-[#C8A97E] pb-1" href="#">Service</a>
+          <a className="font-['Playfair_Display'] tracking-tight text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Cars</a>
+          <a className="font-['Playfair_Display'] tracking-tight text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Experience</a>
+        </div>
+        <button className="text-[#C8A97E] border border-[#C8A97E]/30 px-6 py-2 hover:bg-[#C8A97E]/10 transition-colors font-label-sm">Sign In</button>
       </nav>
 
-      {/* HEADER */}
-      <div style={{ paddingTop: 100, maxWidth: 1440, margin: '0 auto', padding: '100px 80px 0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-          <div className="gold-line" />
-          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>Mercedes Care</span>
-        </div>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 42, fontWeight: 300, color: '#fff', marginBottom: 8 }}>Service Appointment</h1>
-        <p style={{ fontSize: 15, fontWeight: 300, color: '#6b6880', marginBottom: 48 }}>Precision engineering deserves specialized care. Secure your appointment with our master technicians.</p>
-      </div>
+      {/* Main Content */}
+      <main className="pt-32 pb-40 px-6 md:px-20 max-w-7xl mx-auto">
+        {/* Header */}
+        <header className="mb-16">
+          <h1 className="font-headline-h1 text-headline-h1 text-[#C8A97E] mb-4">Mercedes Care — Service Appointment</h1>
+          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Precision engineering deserves specialized care. Secure your appointment with our master technicians in a few simple steps.</p>
+        </header>
 
-      <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px 80px', display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 48 }}>
-        {/* LEFT */}
-        <div>
-          {/* SECTION 01: Service Type */}
-          <div style={{ marginBottom: 48 }}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: 13, fontWeight: 500, color: '#C8A97E', letterSpacing: '0.1em' }}>01</span> Select Service Type
+        <form className="space-y-20">
+          {/* Service Type Selection */}
+          <section>
+            <h2 className="font-headline-h3 text-headline-h3 text-white mb-8 flex items-center gap-3">
+              <span className="text-[#C8A97E]">01</span> Select Service Type
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {SERVICES.map((svc) => {
-                const active = selectedServices.includes(svc.id);
-                return (
-                  <div key={svc.id} onClick={() => toggleService(svc.id)} style={{
-                    background: active ? 'rgba(200,169,126,0.06)' : '#111118',
-                    border: active ? '1px solid rgba(200,169,126,0.35)' : '1px solid rgba(200,169,126,0.08)',
-                    borderRadius: 8, padding: '18px 24px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 16, transition: 'all 0.3s',
-                  }}>
-                    <div style={{ width: 20, height: 20, borderRadius: 4, border: active ? '1px solid #C8A97E' : '1px solid rgba(200,169,126,0.2)', background: active ? 'rgba(200,169,126,0.15)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      {active && <Check size={12} color="#C8A97E" />}
-                    </div>
-                    <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(200,169,126,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{svc.icon}</div>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 15, fontWeight: 500, color: '#fff', marginBottom: 2 }}>{svc.title}</p>
-                      <p style={{ fontSize: 12, color: '#6b6880' }}>{svc.desc} • {svc.duration}</p>
-                    </div>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: '#C8A97E', whiteSpace: 'nowrap' }}>{svc.price}</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {/* Oil Change */}
+              <div className="relative">
+                <input defaultChecked className="sr-only service-radio" id="oil_change" name="service_type" type="radio" />
+                <label className="glass-card flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300 hover:border-[#C8A97E]/50 group h-full" htmlFor="oil_change">
+                  <span className="material-symbols-outlined text-4xl mb-4 text-zinc-500 group-hover:text-[#C8A97E]">oil_barrel</span>
+                  <span className="font-label-sm uppercase mb-2">Oil Change</span>
+                  <p className="text-center text-xs text-zinc-500 leading-tight">Synthetic oil and filter replacement.</p>
+                </label>
+              </div>
+              {/* Tire Service */}
+              <div className="relative">
+                <input className="sr-only service-radio" id="tire_service" name="service_type" type="radio" />
+                <label className="glass-card flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300 hover:border-[#C8A97E]/50 group h-full" htmlFor="tire_service">
+                  <span className="material-symbols-outlined text-4xl mb-4 text-zinc-500 group-hover:text-[#C8A97E]">tire_repair</span>
+                  <span className="font-label-sm uppercase mb-2">Tire Service</span>
+                  <p className="text-center text-xs text-zinc-500 leading-tight">Alignment, rotation, and balance.</p>
+                </label>
+              </div>
+              {/* Full Inspection */}
+              <div className="relative">
+                <input className="sr-only service-radio" id="inspection" name="service_type" type="radio" />
+                <label className="glass-card flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300 hover:border-[#C8A97E]/50 group h-full" htmlFor="inspection">
+                  <span className="material-symbols-outlined text-4xl mb-4 text-zinc-500 group-hover:text-[#C8A97E]">fact_check</span>
+                  <span className="font-label-sm uppercase mb-2">Full Inspection</span>
+                  <p className="text-center text-xs text-zinc-500 leading-tight">Comprehensive multi-point health check.</p>
+                </label>
+              </div>
+              {/* Repair */}
+              <div className="relative">
+                <input className="sr-only service-radio" id="repair" name="service_type" type="radio" />
+                <label className="glass-card flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300 hover:border-[#C8A97E]/50 group h-full" htmlFor="repair">
+                  <span className="material-symbols-outlined text-4xl mb-4 text-zinc-500 group-hover:text-[#C8A97E]">build</span>
+                  <span className="font-label-sm uppercase mb-2">Repair</span>
+                  <p className="text-center text-xs text-zinc-500 leading-tight">Mechanical or technical diagnostic.</p>
+                </label>
+              </div>
+              {/* Full Service */}
+              <div className="relative">
+                <input className="sr-only service-radio" id="full_service" name="service_type" type="radio" />
+                <label className="glass-card flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300 hover:border-[#C8A97E]/50 group h-full" htmlFor="full_service">
+                  <span className="material-symbols-outlined text-4xl mb-4 text-zinc-500 group-hover:text-[#C8A97E]">verified_user</span>
+                  <span className="font-label-sm uppercase mb-2">Full Service</span>
+                  <p className="text-center text-xs text-zinc-500 leading-tight">The ultimate maintenance package.</p>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          {/* Dealership and Logistics */}
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div>
+              <h2 className="font-headline-h3 text-headline-h3 text-white mb-8 flex items-center gap-3">
+                <span className="text-[#C8A97E]">02</span> Dealership
+              </h2>
+              <div className="space-y-4">
+                <select className="w-full bg-surface-container border border-outline-variant text-on-surface p-4 focus:border-[#C8A97E] outline-none transition-colors rounded-none appearance-none font-body-md">
+                  <option value="">Select a Dealership</option>
+                  <option value="karachi">Mercedes-Benz Karachi Central</option>
+                  <option value="lahore">Mercedes-Benz Lahore DHA</option>
+                  <option value="islamabad">Mercedes-Benz Islamabad</option>
+                </select>
+                <div className="h-64 glass-card relative overflow-hidden">
+                  <img alt="Showroom Location" className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBp1JLX9feKJ3r5MTCe5ajCCGE9vBfwN7vXoIQ798Jy1Nxp1aOSF1IKCSbTxKC6yTTIBhJmkAtPbivBoczHixksThozQRJhsN_cVTzkZgi8jXRq_9KZ65YNRPPeSQrO5FE72Lr0ubtWaBiTd5gerR3uOiGRtYymEUEG0ExkvviBqVOxmmG3aT0CyPnETdp6kP4BGvNrEfhn9OL_HavtGYuhaltcldbLtNtzkXLdHQ-7BDbARZvvj9j5G0VBYiySs9FoGThHlOGtfFI" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050508] to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[#C8A97E] text-sm">location_on</span>
+                    <span className="text-xs uppercase tracking-widest text-[#C8A97E]">View on Map</span>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* SECTION 02: Dealership */}
-          <div style={{ marginBottom: 48 }}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: 13, fontWeight: 500, color: '#C8A97E', letterSpacing: '0.1em' }}>02</span> Dealership
-            </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {DEALERS.map((d, i) => (
-                <div key={d.name} onClick={() => setSelectedDealer(i)} style={{
-                  background: selectedDealer === i ? 'rgba(200,169,126,0.06)' : '#111118',
-                  border: selectedDealer === i ? '1px solid rgba(200,169,126,0.35)' : '1px solid rgba(200,169,126,0.08)',
-                  borderRadius: 8, padding: '18px 24px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 16, transition: 'all 0.3s',
-                }}>
-                  <MapPin size={18} color={selectedDealer === i ? '#C8A97E' : '#4e453b'} />
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>{d.name}</p>
-                    <p style={{ fontSize: 12, color: '#6b6880' }}>{d.address}</p>
-                  </div>
-                  {selectedDealer === i && <Check size={16} color="#C8A97E" />}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* SECTION 03: Schedule */}
-          <div style={{ marginBottom: 48 }}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: 13, fontWeight: 500, color: '#C8A97E', letterSpacing: '0.1em' }}>03</span> Schedule
-            </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
-              <div>
-                <label style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6b6880', marginBottom: 8, display: 'block' }}>Date</label>
-                <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} style={{ ...inputStyle, colorScheme: 'dark' }} />
-              </div>
-              <div>
-                <label style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6b6880', marginBottom: 8, display: 'block' }}>Vehicle Registration</label>
-                <input value={vehicleReg} onChange={(e) => setVehicleReg(e.target.value)} placeholder="LEA-1234" style={inputStyle} />
               </div>
             </div>
-            <label style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6b6880', marginBottom: 10, display: 'block' }}>Time Slot</label>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 20 }}>
-              {TIME_SLOTS.map((t, i) => (
-                <button key={t} onClick={() => setSelectedTime(i)} style={{
-                  padding: '12px', background: selectedTime === i ? 'rgba(200,169,126,0.12)' : '#111118',
-                  border: selectedTime === i ? '1px solid #C8A97E' : '1px solid rgba(200,169,126,0.08)',
-                  borderRadius: 6, color: selectedTime === i ? '#C8A97E' : '#7a7788', fontSize: 13, fontWeight: 500,
-                  cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", transition: 'all 0.3s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                }}>
-                  <Clock size={13} /> {t}
-                </button>
-              ))}
-            </div>
-            <label style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6b6880', marginBottom: 8, display: 'block' }}>Additional Notes</label>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Describe any specific concerns..." rows={3}
-              style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.6 }} />
-          </div>
-        </div>
-
-        {/* RIGHT — Summary Sidebar */}
-        <div>
-          <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, padding: '32px 28px', position: 'sticky', top: 100 }}>
-            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff', marginBottom: 24 }}>Booking Summary</h3>
-
-            {selectedServices.length > 0 ? (
-              <>
-                {selectedServices.map((id) => {
-                  const svc = SERVICES.find((s) => s.id === id);
-                  return (
-                    <div key={id} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                      <span style={{ fontSize: 13, color: '#9a97a5' }}>{svc.title}</span>
-                      <span style={{ fontSize: 13, color: '#C8A97E', fontWeight: 500 }}>{svc.price}</span>
-                    </div>
-                  );
-                })}
-                <div style={{ borderTop: '1px solid rgba(200,169,126,0.12)', paddingTop: 14, marginTop: 8, display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>Estimated Total</span>
-                  <span style={{ fontSize: 20, fontWeight: 600, color: '#C8A97E' }}>PKR {totalPrice.toLocaleString()}</span>
+            <div>
+              <h2 className="font-headline-h3 text-headline-h3 text-white mb-8 flex items-center gap-3">
+                <span className="text-[#C8A97E]">03</span> Schedule
+              </h2>
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className="font-label-sm uppercase text-zinc-500">Preferred Appointment Date</label>
+                  <input className="w-full bg-surface-container border border-outline-variant text-on-surface p-4 focus:border-[#C8A97E] outline-none transition-colors rounded-none font-body-md" type="date" />
                 </div>
-              </>
-            ) : (
-              <p style={{ fontSize: 13, color: '#3a3748', fontStyle: 'italic' }}>No services selected yet.</p>
-            )}
-
-            {selectedDealer !== null && (
-              <div style={{ marginTop: 20, padding: '14px 16px', background: 'rgba(200,169,126,0.04)', borderRadius: 6, border: '1px solid rgba(200,169,126,0.08)' }}>
-                <p style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b', marginBottom: 4 }}>Location</p>
-                <p style={{ fontSize: 13, color: '#9a97a5' }}>{DEALERS[selectedDealer].name}</p>
+                <div className="space-y-2">
+                  <label className="font-label-sm uppercase text-zinc-500">Service Notes &amp; Requests</label>
+                  <textarea className="w-full bg-surface-container border border-outline-variant text-on-surface p-4 focus:border-[#C8A97E] outline-none transition-colors rounded-none font-body-md resize-none" placeholder="Specify any particular issues or requests for our technicians..." rows="5"></textarea>
+                </div>
               </div>
-            )}
+            </div>
+          </section>
 
-            <button className="gold-btn" style={{ width: '100%', marginTop: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-              Book Appointment <ChevronRight size={16} />
+          {/* Final Submission */}
+          <section className="flex flex-col md:flex-row items-center justify-between gap-8 border-t border-[#C8A97E]/15 pt-16">
+            <div className="flex items-center gap-4">
+              <span className="material-symbols-outlined text-[#C8A97E]">security</span>
+              <p className="text-xs text-zinc-500 max-w-sm">Your booking is protected by our global privacy standards. A service advisor will contact you within 2 business hours to confirm.</p>
+            </div>
+            <button className="group relative inline-flex items-center justify-center px-12 py-5 font-label-sm uppercase tracking-widest overflow-hidden border border-[#C8A97E] text-[#C8A97E] transition-all duration-300 hover:text-[#050508]" type="submit">
+              <span className="relative z-10">Confirm Appointment</span>
+              <div className="absolute inset-0 bg-[#C8A97E] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
             </button>
+          </section>
+        </form>
+      </main>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginTop: 16 }}>
-              <Info size={14} color="#4e453b" style={{ marginTop: 2, flexShrink: 0 }} />
-              <p style={{ fontSize: 11, fontWeight: 300, color: '#4e453b', lineHeight: 1.6 }}>
-                Your booking is protected by our global privacy standards. A service advisor will contact you within 2 business hours to confirm.
-              </p>
-            </div>
+      {/* Footer */}
+      <footer className="bg-[#050508] w-full py-20 px-6 md:px-20 grid grid-cols-1 md:grid-cols-3 gap-16 border-t border-[#C8A97E]/10">
+        <div className="space-y-6">
+          <span className="text-lg font-semibold text-white font-['Playfair_Display']">Mercedes-Benz</span>
+          <p className="text-zinc-500 font-['Playfair_Display'] text-sm tracking-tight leading-relaxed">
+            Experience the pinnacle of automotive excellence. Our heritage is built on a century of innovation and luxury craftsmanship.
+          </p>
+        </div>
+        <div>
+          <h4 className="text-[#C8A97E] font-label-sm uppercase mb-8">Navigation</h4>
+          <div className="grid grid-cols-2 gap-4">
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Cars</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">My Orders</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Wishlist</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Test Drive</a>
+            <a className="text-[#C8A97E] font-['Playfair_Display'] text-sm" href="#">Service</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Admin</a>
           </div>
         </div>
-      </div>
-
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', padding: '40px 0 20px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={14} color="#C8A97E" /></div>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: '#fff' }}>Mercedes-Benz</span>
-            </div>
-            <p style={{ fontSize: 13, fontWeight: 300, color: '#5a5768', lineHeight: 1.7, maxWidth: 280 }}>Experience the pinnacle of automotive excellence. Built on a century of innovation.</p>
+        <div>
+          <h4 className="text-[#C8A97E] font-label-sm uppercase mb-8">Newsletter</h4>
+          <div className="flex flex-col gap-4">
+            <input className="bg-transparent border-b border-[#C8A97E]/30 py-2 focus:border-[#C8A97E] outline-none text-sm transition-colors" placeholder="Your Email Address" type="email" />
+            <p className="text-[10px] text-zinc-600 uppercase tracking-widest">© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
           </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Navigation</h4>
-            {['Cars', 'My Orders', 'Wishlist', 'Test Drive', 'Service', 'Admin'].map((l) => (
-              <a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10 }}>{l}</a>
-            ))}
-          </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Newsletter</h4>
-            <p style={{ fontSize: 13, fontWeight: 300, color: '#5a5768', lineHeight: 1.7 }}>Stay updated with exclusive offers and events.</p>
-          </div>
-        </div>
-        <div style={{ maxWidth: 1440, margin: '20px auto 0', padding: '16px 80px 0', borderTop: '1px solid rgba(200,169,126,0.08)' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }

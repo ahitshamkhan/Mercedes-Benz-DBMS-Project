@@ -1,194 +1,186 @@
-import { useState } from 'react';
-import { Star, Heart, Trash2, ArrowRight, ShoppingCart, Eye, HeartOff } from 'lucide-react';
-
-const INITIAL_ITEMS = [
-  { id: 1, name: 'Mercedes-AMG GT Black Series', category: 'AMG Performance', price: 'PKR 145,000,000', image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=500&q=80', rating: 5.0, year: 2024 },
-  { id: 2, name: 'S-Class Saloon', category: 'Luxury Sedan', price: 'PKR 85,000,000', image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&q=80', rating: 4.9, year: 2024 },
-  { id: 3, name: 'G-Class G63 AMG', category: 'SUV', price: 'PKR 150,000,000', image: 'https://images.unsplash.com/photo-1520031441872-265e4ff70366?w=500&q=80', rating: 4.8, year: 2024 },
-];
-
 export default function Wishlist() {
-  const [items, setItems] = useState(INITIAL_ITEMS);
-  const [removingId, setRemovingId] = useState(null);
-
-  const removeItem = (id) => {
-    setRemovingId(id);
-    setTimeout(() => {
-      setItems((prev) => prev.filter((item) => item.id !== id));
-      setRemovingId(null);
-    }, 300);
-  };
-
-  const isEmpty = items.length === 0;
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        .card-hover { transition:transform 0.4s, box-shadow 0.4s, opacity 0.3s; }
-        .card-hover:hover { transform:translateY(-4px); box-shadow:0 0 25px rgba(200,169,126,0.06); }
-        .img-zoom { transition:transform 0.6s; }
-        .img-zoom:hover { transform:scale(1.05); }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Star size={16} color="#C8A97E" />
-            </div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <div style={{ display: 'flex', gap: 36 }}>
-            {['Cars', 'Service', 'Wishlist', 'My Orders'].map((l) => (
-              <a key={l} href="#" style={{ fontSize: 13, fontWeight: l === 'Wishlist' ? 500 : 300, color: l === 'Wishlist' ? '#C8A97E' : '#b0adb8', letterSpacing: '0.05em' }}>{l}</a>
-            ))}
-          </div>
-          <button className="gold-btn" style={{ padding: '8px 22px', fontSize: 11 }}>My Account</button>
+    <>
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E]">star</span>
+          <h1 className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</h1>
         </div>
-      </nav>
+        <nav className="hidden md:flex gap-10">
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-label-sm" href="#">CARS</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-label-sm" href="#">SERVICE</a>
+          <a className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-label-sm" href="#">WISHLIST</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-label-sm" href="#">MY ORDERS</a>
+        </nav>
+        <button className="text-[#C8A97E] font-label-sm hover:bg-[#C8A97E]/10 px-6 py-2 border border-[#C8A97E]/30 transition-all">Sign In</button>
+      </header>
 
-      {/* CONTENT */}
-      <div style={{ paddingTop: 100, maxWidth: 1440, margin: '0 auto', padding: '100px 80px 60px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-          <div className="gold-line" />
-          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>My Collection</span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48 }}>
-          <div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 42, fontWeight: 300, color: '#fff', marginBottom: 8 }}>Your Wishlist</h1>
-            <p style={{ fontSize: 15, fontWeight: 300, color: '#6b6880' }}>Explore your curated selection of automotive excellence.</p>
+      <main className="pt-40 pb-section-gap px-margin-desktop max-w-container-max mx-auto min-h-screen">
+        {/* Header Section */}
+        <header className="mb-20">
+          <div className="flex items-baseline gap-4 mb-4">
+            <span className="text-primary font-label-sm tracking-[0.2em] uppercase">Private Collection</span>
+            <div className="h-px bg-primary/20 flex-grow"></div>
           </div>
-          {!isEmpty && (
-            <span style={{ fontSize: 13, color: '#6b6880' }}>{items.length} {items.length === 1 ? 'vehicle' : 'vehicles'} saved</span>
-          )}
-        </div>
+          <h2 className="font-headline-h1 text-headline-h1 text-on-surface">Your Saved Vehicles</h2>
+          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-6">
+            Explore your curated selection of automotive excellence. Manage your preferred configurations and proceed to consultation for the world's most desired automobiles.
+          </p>
+        </header>
 
-        {isEmpty ? (
-          /* EMPTY STATE */
-          <div style={{ textAlign: 'center', padding: '100px 0' }}>
-            <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'rgba(200,169,126,0.06)', border: '1px solid rgba(200,169,126,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
-              <HeartOff size={32} color="#2a2931" />
+        {/* Wishlist Content */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-unit gap-y-12">
+          {/* Car Card 1 */}
+          <div className="md:col-span-8 group relative bg-surface-container-lowest hairline-border overflow-hidden card-glow transition-all duration-500">
+            <div className="aspect-[21/9] overflow-hidden">
+              <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAM9AGqQEm4oA25o4Jz-Y7wA5RaVhKuIoELzE0AFLF9-JAdP9KbHATu8yjkt0GZV8Z6AB7lV_iGU5iyB7yi9NuVk2Sz7Uu63vfy-P7BdVL5OrZKCCHmh4rS1dvI8-0Zorw2zThZFsELtiJRjAf_FsosE79NmSQMHY_xDRAQw44itlAa6edFCI5iaROrnhes6jqa6S908tZpN8CLm0TKVrV33JShe87Cv0d2K1jsPdgi02XgiAmNsgho_cRww2uH1to-E18QwJ5Oio4" alt="Mercedes-AMG GT Black Series" />
             </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 300, color: '#fff', marginBottom: 12 }}>Your wishlist is empty.</h2>
-            <p style={{ fontSize: 14, fontWeight: 300, color: '#5a5768', lineHeight: 1.7, maxWidth: 400, margin: '0 auto 32px' }}>
-              Discover our latest models and save your favorites to view them later in your private collection.
-            </p>
-            <button className="gold-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-              Start Exploring <ArrowRight size={16} />
-            </button>
-          </div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 48 }}>
-            {/* CAR CARDS */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {items.map((car) => (
-                <div key={car.id} className="card-hover" style={{
-                  background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, overflow: 'hidden',
-                  opacity: removingId === car.id ? 0 : 1, transform: removingId === car.id ? 'translateX(40px)' : 'none',
-                }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', alignItems: 'stretch' }}>
-                    <div style={{ overflow: 'hidden' }}>
-                      <img className="img-zoom" src={car.image} alt={car.name} style={{ width: '100%', height: '100%', objectFit: 'cover', minHeight: 180 }} />
-                    </div>
-                    <div style={{ padding: '24px 28px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                      <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
-                          <div>
-                            <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#C8A97E' }}>{car.category}</span>
-                            <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff', marginTop: 4 }}>{car.name}</h3>
-                          </div>
-                          <button onClick={() => removeItem(car.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
-                            <Trash2 size={16} color="#5a5768" />
-                          </button>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                            <Star size={12} color="#C8A97E" fill="#C8A97E" />
-                            <span style={{ fontSize: 12, color: '#C8A97E' }}>{car.rating}</span>
-                          </div>
-                          <span style={{ fontSize: 12, color: '#3a3748' }}>•</span>
-                          <span style={{ fontSize: 12, color: '#5a5768' }}>{car.year}</span>
-                        </div>
-                        <p style={{ fontSize: 18, fontWeight: 600, color: '#C8A97E' }}>{car.price}</p>
-                      </div>
-                      <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-                        <button style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '10px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                          <Eye size={14} /> Details
-                        </button>
-                        <button style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '10px', background: 'rgba(200,169,126,0.1)', border: '1px solid #C8A97E', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                          <ShoppingCart size={14} /> Order
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* SIDEBAR — Summary */}
-            <div>
-              <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, padding: '32px 28px', position: 'sticky', top: 100 }}>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff', marginBottom: 24 }}>Wishlist Summary</h3>
-                {items.map((car) => (
-                  <div key={car.id} style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
-                    <img src={car.image} alt={car.name} style={{ width: 48, height: 48, borderRadius: 6, objectFit: 'cover' }} />
-                    <div style={{ flex: 1 }}>
-                      <p style={{ fontSize: 13, fontWeight: 500, color: '#e4e1eb' }}>{car.name}</p>
-                      <p style={{ fontSize: 12, color: '#C8A97E' }}>{car.price}</p>
-                    </div>
-                    <Heart size={14} color="#C8A97E" fill="#C8A97E" />
-                  </div>
-                ))}
-                <div style={{ borderTop: '1px solid rgba(200,169,126,0.1)', paddingTop: 16, marginTop: 8 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <span style={{ fontSize: 13, color: '#6b6880' }}>Total Vehicles</span>
-                    <span style={{ fontSize: 13, color: '#e4e1eb', fontWeight: 500 }}>{items.length}</span>
-                  </div>
-                </div>
-                <button className="gold-btn" style={{ width: '100%', marginTop: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-                  Compare All <ArrowRight size={16} />
+            <div className="p-10 flex justify-between items-end">
+              <div>
+                <span className="font-label-sm text-primary uppercase mb-2 block">Performance Luxury</span>
+                <h3 className="font-headline-h3 text-headline-h3">Mercedes-AMG GT Black Series</h3>
+                <p className="text-primary font-headline-h3 mt-2">PKR 145,000,000</p>
+              </div>
+              <div className="flex gap-4">
+                <button className="flex items-center gap-2 font-label-sm text-error hover:bg-error/10 px-4 py-2 border border-error/20 transition-all uppercase">
+                  <span className="material-symbols-outlined text-sm">close</span>
+                  Remove
+                </button>
+                <button className="font-label-sm bg-primary text-on-primary px-8 py-3 uppercase tracking-widest hover:bg-primary-fixed-dim transition-all">
+                  Configure
                 </button>
               </div>
             </div>
           </div>
-        )}
-      </div>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', marginTop: 80, padding: '40px 0 20px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={14} color="#C8A97E" /></div>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: '#fff' }}>Mercedes-Benz</span>
+          {/* Stats/Detail Card */}
+          <div className="md:col-span-4 bg-surface-container hairline-border p-10 flex flex-col justify-between">
+            <div>
+              <h4 className="font-headline-h3 text-headline-h3 mb-6">Wishlist Summary</h4>
+              <div className="space-y-6">
+                <div className="flex justify-between border-b border-outline-variant pb-4">
+                  <span className="text-on-surface-variant font-body-md">Saved Vehicles</span>
+                  <span className="text-primary font-body-md font-bold">03</span>
+                </div>
+                <div className="flex justify-between border-b border-outline-variant pb-4">
+                  <span className="text-on-surface-variant font-body-md">Est. Total Value</span>
+                  <span className="text-primary font-body-md font-bold">PKR 312M</span>
+                </div>
+                <div className="flex justify-between border-b border-outline-variant pb-4">
+                  <span className="text-on-surface-variant font-body-md">Last Updated</span>
+                  <span className="text-primary font-body-md font-bold">Oct 24, 2024</span>
+                </div>
+              </div>
             </div>
-            <p style={{ fontSize: 13, fontWeight: 300, color: '#5a5768', lineHeight: 1.7, maxWidth: 280 }}>Defining the pinnacle of automotive engineering for over a century.</p>
+            <button className="w-full border border-primary/40 text-primary font-label-sm py-4 uppercase tracking-widest hover:bg-primary/10 transition-all">
+              Schedule Showroom Visit
+            </button>
           </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Explore</h4>
-            {['Cars', 'My Orders', 'Wishlist', 'Test Drive', 'Service', 'Admin'].map((l) => (
-              <a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10 }}>{l}</a>
-            ))}
+
+          {/* Car Card 2 */}
+          <div className="md:col-span-6 group relative bg-surface-container-lowest hairline-border overflow-hidden card-glow transition-all duration-500">
+            <div className="aspect-video overflow-hidden">
+              <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOEdD34PTd2irGf5K2wyZDXygzUU2KPFvxjZK2s4L074Xuo5_gIRTxgVFyNSI8_Xlt-8TH5xtYEi6IN0Mp8pFCuMVHEzY6xmePfqY38LKViVZwt_RAFj7r7QwA41ELPaeT0ezNFxK1JMgmzTislzQeWK05gOjFjWGSZb6lFa_MxmU7EbBByop9FVRnRRD5aMHrPWM370UapAu-Du-5kS7WWkfLgit21AipuJ3tEmqiHnCx3DscU2HGGJrpjUNPDOXuftNDXXvmQpM" alt="S-Class Saloon" />
+            </div>
+            <div className="p-8">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <span className="font-label-sm text-primary uppercase mb-2 block">The Pinnacle</span>
+                  <h3 className="font-headline-h3 text-headline-h3">S-Class Saloon</h3>
+                </div>
+                <button className="text-error/60 hover:text-error transition-colors p-2">
+                  <span className="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-primary font-headline-h3">PKR 82,500,000</span>
+                <a className="font-label-sm text-on-surface hover:text-primary transition-colors flex items-center gap-2 uppercase" href="#">
+                  Details
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+              </div>
+            </div>
           </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Legal</h4>
-            {['Contact', 'Legal'].map((l) => (
-              <a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10 }}>{l}</a>
-            ))}
+
+          {/* Car Card 3 */}
+          <div className="md:col-span-6 group relative bg-surface-container-lowest hairline-border overflow-hidden card-glow transition-all duration-500">
+            <div className="aspect-video overflow-hidden">
+              <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6bjhATgJ6alrcAZw2smrGvZZrAYSe52jOCmB6MDXZnlhWGVv75Q012ARFHsGOm6ct60Q8_zIP4XqssRauTcpzDIM8TMSQhOjXBeWisX8hjHVzLNPjST8k4I7-dYwVIPTyI9PjKILijNeA1FUktVXo5gT0lUXTUqoh4pG1RwJm6aXUjYQuT-m8BRnRO2L7rWurmqoP-7KNrRF_QSTfUMns62LkOS5zv4CTd5eXN5J-z50JUfk4Oi02Z5vFA3CNbmgEl_8iJ9eyD-w" alt="G-Class G63 AMG" />
+            </div>
+            <div className="p-8">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <span className="font-label-sm text-primary uppercase mb-2 block">Iconic Strength</span>
+                  <h3 className="font-headline-h3 text-headline-h3">G-Class G63 AMG</h3>
+                </div>
+                <button className="text-error/60 hover:text-error transition-colors p-2">
+                  <span className="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-primary font-headline-h3">PKR 98,200,000</span>
+                <a className="font-label-sm text-on-surface hover:text-primary transition-colors flex items-center gap-2 uppercase" href="#">
+                  Details
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-        <div style={{ maxWidth: 1440, margin: '20px auto 0', padding: '16px 80px 0', borderTop: '1px solid rgba(200,169,126,0.08)' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+
+        {/* Empty State (Hidden) */}
+        <div className="hidden flex-col items-center justify-center py-32 text-center border border-dashed border-primary/20">
+          <span className="material-symbols-outlined text-6xl text-primary/30 mb-8">car_tag</span>
+          <h3 className="font-headline-h2 text-headline-h3 mb-4">Your wishlist is empty.</h3>
+          <p className="font-body-md text-on-surface-variant mb-10 max-w-sm">Discover our latest models and save your favorites to view them later in your private collection.</p>
+          <a className="group flex items-center gap-4 text-primary font-label-sm uppercase tracking-widest border border-primary px-10 py-4 hover:bg-primary hover:text-on-primary transition-all" href="#">
+            Start exploring
+            <span className="material-symbols-outlined transition-transform group-hover:translate-x-2">trending_flat</span>
+          </a>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div className="space-y-6">
+          <div className="text-lg font-semibold text-white font-['Playfair_Display']">Mercedes-Benz</div>
+          <p className="text-zinc-500 font-['Playfair_Display'] text-sm tracking-tight leading-relaxed">
+            Defining the pinnacle of automotive engineering for over a century. Excellence is not just a standard, but our heritage.
+          </p>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-600">
+            © 2024 Mercedes-Benz Pakistan. All rights reserved.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-8">
+          <div className="flex flex-col gap-4">
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Cars</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">My Orders</a>
+            <a className="text-[#C8A97E] font-['Playfair_Display'] text-sm" href="#">Wishlist</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Test Drive</a>
+          </div>
+          <div className="flex flex-col gap-4">
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Service</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Admin</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Contact</a>
+            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200" href="#">Legal</a>
+          </div>
+        </div>
+        <div className="space-y-6">
+          <h4 className="text-white font-['Playfair_Display'] text-sm uppercase tracking-widest">Subscribe to the Circle</h4>
+          <div className="relative group">
+            <input className="w-full bg-transparent border-b border-zinc-800 py-3 text-sm focus:outline-none focus:border-[#C8A97E] transition-colors" placeholder="YOUR EMAIL ADDRESS" type="email" />
+            <button className="absolute right-0 top-1/2 -translate-y-1/2 text-[#C8A97E]">
+              <span className="material-symbols-outlined">arrow_right_alt</span>
+            </button>
+          </div>
+          <div className="flex gap-6 pt-4 text-zinc-500">
+            <span className="material-symbols-outlined cursor-pointer hover:text-white">public</span>
+            <span className="material-symbols-outlined cursor-pointer hover:text-white">share</span>
+            <span className="material-symbols-outlined cursor-pointer hover:text-white">mail</span>
+          </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
