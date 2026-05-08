@@ -1,202 +1,223 @@
-import { useState, useEffect } from 'react';
-import { Star, Heart, Eye, ChevronRight, Sparkles, Clock, ArrowRight, Bell } from 'lucide-react';
-
-const ARRIVALS = [
-  { id: 1, name: 'AMG GT 63 Pro', category: 'AMG Performance', price: 'PKR 135,000,000', power: '612 HP', accel: '3.0s', image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=600&q=80', badge: 'Just Landed', daysAgo: 2, featured: true },
-  { id: 2, name: 'EQS 680 SUV', category: 'Electric SUV', price: 'PKR 110,000,000', power: '536 HP', accel: '4.4s', image: 'https://images.unsplash.com/photo-1625231334401-67c9eef63a78?w=600&q=80', badge: 'New', daysAgo: 5, featured: true },
-  { id: 3, name: 'S-Class Maybach', category: 'Ultra Luxury', price: 'PKR 220,000,000', power: '496 HP', accel: '4.8s', image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80', badge: 'Exclusive', daysAgo: 7, featured: false },
-  { id: 4, name: 'GLC 43 AMG Coupé', category: 'AMG SUV', price: 'PKR 78,000,000', power: '421 HP', accel: '4.6s', image: 'https://images.unsplash.com/photo-1520031441872-265e4ff70366?w=600&q=80', badge: 'New', daysAgo: 10, featured: false },
-  { id: 5, name: 'CLE 300 Cabriolet', category: 'Convertible', price: 'PKR 68,000,000', power: '258 HP', accel: '6.2s', image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=600&q=80', badge: 'New', daysAgo: 12, featured: false },
-  { id: 6, name: 'AMG ONE', category: 'Hypercar', price: 'PKR 850,000,000', power: '1,063 HP', accel: '2.9s', image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=600&q=80', badge: 'Limited', daysAgo: 14, featured: false },
-];
-
-const BADGE_COLORS = {
-  'Just Landed': '#C8A97E',
-  'New': '#2ecc71',
-  'Exclusive': '#9b59b6',
-  'Limited': '#e74c3c',
-};
-
 export default function NewArrivals() {
-  const [liked, setLiked] = useState([]);
-  const [notified, setNotified] = useState(false);
-  const [countdown, setCountdown] = useState({ days: 12, hours: 8, mins: 45 });
-
-  const toggleLike = (id) => setLiked((p) => p.includes(id) ? p.filter((x) => x !== id) : [...p, id]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        let { days, hours, mins } = prev;
-        mins -= 1;
-        if (mins < 0) { mins = 59; hours -= 1; }
-        if (hours < 0) { hours = 23; days -= 1; }
-        if (days < 0) return { days: 0, hours: 0, mins: 0 };
-        return { days, hours, mins };
-      });
-    }, 60000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const featured = ARRIVALS.filter((c) => c.featured);
-  const rest = ARRIVALS.filter((c) => !c.featured);
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        .card-hover { transition:transform 0.4s, box-shadow 0.4s; }
-        .card-hover:hover { transform:translateY(-6px); box-shadow:0 8px 30px rgba(200,169,126,0.08); }
-        .img-zoom { transition:transform 0.6s; }
-        .img-zoom:hover { transform:scale(1.06); }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={16} color="#C8A97E" /></div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <div style={{ display: 'flex', gap: 36 }}>
-            {['Cars', 'New Arrivals', 'Service', 'My Orders'].map((l) => (
-              <a key={l} href="#" style={{ fontSize: 13, fontWeight: l === 'New Arrivals' ? 500 : 300, color: l === 'New Arrivals' ? '#C8A97E' : '#b0adb8', letterSpacing: '0.05em' }}>{l}</a>
-            ))}
-          </div>
-          <button className="gold-btn" style={{ padding: '8px 22px', fontSize: 11 }}>My Account</button>
+    <>
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E]">star</span>
+          <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</span>
         </div>
-      </nav>
+        <nav className="hidden md:flex items-center gap-10 font-['Playfair_Display'] text-sm tracking-tight">
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Home</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Cars</a>
+          <a className="text-[#C8A97E] border-b border-[#C8A97E] pb-1" href="#">New Arrivals</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Test Drive</a>
+        </nav>
+        <button className="px-6 py-2 border border-[#C8A97E]/40 text-[#C8A97E] font-label-sm uppercase hover:bg-[#C8A97E]/10 transition-all duration-300">
+          Sign In
+        </button>
+      </header>
 
-      {/* HERO */}
-      <div style={{ paddingTop: 100, maxWidth: 1440, margin: '0 auto', padding: '100px 80px 0' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-          <div className="gold-line" />
-          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>Fresh from the Factory</span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48 }}>
-          <div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 48, fontWeight: 300, color: '#fff', marginBottom: 8 }}>New Arrivals</h1>
-            <p style={{ fontSize: 15, fontWeight: 300, color: '#6b6880' }}>The latest additions to our exclusive collection.</p>
+      <main className="pt-32 pb-40">
+        {/* Hero Heading */}
+        <section className="px-20 mb-20">
+          <div className="max-w-container-max mx-auto">
+            <span className="text-primary font-label-sm uppercase tracking-[0.3em] mb-4 block">Future of Luxury</span>
+            <h1 className="font-headline-h1 text-on-background mb-4">New Arrivals 2026</h1>
+            <div className="w-24 h-px bg-primary-container"></div>
           </div>
-          <button onClick={() => setNotified(!notified)} style={{
-            display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px',
-            background: notified ? 'rgba(200,169,126,0.1)' : 'transparent',
-            border: '1px solid rgba(200,169,126,0.25)', borderRadius: 4,
-            color: notified ? '#C8A97E' : '#7a7788', fontSize: 12, fontWeight: 500,
-            cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", transition: 'all 0.3s',
-          }}>
-            <Bell size={14} fill={notified ? '#C8A97E' : 'none'} /> {notified ? 'Notifications On' : 'Notify Me'}
-          </button>
-        </div>
+        </section>
 
-        {/* COUNTDOWN BANNER */}
-        <div style={{ background: 'linear-gradient(135deg, rgba(200,169,126,0.08), rgba(200,169,126,0.02))', border: '1px solid rgba(200,169,126,0.12)', borderRadius: 8, padding: '28px 36px', marginBottom: 48, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-              <Sparkles size={16} color="#C8A97E" />
-              <span style={{ fontSize: 14, fontWeight: 500, color: '#C8A97E' }}>Next Drop Coming Soon</span>
-            </div>
-            <p style={{ fontSize: 13, color: '#6b6880' }}>The all-new 2025 Mercedes-AMG SL Roadster arrives exclusively in Pakistan.</p>
-          </div>
-          <div style={{ display: 'flex', gap: 16 }}>
-            {[['Days', countdown.days], ['Hours', countdown.hours], ['Mins', countdown.mins]].map(([label, val]) => (
-              <div key={label} style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: 28, fontWeight: 600, color: '#fff', fontFamily: "'Playfair Display', serif" }}>{String(val).padStart(2, '0')}</p>
-                <p style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b' }}>{label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* FEATURED (Large Cards) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 48 }}>
-          {featured.map((car) => (
-            <div key={car.id} className="card-hover" style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, overflow: 'hidden' }}>
-              <div style={{ position: 'relative', overflow: 'hidden' }}>
-                <img className="img-zoom" src={car.image} alt={car.name} style={{ width: '100%', height: 280, objectFit: 'cover' }} />
-                <button onClick={() => toggleLike(car.id)} style={{ position: 'absolute', top: 14, right: 14, width: 40, height: 40, borderRadius: '50%', background: 'rgba(10,10,15,0.6)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(6px)' }}>
-                  <Heart size={18} color={liked.includes(car.id) ? '#e74c3c' : '#C8A97E'} fill={liked.includes(car.id) ? '#e74c3c' : 'none'} />
-                </button>
-                <span style={{ position: 'absolute', top: 14, left: 14, padding: '5px 14px', background: `${BADGE_COLORS[car.badge]}20`, border: `1px solid ${BADGE_COLORS[car.badge]}40`, borderRadius: 20, fontSize: 11, fontWeight: 600, color: BADGE_COLORS[car.badge], backdropFilter: 'blur(6px)', animation: car.badge === 'Just Landed' ? 'pulse 2s infinite' : 'none' }}>
-                  {car.badge}
-                </span>
-                <div style={{ position: 'absolute', bottom: 14, left: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <Clock size={12} color="#9a97a5" />
-                  <span style={{ fontSize: 11, color: '#9a97a5' }}>{car.daysAgo} days ago</span>
-                </div>
-              </div>
-              <div style={{ padding: '24px 28px' }}>
-                <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#C8A97E' }}>{car.category}</span>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff', margin: '6px 0 12px' }}>{car.name}</h3>
-                <div style={{ display: 'flex', gap: 20, marginBottom: 16, fontSize: 13, color: '#6b6880' }}>
-                  <span>{car.power}</span><span>0-100: {car.accel}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 20, fontWeight: 600, color: '#C8A97E' }}>{car.price}</span>
-                  <button style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '10px 20px', background: 'rgba(200,169,126,0.1)', border: '1px solid #C8A97E', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                    Explore <ArrowRight size={14} />
-                  </button>
-                </div>
+        {/* Horizontal Scroll Strip */}
+        <section className="mb-section-gap overflow-hidden">
+          <div className="flex gap-8 px-20 overflow-x-auto hide-scrollbar snap-x snap-mandatory">
+            {/* Featured Card 1 */}
+            <div className="flex-none w-[80vw] md:w-[60vw] aspect-[21/9] snap-center relative overflow-hidden group gold-hairline bg-surface-container-lowest">
+              <img className="absolute inset-0 w-full h-full object-cover grayscale-[0.2] group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO0JUD2Q9m9bbNn5885x581lrLHtuoAUFZ0Wk12wx0fu7lglz32uK5BSFgQKhPeaXO7PspEsFJgRUJZip4_PYuSqFju0rZvWNA0dNxuiMNxefr2kkm0xbN5Gx1EJzdI8ySgNM4ZOCa4QltTZ9-7PY1wPCBlepsCxPSIK4FjZrHYt46rM1V95TBu7ExoqriTPFKakQ40URYifYO2-8_ZSgEbOFo3HRRyhhbrzBSktbEPFTC6a1EZr7xsto0n0dHz6vuyqbqaX7lo3w" alt="EQS Maybach Night Series" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div className="absolute bottom-10 left-10 text-white">
+                <span className="text-primary font-label-sm uppercase tracking-widest mb-2 block">World Premiere</span>
+                <h3 className="font-headline-h2 text-3xl">EQS Maybach Night Series</h3>
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* REST (Smaller Grid) */}
-        <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff', marginBottom: 24 }}>More New Models</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 80 }}>
-          {rest.map((car) => (
-            <div key={car.id} className="card-hover" style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, overflow: 'hidden' }}>
-              <div style={{ position: 'relative', overflow: 'hidden' }}>
-                <img className="img-zoom" src={car.image} alt={car.name} style={{ width: '100%', height: 160, objectFit: 'cover' }} />
-                <span style={{ position: 'absolute', top: 10, left: 10, padding: '3px 10px', background: `${BADGE_COLORS[car.badge]}20`, border: `1px solid ${BADGE_COLORS[car.badge]}40`, borderRadius: 16, fontSize: 10, fontWeight: 600, color: BADGE_COLORS[car.badge] }}>{car.badge}</span>
-                <button onClick={() => toggleLike(car.id)} style={{ position: 'absolute', top: 10, right: 10, width: 30, height: 30, borderRadius: '50%', background: 'rgba(10,10,15,0.6)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                  <Heart size={14} color={liked.includes(car.id) ? '#e74c3c' : '#C8A97E'} fill={liked.includes(car.id) ? '#e74c3c' : 'none'} />
-                </button>
+            {/* Featured Card 2 */}
+            <div className="flex-none w-[80vw] md:w-[60vw] aspect-[21/9] snap-center relative overflow-hidden group gold-hairline bg-surface-container-lowest">
+              <img className="absolute inset-0 w-full h-full object-cover grayscale-[0.2] group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0gRqbPK6fLrl73ZS_sdemqZ9IpOuuaiQTB51_hSnl69-_wsSJ-XC5gN1fQTzC_ad7uf6zBlmLRj2_pvHU9crFfwKj_iRri97SEY2rOBGGeNmHyRaI6RpcdQQtOvUB1al6gTTDDzpgEDE12_7C9LQnxDp_-vbuLRvlVJo1oMWlvePrK-Hoa2Hu6RP7a0vwTa_2F0k3hIPNl1lxOl4M55offVkVCYSWs9RGetcIemBn_l22K8FHfkPs0ywnriVI71ON0umCJ5oAyYM" alt="AMG GT 63 Coupe SE" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div className="absolute bottom-10 left-10 text-white">
+                <span className="text-primary font-label-sm uppercase tracking-widest mb-2 block">Performance Core</span>
+                <h3 className="font-headline-h2 text-3xl">AMG GT 63 Coupe SE</h3>
               </div>
-              <div style={{ padding: '16px 18px' }}>
-                <span style={{ fontSize: 9, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b' }}>{car.category}</span>
-                <h4 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 400, color: '#fff', margin: '4px 0 8px' }}>{car.name}</h4>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: '#C8A97E' }}>{car.price}</span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#4e453b' }}><Clock size={11} /> {car.daysAgo}d</span>
+            </div>
+
+            {/* Featured Card 3 */}
+            <div className="flex-none w-[80vw] md:w-[60vw] aspect-[21/9] snap-center relative overflow-hidden group gold-hairline bg-surface-container-lowest">
+              <img className="absolute inset-0 w-full h-full object-cover grayscale-[0.2] group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9UJnUPl8m2hHKS0vl4H5O4XwRUE9vMpCSHSJOZhmkQxSPaKuxch0ZNMs5DIFlWP-ji-GR2DbCtVYs5G1ibbKdy_c27S1IvbdvOKgM2YZ5nJYqzW-l-KY7aDZLNXMJuFvxtUZPsS80Hnu-yDMeQgGDOQAvT77aYdE4wq9UqGiaCkBcl1a9_XcPArZDRVQxPZkRDYTakxjPE6Nk0I3JJWRmqvGk7Fkoobt9xmSI0IbdPYGWvx4yEJjsTnFp6FwD549eJ-U4D28aBu8" alt="S-Class Pinnacle Edition" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div className="absolute bottom-10 left-10 text-white">
+                <span className="text-primary font-label-sm uppercase tracking-widest mb-2 block">Intelligence Redefined</span>
+                <h3 className="font-headline-h2 text-3xl">S-Class Pinnacle Edition</h3>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Grid Section */}
+        <section className="px-20">
+          <div className="max-w-container-max mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {/* Car Card 1 */}
+              <div className="bg-[#111118] gold-hairline p-1 group gold-glow transition-all duration-500">
+                <div className="relative overflow-hidden aspect-[4/3] bg-surface-container-low mb-6">
+                  <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCSSGkqsqMU8aNWqd6upRNE8x6eKEfpYS5JiP8tw0BDIirtXMJfbhOHRFz5LFTxP7aDMk0AaYWyVqzshw6IIhn7zs6exmx3Y49z4l_HT6Z0ATW6hi3QaanOzRdZACnLWnqgvu5kngXhbGucR1kGnthVSLEEczNAWVERRihbJLfAIO791htzni3x8CIUvPdgcDN0Hk4kFsmps8Dm8FATBxgwstFrnMQ_WvcZmzqZseGc1CRyghlR9pdvDzSnRYOuy99H6ITP3KzQgk" alt="C 300 Night Edition" />
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-primary text-on-primary font-label-sm uppercase tracking-widest text-[10px]">New</span>
+                </div>
+                <div className="px-6 pb-8">
+                  <p className="text-outline font-label-sm uppercase mb-1">C-Class Sedan</p>
+                  <h4 className="font-headline-h3 text-2xl mb-4">C 300 Night Edition</h4>
+                  <div className="flex justify-between items-center border-t border-outline-variant pt-4">
+                    <span className="font-body-md text-primary">From $46,950</span>
+                    <button className="flex items-center gap-2 group/btn font-label-sm text-on-surface uppercase">
+                      Explore
+                      <span className="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Car Card 2 */}
+              <div className="bg-[#111118] gold-hairline p-1 group gold-glow transition-all duration-500">
+                <div className="relative overflow-hidden aspect-[4/3] bg-surface-container-low mb-6">
+                  <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBddNjSjTTaYajtxyvxgoutglR9ilNpUPDW8OcPK09P8UOBuUSYrbq9juof48O-FSpFVM00oz959NkQjaXvmicle-UYPyK3Bxzi6jjQkG4DD_kKtbkJsTBfsyUkWUdTNZnj4mLHdhwFlM7KUIC3gA7KnvFrnoxgZ-xxZixIvti3eSG9JyoPTekPqIZ29hP0_NkNvo-8LJxLI3W7PXktG-gK8EOEWrQt0VJX1B1buVFug5EsIE6lj_ONfGam_EIwOosuBWewvYr4CM" alt="G 63 Desert Rose" />
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-primary text-on-primary font-label-sm uppercase tracking-widest text-[10px]">New</span>
+                </div>
+                <div className="px-6 pb-8">
+                  <p className="text-outline font-label-sm uppercase mb-1">G-Class Offroad</p>
+                  <h4 className="font-headline-h3 text-2xl mb-4">G 63 Desert Rose</h4>
+                  <div className="flex justify-between items-center border-t border-outline-variant pt-4">
+                    <span className="font-body-md text-primary">From $179,000</span>
+                    <button className="flex items-center gap-2 group/btn font-label-sm text-on-surface uppercase">
+                      Explore
+                      <span className="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Car Card 3 */}
+              <div className="bg-[#111118] gold-hairline p-1 group gold-glow transition-all duration-500">
+                <div className="relative overflow-hidden aspect-[4/3] bg-surface-container-low mb-6">
+                  <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaymZFx9yMkElBpeLMmKv8WlelS7hypzZDXJFV1BaCdQL4zdxDPlTNMO6FdGbvjLxv2N4NU86ZJ3-ize8AmFyNKJni3S0HisOGiTONP0peavl1MVFQfBNrKv05WgvOCv0SS8HAIdjpds45dESVv16MMVrY9c9uP74hrJoD5kF-4q1HiU0DVX2evXqOSD3QkIfxx_ly_vV0OVbeeHXb1WnoARQOpggGBglD2tsF4tzLMLcq6A5JRpw0HU90bh-WxXekZN8pLXn9Cqw" alt="EQE 350+ Luxury" />
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-primary text-on-primary font-label-sm uppercase tracking-widest text-[10px]">New</span>
+                </div>
+                <div className="px-6 pb-8">
+                  <p className="text-outline font-label-sm uppercase mb-1">EQE SUV</p>
+                  <h4 className="font-headline-h3 text-2xl mb-4">EQE 350+ Luxury</h4>
+                  <div className="flex justify-between items-center border-t border-outline-variant pt-4">
+                    <span className="font-body-md text-primary">From $77,900</span>
+                    <button className="flex items-center gap-2 group/btn font-label-sm text-on-surface uppercase">
+                      Explore
+                      <span className="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Car Card 4 */}
+              <div className="bg-[#111118] gold-hairline p-1 group gold-glow transition-all duration-500">
+                <div className="relative overflow-hidden aspect-[4/3] bg-surface-container-low mb-6">
+                  <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_cGuL5yxPMpRJWTA1t_7a1TacpCo1RPCFJyttL45XnS1IHT2P5qmepVCNRuq7E-0ge7MYXeOPTtRYCez0mAy4_VStsaWmW_pIHR2iCVzkOFS5R3MlXT6X0iBSTlFNWaEwisfVCsoiXFIxC2jcj636WqvhgG3Y_S9lbjvzuCVjvMSmcOM51ocMKHX9uHrEbALTfEJOe6kLVulKqv8xXPZRP_q84X2IhnbpMj6SkTIdfmVy-KhQE3lmg80eYgXExzkUPWTHr1LMDAg" alt="E 450 4MATIC" />
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-primary text-on-primary font-label-sm uppercase tracking-widest text-[10px]">New</span>
+                </div>
+                <div className="px-6 pb-8">
+                  <p className="text-outline font-label-sm uppercase mb-1">E-Class Sedan</p>
+                  <h4 className="font-headline-h3 text-2xl mb-4">E 450 4MATIC</h4>
+                  <div className="flex justify-between items-center border-t border-outline-variant pt-4">
+                    <span className="font-body-md text-primary">From $68,100</span>
+                    <button className="flex items-center gap-2 group/btn font-label-sm text-on-surface uppercase">
+                      Explore
+                      <span className="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Car Card 5 */}
+              <div className="bg-[#111118] gold-hairline p-1 group gold-glow transition-all duration-500">
+                <div className="relative overflow-hidden aspect-[4/3] bg-surface-container-low mb-6">
+                  <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvEX4HAu3fuxnVO99KK-SLAIt4cjV7p-CMZRUblDcboFM-T53zw7ynYVMYIYGuQA2J2m3bEmadqMy0r6ktLO5TVzntnuTILUMB2581wP56b6CqTk1iBSGhvKRYut5Vw06P1DOQohVTneBJyOUzix4QxRh1zi6MpfsGkv-qnKA23dDnNv_emTzqEco1nD31hFGRUrhIXTDRp0Ul2awTmcGlujGF0Weux5tkQwgERqLnS2G5GXLMnLmY5ichG-2VTXdZDk29Dt-7uPs" alt="SL 63 Performance" />
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-primary text-on-primary font-label-sm uppercase tracking-widest text-[10px]">New</span>
+                </div>
+                <div className="px-6 pb-8">
+                  <p className="text-outline font-label-sm uppercase mb-1">AMG SL Roadster</p>
+                  <h4 className="font-headline-h3 text-2xl mb-4">SL 63 Performance</h4>
+                  <div className="flex justify-between items-center border-t border-outline-variant pt-4">
+                    <span className="font-body-md text-primary">From $183,000</span>
+                    <button className="flex items-center gap-2 group/btn font-label-sm text-on-surface uppercase">
+                      Explore
+                      <span className="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Car Card 6 */}
+              <div className="bg-[#111118] gold-hairline p-1 group gold-glow transition-all duration-500">
+                <div className="relative overflow-hidden aspect-[4/3] bg-surface-container-low mb-6">
+                  <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjNOMSTOtcc0ccsixzFoxZ3ts7adH1k-Z-xbveB6_Xk4SP7sOA6ryu6W_SEJbbL50n4eLlbfGQIgR0jLMsTBn486ge6VrwoQ79uvnvUzN5nY1y_RWwSOAfTrYEWUq9SKVoKoJUG0Yry-_aB2FjSeogRcYCZRqJhc0Ksg7x2Scszaj1AObzz-xghply7mqEA_ToyNfbwc3OXUca5nhqreyernEXxnR5_y0S1Jf5j6JK9D9F20OEpIoFx_EG_v8JYb8GFhJflMHu4gg" alt="GLE 53 Hybrid" />
+                  <span className="absolute top-4 left-4 px-3 py-1 bg-primary text-on-primary font-label-sm uppercase tracking-widest text-[10px]">New</span>
+                </div>
+                <div className="px-6 pb-8">
+                  <p className="text-outline font-label-sm uppercase mb-1">GLE SUV</p>
+                  <h4 className="font-headline-h3 text-2xl mb-4">GLE 53 Hybrid</h4>
+                  <div className="flex justify-between items-center border-t border-outline-variant pt-4">
+                    <span className="font-body-md text-primary">From $86,750</span>
+                    <button className="flex items-center gap-2 group/btn font-label-sm text-on-surface uppercase">
+                      Explore
+                      <span className="material-symbols-outlined text-sm group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        </section>
+      </main>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', padding: '40px 0 20px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={14} color="#C8A97E" /></div>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: '#fff' }}>Mercedes-Benz</span>
-            </div>
-            <p style={{ fontSize: 13, fontWeight: 300, color: '#5a5768', lineHeight: 1.7, maxWidth: 280 }}>Innovation meets luxury in every new model.</p>
-          </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Explore</h4>
-            {['Cars', 'New Arrivals', 'Special Offers'].map((l) => (<a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10 }}>{l}</a>))}
-          </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Account</h4>
-            {['My Orders', 'Wishlist', 'Profile'].map((l) => (<a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10 }}>{l}</a>))}
-          </div>
+      {/* Footer */}
+      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10 font-['Playfair_Display'] text-sm tracking-tight">
+        <div>
+          <div className="text-lg font-semibold text-white mb-6 uppercase tracking-[0.2em]">Mercedes-Benz</div>
+          <p className="text-zinc-500 leading-relaxed max-w-xs font-['DM_Sans']">
+            The pinnacle of automotive engineering and luxury. Crafting the world's most desirable cars since 1886.
+          </p>
         </div>
-        <div style={{ maxWidth: 1440, margin: '20px auto 0', padding: '16px 80px 0', borderTop: '1px solid rgba(200,169,126,0.08)' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+        <div className="grid grid-cols-2 gap-8">
+          <ul className="space-y-4">
+            <li><a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 block" href="#">Cars</a></li>
+            <li><a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 block" href="#">My Orders</a></li>
+            <li><a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 block" href="#">Wishlist</a></li>
+            <li><a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 block" href="#">Test Drive</a></li>
+          </ul>
+          <ul className="space-y-4">
+            <li><a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 block" href="#">Service</a></li>
+            <li><a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 block" href="#">Contact</a></li>
+            <li><a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 block" href="#">Legal</a></li>
+            <li><a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 block" href="#">Privacy</a></li>
+          </ul>
+        </div>
+        <div className="flex flex-col justify-between">
+          <div className="flex gap-6 mb-10">
+            <span className="material-symbols-outlined text-[#C8A97E]">social_leaderboard</span>
+            <span className="material-symbols-outlined text-[#C8A97E]">retweet</span>
+            <span className="material-symbols-outlined text-[#C8A97E]">video_youtube</span>
+          </div>
+          <p className="text-zinc-600 font-['DM_Sans'] text-xs">
+            © 2024 Mercedes-Benz Pakistan. All rights reserved.
+          </p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }

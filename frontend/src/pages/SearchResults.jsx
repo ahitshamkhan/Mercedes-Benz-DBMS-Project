@@ -1,202 +1,248 @@
-import { useState, useMemo } from 'react';
-import { Star, Search, SlidersHorizontal, X, Heart, Eye, Grid3X3, List, ChevronDown } from 'lucide-react';
-
-const CARS = [
-  { id: 1, name: 'S-Class 500', category: 'Sedan', price: 85000000, year: 2024, power: '429 HP', image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&q=80', rating: 4.9 },
-  { id: 2, name: 'AMG GT Coupé', category: 'AMG', price: 120000000, year: 2024, power: '585 HP', image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=500&q=80', rating: 5.0 },
-  { id: 3, name: 'G-Class G63', category: 'SUV', price: 150000000, year: 2024, power: '577 HP', image: 'https://images.unsplash.com/photo-1520031441872-265e4ff70366?w=500&q=80', rating: 4.8 },
-  { id: 4, name: 'EQS 580', category: 'Electric', price: 95000000, year: 2024, power: '516 HP', image: 'https://images.unsplash.com/photo-1625231334401-67c9eef63a78?w=500&q=80', rating: 4.7 },
-  { id: 5, name: 'C-Class 300', category: 'Sedan', price: 45000000, year: 2024, power: '258 HP', image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=500&q=80', rating: 4.6 },
-  { id: 6, name: 'GLE 450', category: 'SUV', price: 75000000, year: 2023, power: '362 HP', image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&q=80', rating: 4.5 },
-  { id: 7, name: 'AMG C63 S', category: 'AMG', price: 98000000, year: 2024, power: '671 HP', image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=500&q=80', rating: 4.9 },
-  { id: 8, name: 'EQB 300', category: 'Electric', price: 55000000, year: 2023, power: '228 HP', image: 'https://images.unsplash.com/photo-1625231334401-67c9eef63a78?w=500&q=80', rating: 4.4 },
-];
-
-const CATEGORIES = ['All', 'Sedan', 'SUV', 'AMG', 'Electric'];
-const SORT_OPTIONS = ['Relevance', 'Price: Low to High', 'Price: High to Low', 'Newest', 'Rating'];
-const PRICE_RANGES = ['Any', 'Under 50M', '50M - 100M', 'Over 100M'];
-
 export default function SearchResults() {
-  const [query, setQuery] = useState('Mercedes');
-  const [category, setCategory] = useState('All');
-  const [sortBy, setSortBy] = useState('Relevance');
-  const [priceRange, setPriceRange] = useState('Any');
-  const [viewMode, setViewMode] = useState('grid');
-  const [showFilters, setShowFilters] = useState(false);
-  const [liked, setLiked] = useState([]);
-
-  const toggleLike = (id) => setLiked((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
-
-  const results = useMemo(() => {
-    let data = [...CARS];
-
-    if (query) data = data.filter((c) => c.name.toLowerCase().includes(query.toLowerCase()) || c.category.toLowerCase().includes(query.toLowerCase()));
-    if (category !== 'All') data = data.filter((c) => c.category === category);
-    if (priceRange === 'Under 50M') data = data.filter((c) => c.price < 50000000);
-    else if (priceRange === '50M - 100M') data = data.filter((c) => c.price >= 50000000 && c.price <= 100000000);
-    else if (priceRange === 'Over 100M') data = data.filter((c) => c.price > 100000000);
-
-    if (sortBy === 'Price: Low to High') data.sort((a, b) => a.price - b.price);
-    else if (sortBy === 'Price: High to Low') data.sort((a, b) => b.price - a.price);
-    else if (sortBy === 'Newest') data.sort((a, b) => b.year - a.year);
-    else if (sortBy === 'Rating') data.sort((a, b) => b.rating - a.rating);
-
-    return data;
-  }, [query, category, sortBy, priceRange]);
-
-  const fmt = (n) => `PKR ${(n / 1000000).toFixed(0)}M`;
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        .card-hover { transition:transform 0.4s, box-shadow 0.4s; }
-        .card-hover:hover { transform:translateY(-4px); box-shadow:0 0 20px rgba(200,169,126,0.06); }
-        .img-zoom { transition:transform 0.6s; }
-        .img-zoom:hover { transform:scale(1.05); }
-        input:focus { border-color:#C8A97E !important; outline:none; }
-        input::placeholder { color:#3a3748; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={16} color="#C8A97E" /></div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <div style={{ flex: 1, maxWidth: 480, margin: '0 48px', position: 'relative' }}>
-            <Search size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 13 }} />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search models, categories..."
-              style={{ width: '100%', padding: '11px 16px 11px 44px', background: '#111118', border: '1px solid rgba(200,169,126,0.12)', borderRadius: 6, color: '#e4e1eb', fontSize: 13, fontFamily: "'DM Sans', sans-serif" }} />
-            {query && <button onClick={() => setQuery('')} style={{ position: 'absolute', right: 12, top: 12, background: 'none', border: 'none', cursor: 'pointer' }}><X size={16} color="#4e453b" /></button>}
-          </div>
-          <button className="gold-btn" style={{ padding: '8px 22px', fontSize: 11 }}>My Account</button>
+    <>
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E] text-2xl">star</span>
+          <h1 className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</h1>
         </div>
-      </nav>
+        <nav className="hidden md:flex gap-8">
+          <a className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-label-sm text-label-sm transition-all" href="#">EXPLORE</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-label-sm text-label-sm" href="#">MODELS</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-label-sm text-label-sm" href="#">PURCHASE</a>
+        </nav>
+        <button className="px-6 py-2 border border-[#C8A97E]/30 text-[#C8A97E] font-label-sm text-label-sm hover:bg-[#C8A97E]/10 transition-all uppercase tracking-widest">
+          Sign In
+        </button>
+      </header>
 
-      <div style={{ paddingTop: 100, maxWidth: 1440, margin: '0 auto', padding: '100px 80px 60px' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 32 }}>
-          <div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 300, color: '#fff', marginBottom: 6 }}>
-              {query ? <>Results for "<span style={{ color: '#C8A97E' }}>{query}</span>"</> : 'All Vehicles'}
-            </h1>
-            <p style={{ fontSize: 14, color: '#5a5768' }}>{results.length} {results.length === 1 ? 'vehicle' : 'vehicles'} found</p>
-          </div>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <button onClick={() => setShowFilters(!showFilters)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 16px', background: showFilters ? 'rgba(200,169,126,0.1)' : 'transparent', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 4, color: '#C8A97E', fontSize: 12, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-              <SlidersHorizontal size={14} /> Filters
-            </button>
-            <div style={{ display: 'flex', border: '1px solid rgba(200,169,126,0.15)', borderRadius: 4, overflow: 'hidden' }}>
-              <button onClick={() => setViewMode('grid')} style={{ padding: '8px 12px', background: viewMode === 'grid' ? 'rgba(200,169,126,0.1)' : 'transparent', border: 'none', color: viewMode === 'grid' ? '#C8A97E' : '#4e453b', cursor: 'pointer' }}><Grid3X3 size={16} /></button>
-              <button onClick={() => setViewMode('list')} style={{ padding: '8px 12px', background: viewMode === 'list' ? 'rgba(200,169,126,0.1)' : 'transparent', border: 'none', borderLeft: '1px solid rgba(200,169,126,0.1)', color: viewMode === 'list' ? '#C8A97E' : '#4e453b', cursor: 'pointer' }}><List size={16} /></button>
-            </div>
+      <main className="pt-32 pb-20 px-20 max-w-[1440px] mx-auto min-h-screen">
+        {/* Search Header */}
+        <div className="mb-16 flex flex-col gap-4">
+          <p className="text-primary font-label-sm text-label-sm uppercase tracking-[0.2em]">Exquisite Inventory</p>
+          <div className="flex items-end justify-between">
+            <h2 className="font-headline-h1 text-headline-h1 leading-none">Search Results</h2>
+            <span className="font-body-lg text-surface-container-highest italic pb-2">12 curated masterpieces found</span>
           </div>
         </div>
 
-        {/* Filters Panel */}
-        {showFilters && (
-          <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px 28px', marginBottom: 28, display: 'flex', gap: 32, alignItems: 'flex-end' }}>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b', marginBottom: 10 }}>Category</p>
-              <div style={{ display: 'flex', gap: 6 }}>
-                {CATEGORIES.map((c) => (
-                  <button key={c} onClick={() => setCategory(c)} style={{ padding: '7px 16px', fontSize: 12, border: category === c ? '1px solid #C8A97E' : '1px solid rgba(200,169,126,0.12)', background: category === c ? '#C8A97E' : 'transparent', color: category === c ? '#0a0a0f' : '#7a7788', borderRadius: 2, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>{c}</button>
-                ))}
+        <div className="grid grid-cols-12 gap-10 items-start">
+          {/* Left Sidebar Filter Panel */}
+          <aside className="col-span-3 sticky top-32 flex flex-col gap-8">
+            <div className="glass-panel p-8 flex flex-col gap-10">
+              {/* Category */}
+              <div className="flex flex-col gap-4">
+                <label className="text-primary font-label-sm text-label-sm uppercase tracking-widest">Category</label>
+                <div className="flex flex-col gap-3">
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <input defaultChecked className="w-4 h-4 rounded-none bg-transparent border-primary/40 text-primary focus:ring-0 focus:ring-offset-0" type="checkbox" />
+                    <span className="font-body-md text-on-surface/70 group-hover:text-on-surface transition-colors">Sedans &amp; Saloons</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <input className="w-4 h-4 rounded-none bg-transparent border-primary/40 text-primary focus:ring-0 focus:ring-offset-0" type="checkbox" />
+                    <span className="font-body-md text-on-surface/70 group-hover:text-on-surface transition-colors">Performance Coupés</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer group">
+                    <input className="w-4 h-4 rounded-none bg-transparent border-primary/40 text-primary focus:ring-0 focus:ring-offset-0" type="checkbox" />
+                    <span className="font-body-md text-on-surface/70 group-hover:text-on-surface transition-colors">Luxury SUVs</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Year Slider */}
+              <div className="flex flex-col gap-6">
+                <div className="flex justify-between items-center">
+                  <label className="text-primary font-label-sm text-label-sm uppercase tracking-widest">Year</label>
+                  <span className="text-xs text-on-surface-variant">2022 — 2024</span>
+                </div>
+                <input className="w-full" max="2024" min="2020" type="range" defaultValue="2023" />
+              </div>
+
+              {/* Price Slider */}
+              <div className="flex flex-col gap-6">
+                <div className="flex justify-between items-center">
+                  <label className="text-primary font-label-sm text-label-sm uppercase tracking-widest">Price Range</label>
+                  <span className="text-xs text-on-surface-variant">$110k — $350k</span>
+                </div>
+                <input className="w-full" max="500000" min="50000" step="10000" type="range" />
+              </div>
+
+              {/* In Stock Toggle */}
+              <div className="flex items-center justify-between">
+                <label className="text-primary font-label-sm text-label-sm uppercase tracking-widest cursor-pointer">Immediate Delivery</label>
+                <button className="relative inline-flex h-5 w-10 items-center justify-center rounded-full bg-surface-container-highest">
+                  <span className="absolute left-1 inline-block h-3 w-3 rounded-full bg-primary transition transform translate-x-5"></span>
+                </button>
+              </div>
+
+              <button className="mt-4 w-full py-4 bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-widest hover:brightness-110 transition-all">
+                Refine Search
+              </button>
+            </div>
+          </aside>
+
+          {/* Results Grid */}
+          <section className="col-span-9 grid grid-cols-2 gap-8">
+            {/* Card 1 */}
+            <div className="group relative bg-[#111118] border border-primary/15 overflow-hidden transition-all duration-500 hover:border-primary/40">
+              <div className="h-[400px] overflow-hidden relative">
+                <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMF1cLiEomKcxTd4Ld9bHnKYF02qIo8PkR06dcR7HtZi1V9P51i_PcJ5onXXdUu1R4AsBNxjYuvYONHqC9TLPuBXTywet3J325sfTmUE7nbOf30zqElA1WCez699oKU31YkeNygGR2KTjLhkEurz9sOqxcBW4Z1U3v3ZJXXSUohljwaZXNO9O8upeUF2L06Et_E4DCSAKUq9SOVIA-44WkSkUz2Uuzt4VkuQ3LjhSwfPmzhLJQcKewZUR0tr7gDIOQ_CzJKHpH874" alt="S-Class Maybach" />
+                <div className="absolute top-6 left-6 px-4 py-1 glass-panel text-[10px] uppercase tracking-[0.2em] text-primary">In Showroom</div>
+              </div>
+              <div className="p-10 flex flex-col gap-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-headline-h3 text-headline-h3 text-on-background">S-Class Maybach</h3>
+                    <p className="text-surface-container-highest font-label-sm text-[11px] uppercase tracking-widest">Ultimate Luxury Sedan</p>
+                  </div>
+                  <span className="text-primary font-headline-h3">$215,900</span>
+                </div>
+                <div className="flex gap-6 mt-4 pt-6 border-t border-primary/10">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-surface-container-highest uppercase">Performance</span>
+                    <span className="text-sm">496 HP</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-surface-container-highest uppercase">Velocity</span>
+                    <span className="text-sm">4.7s 0-60</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div>
-              <p style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b', marginBottom: 10 }}>Price Range</p>
-              <div style={{ display: 'flex', gap: 6 }}>
-                {PRICE_RANGES.map((p) => (
-                  <button key={p} onClick={() => setPriceRange(p)} style={{ padding: '7px 14px', fontSize: 12, border: priceRange === p ? '1px solid #C8A97E' : '1px solid rgba(200,169,126,0.12)', background: priceRange === p ? '#C8A97E' : 'transparent', color: priceRange === p ? '#0a0a0f' : '#7a7788', borderRadius: 2, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>{p}</button>
-                ))}
+
+            {/* Card 2 */}
+            <div className="group relative bg-[#111118] border border-primary/15 overflow-hidden transition-all duration-500 hover:border-primary/40">
+              <div className="h-[400px] overflow-hidden relative">
+                <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI1InTSFbMudQ0PNX2XFR8klc6PA_JEVwAWBLD-U9PFPuGPfS81gpefcFTtTDZZw6S9aRDKHDEIYtJmiWrcvECv0BcfzUIyirieC31GK2y-RkKGYQKMP4pI_8j_oEOSN2p0Nc_HRFCQ9nUoaVxN_-GKN7Af9gRK9cz2IsrckO-NbONrdyL7rJ1Gsx4ob5CkZgdGj2G1iaqBeDfjx0jZ657BDnLPa85_w89vgCckRMvfPuQ674M2PE6De_5HpsKDeCgjMihNLsOH44" alt="AMG GT Coupé" />
+                <div className="absolute top-6 left-6 px-4 py-1 glass-panel text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">Custom Order</div>
+              </div>
+              <div className="p-10 flex flex-col gap-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-headline-h3 text-headline-h3 text-on-background">AMG GT Coupé</h3>
+                    <p className="text-surface-container-highest font-label-sm text-[11px] uppercase tracking-widest">Handcrafted Excellence</p>
+                  </div>
+                  <span className="text-primary font-headline-h3">$175,000</span>
+                </div>
+                <div className="flex gap-6 mt-4 pt-6 border-t border-primary/10">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-surface-container-highest uppercase">Performance</span>
+                    <span className="text-sm">577 HP</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-surface-container-highest uppercase">Velocity</span>
+                    <span className="text-sm">3.1s 0-60</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div>
-              <p style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b', marginBottom: 10 }}>Sort By</p>
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={{ padding: '8px 14px', background: '#0d0d14', border: '1px solid rgba(200,169,126,0.12)', borderRadius: 4, color: '#e4e1eb', fontSize: 12, fontFamily: "'DM Sans', sans-serif", appearance: 'none', cursor: 'pointer', minWidth: 140 }}>
-                {SORT_OPTIONS.map((s) => <option key={s} value={s}>{s}</option>)}
-              </select>
+
+            {/* Card 3 */}
+            <div className="group relative bg-[#111118] border border-primary/15 overflow-hidden transition-all duration-500 hover:border-primary/40">
+              <div className="h-[400px] overflow-hidden relative">
+                <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqvJMcgcrfNIpbRJuEFREBlf19MaE9yVaEfq4Fu0VxMcwErKV_L76v4lTjWjV7stBrM9vWJHnn_fBvtg7E46467Kst-RkZ1TOybXdni9Vm4AWts8A-t3qq-6-zq1oY_doCu5uMpimL9phRl-beefyngZMyo9NDN52KS6fr57mEZp_LWn6AeScP-MhEBiAC-Q3Y-nDYEM3HwtQAx_A6djSsc34kK52Z7xGcCKGCqUNXPfkzgHE8_0bB8a803Voj8MdyVquSK5WahY0" alt="EQS 580 4MATIC" />
+                <div className="absolute top-6 left-6 px-4 py-1 glass-panel text-[10px] uppercase tracking-[0.2em] text-primary">Limited Stock</div>
+              </div>
+              <div className="p-10 flex flex-col gap-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-headline-h3 text-headline-h3 text-on-background">EQS 580 4MATIC</h3>
+                    <p className="text-surface-container-highest font-label-sm text-[11px] uppercase tracking-widest">Electric Avant-Garde</p>
+                  </div>
+                  <span className="text-primary font-headline-h3">$127,350</span>
+                </div>
+                <div className="flex gap-6 mt-4 pt-6 border-t border-primary/10">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-surface-container-highest uppercase">Range</span>
+                    <span className="text-sm">340 Miles</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-surface-container-highest uppercase">Intelligence</span>
+                    <span className="text-sm">MBUX Hyper</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
 
-        {/* RESULTS */}
-        {viewMode === 'grid' ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-            {results.map((car) => (
-              <div key={car.id} className="card-hover" style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, overflow: 'hidden' }}>
-                <div style={{ position: 'relative', overflow: 'hidden' }}>
-                  <img className="img-zoom" src={car.image} alt={car.name} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
-                  <button onClick={() => toggleLike(car.id)} style={{ position: 'absolute', top: 12, right: 12, width: 36, height: 36, borderRadius: '50%', background: 'rgba(10,10,15,0.6)', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(6px)' }}>
-                    <Heart size={16} color={liked.includes(car.id) ? '#e74c3c' : '#C8A97E'} fill={liked.includes(car.id) ? '#e74c3c' : 'none'} />
-                  </button>
-                  <span style={{ position: 'absolute', bottom: 12, left: 12, padding: '4px 12px', background: 'rgba(10,10,15,0.7)', borderRadius: 20, fontSize: 10, fontWeight: 500, color: '#C8A97E', letterSpacing: '0.08em', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>{car.category}</span>
+            {/* Card 4 */}
+            <div className="group relative bg-[#111118] border border-primary/15 overflow-hidden transition-all duration-500 hover:border-primary/40">
+              <div className="h-[400px] overflow-hidden relative">
+                <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWP5isZzyQv9QGCHWfsdOMc481Fgg_4cm-OjziZ2PobnXKpn-2QaTXPGO_6YfqVxKjJtECoI3AG-8Ql6UoazULfpqktmp2IjDmhTPWfu6ScEt0Jxsb2PvCsLIQNDx7BxBDFD9Rs8jUJI-mTesUUPeSr2DdSQ0fnB42mCsV1wjT6gKa44ccYID-sY89EIcTV6MkQOqyKzfn6onNx6qLn-Sk23QpkVkzz9UMKjp6xVeww4ND5i9z2IVRiQNQBiM20StjROniT85DbrU" alt="G 63 AMG" />
+                <div className="absolute top-6 left-6 px-4 py-1 glass-panel text-[10px] uppercase tracking-[0.2em] text-on-surface-variant">Reserve Now</div>
+              </div>
+              <div className="p-10 flex flex-col gap-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-headline-h3 text-headline-h3 text-on-background">G 63 AMG</h3>
+                    <p className="text-surface-container-highest font-label-sm text-[11px] uppercase tracking-widest">The Icon Reimagined</p>
+                  </div>
+                  <span className="text-primary font-headline-h3">$179,000</span>
                 </div>
-                <div style={{ padding: '20px' }}>
-                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 400, color: '#fff', marginBottom: 8 }}>{car.name}</h3>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                    <span style={{ fontSize: 16, fontWeight: 600, color: '#C8A97E' }}>{fmt(car.price)}</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <Star size={12} color="#C8A97E" fill="#C8A97E" />
-                      <span style={{ fontSize: 12, color: '#C8A97E' }}>{car.rating}</span>
-                    </div>
+                <div className="flex gap-6 mt-4 pt-6 border-t border-primary/10">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-surface-container-highest uppercase">Torque</span>
+                    <span className="text-sm">627 lb-ft</span>
                   </div>
-                  <div style={{ display: 'flex', gap: 12, fontSize: 12, color: '#5a5768' }}>
-                    <span>{car.power}</span><span>•</span><span>{car.year}</span>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-surface-container-highest uppercase">Heritage</span>
+                    <span className="text-sm">V8 Biturbo</span>
                   </div>
-                  <button style={{ width: '100%', marginTop: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '10px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                    <Eye size={14} /> View Details
-                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {results.map((car) => (
-              <div key={car.id} className="card-hover" style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, overflow: 'hidden', display: 'grid', gridTemplateColumns: '200px 1fr auto', alignItems: 'center' }}>
-                <img src={car.image} alt={car.name} style={{ width: '100%', height: 120, objectFit: 'cover' }} />
-                <div style={{ padding: '16px 28px' }}>
-                  <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#C8A97E' }}>{car.category}</span>
-                  <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 400, color: '#fff', margin: '4px 0 8px' }}>{car.name}</h3>
-                  <div style={{ display: 'flex', gap: 16, fontSize: 12, color: '#6b6880' }}>
-                    <span>{car.power}</span><span>{car.year}</span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}><Star size={11} color="#C8A97E" fill="#C8A97E" /> {car.rating}</span>
-                  </div>
-                </div>
-                <div style={{ padding: '0 28px', textAlign: 'right' }}>
-                  <p style={{ fontSize: 18, fontWeight: 600, color: '#C8A97E', marginBottom: 10 }}>{fmt(car.price)}</p>
-                  <button style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '8px 16px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}><Eye size={14} /> Details</button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+            </div>
+          </section>
+        </div>
 
-        {results.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <Search size={40} color="#2a2931" style={{ marginBottom: 16 }} />
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 300, color: '#fff', marginBottom: 8 }}>No vehicles found</h2>
-            <p style={{ fontSize: 14, color: '#5a5768' }}>Try adjusting your search or filters.</p>
+        {/* No Results State (Hidden) */}
+        <div className="hidden flex-col items-center justify-center py-40 gap-8">
+          <span className="material-symbols-outlined text-8xl text-primary/30" style={{ fontVariationSettings: "'FILL' 0, 'wght' 100" }}>search</span>
+          <div className="text-center flex flex-col gap-4">
+            <h3 className="font-headline-h3 text-headline-h3">No Matches Found</h3>
+            <p className="text-on-surface/50 max-w-md mx-auto">Our current inventory does not match your specific criteria. Please refine your filters or contact our concierge for a bespoke sourcing request.</p>
           </div>
-        )}
-      </div>
+          <button className="mt-4 px-12 py-4 border border-primary/30 text-primary font-label-sm text-label-sm uppercase tracking-widest hover:bg-primary/10 transition-all">
+            Reset All Filters
+          </button>
+        </div>
+      </main>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', marginTop: 80, padding: '40px 0 20px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+      {/* Footer */}
+      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div className="flex flex-col gap-8">
+          <h2 className="text-lg font-semibold text-white font-['Playfair_Display']">Mercedes-Benz</h2>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 max-w-xs">Experience the pinnacle of automotive engineering and luxury craftsmanship. Our legacy is defined by innovation and a relentless pursuit of perfection.</p>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-[#C8A97E]">© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-8">
+          <div className="flex flex-col gap-4">
+            <h4 className="font-label-sm text-label-sm text-white uppercase tracking-widest mb-2">Showroom</h4>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-sm" href="#">Cars</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-sm" href="#">Test Drive</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-sm" href="#">Service</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-sm" href="#">My Orders</a>
+          </div>
+          <div className="flex flex-col gap-4">
+            <h4 className="font-label-sm text-label-sm text-white uppercase tracking-widest mb-2">Corporate</h4>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-sm" href="#">Admin</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-sm" href="#">Contact</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-sm" href="#">Legal</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 text-sm" href="#">Privacy</a>
+          </div>
+        </div>
+        <div className="flex flex-col gap-8">
+          <h4 className="font-label-sm text-label-sm text-white uppercase tracking-widest">Newsletter</h4>
+          <div className="relative">
+            <input className="w-full bg-transparent border-b border-zinc-800 py-3 text-sm focus:outline-none focus:border-primary transition-colors" placeholder="Email Address" type="email" />
+            <button className="absolute right-0 bottom-3 text-primary text-sm uppercase tracking-widest">Join</button>
+          </div>
+          <div className="flex gap-4">
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary cursor-pointer transition-colors">share</span>
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary cursor-pointer transition-colors">mail</span>
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary cursor-pointer transition-colors">location_on</span>
+          </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
