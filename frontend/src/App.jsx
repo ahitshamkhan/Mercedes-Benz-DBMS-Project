@@ -26,6 +26,7 @@ import ManageOrders from './pages/ManageOrders'
 import ManageCustomers from './pages/ManageCustomers'
 import CustomerChat from './pages/CustomerChat'
 import AdminChat from './pages/AdminChat'
+import About from './pages/About'
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
         <Route path="/admin/customers" element={<ManageCustomers />} />
         <Route path="/chat" element={<CustomerChat />} />
         <Route path="/admin/chat" element={<AdminChat />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </BrowserRouter>
   )
