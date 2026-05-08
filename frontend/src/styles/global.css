@@ -1,51 +1,25 @@
-/* Mercedes-Benz Global Reset */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles matching Stitch design system */
+.gold-glow:hover {
+  box-shadow: 0 0 15px rgba(200, 169, 126, 0.3);
 }
 
-html {
-  scroll-behavior: smooth;
+.particle-bg {
+  background-image: radial-gradient(
+    circle at 2px 2px,
+    rgba(200, 169, 126, 0.15) 1px,
+    transparent 0
+  );
+  background-size: 40px 40px;
+}
+
+.hairline-gold {
+  border: 1px solid rgba(200, 169, 126, 0.15);
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: #0a0a0f;
-  color: #e4e1eb;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
-
-button {
-  font-family: 'DM Sans', sans-serif;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0a0a0f;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(200, 169, 126, 0.15);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(200, 169, 126, 0.3);
+  min-height: max(884px, 100dvh);
 }
