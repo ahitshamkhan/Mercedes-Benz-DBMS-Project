@@ -1,229 +1,132 @@
-import { useState } from 'react';
-import { Star, Eye, EyeOff, User, Mail, Phone, Lock, MapPin, ChevronRight, Check } from 'lucide-react';
-
 export default function Register() {
-  const [showPass, setShowPass] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [agreed, setAgreed] = useState(false);
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', city: '', password: '', confirmPassword: '' });
-
-  const update = (k, v) => setForm((p) => ({ ...p, [k]: v }));
-
-  const passStrength = () => {
-    const p = form.password;
-    if (!p) return { level: 0, label: '', color: '#3a3748' };
-    let s = 0;
-    if (p.length >= 8) s++;
-    if (/[A-Z]/.test(p)) s++;
-    if (/[0-9]/.test(p)) s++;
-    if (/[^A-Za-z0-9]/.test(p)) s++;
-    const map = [
-      { level: 1, label: 'Weak', color: '#e74c3c' },
-      { level: 2, label: 'Fair', color: '#f39c12' },
-      { level: 3, label: 'Good', color: '#C8A97E' },
-      { level: 4, label: 'Strong', color: '#2ecc71' },
-    ];
-    return map[s - 1] || { level: 0, label: '', color: '#3a3748' };
-  };
-
-  const strength = passStrength();
-
-  const inputStyle = {
-    width: '100%', padding: '14px 16px 14px 44px', background: '#111118',
-    border: '1px solid rgba(200,169,126,0.12)', borderRadius: 6, color: '#e4e1eb',
-    fontSize: 14, fontFamily: "'DM Sans', sans-serif", outline: 'none', transition: 'border 0.3s',
-  };
-
-  const labelStyle = {
-    fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
-    color: '#6b6880', marginBottom: 8, display: 'block',
-  };
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; width:100%; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        input:focus { border-color: #C8A97E !important; }
-        input::placeholder { color: #3a3748; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Star size={16} color="#C8A97E" />
-            </div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <a href="#" style={{ fontSize: 13, fontWeight: 500, color: '#C8A97E', letterSpacing: '0.05em' }}>Sign In</a>
+    <>
+      {/* Header */}
+      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase flex items-center gap-3">
+          <span className="material-symbols-outlined text-2xl star-glow" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+          Mercedes-Benz
         </div>
-      </nav>
+        <a className="text-sm font-label-sm text-[#C8A97E] hover:text-white transition-colors tracking-widest uppercase" href="#">Sign In</a>
+      </header>
 
-      {/* MAIN */}
-      <div style={{ paddingTop: 72, display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '100vh' }}>
-        {/* LEFT — Image */}
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
-          <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=900&q=80" alt="Mercedes" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent 40%, #0a0a0f 100%)' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #0a0a0f 5%, transparent 40%)' }} />
-          <div style={{ position: 'absolute', bottom: 60, left: 48, maxWidth: 400 }}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 300, color: '#fff', lineHeight: 1.3, marginBottom: 12 }}>
-              Enter a World of Unparalleled <span style={{ color: '#C8A97E' }}>Excellence</span>
-            </h2>
-            <p style={{ fontSize: 14, fontWeight: 300, color: '#9a97a5', lineHeight: 1.7 }}>
-              Experiencing excellence in every detail. Join the legacy of automotive perfection.
-            </p>
+      <main className="min-h-screen pt-20 flex flex-col md:flex-row items-stretch">
+        {/* Left Side: Brand Narrative */}
+        <section className="relative w-full md:w-5/12 min-h-[353px] md:min-h-screen flex flex-col items-center justify-center p-8 md:p-20 overflow-hidden bg-black">
+          <div className="absolute inset-0 opacity-40">
+            <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCXUx6bIwlUkvhD1R8jSwxyyM2vzXy9QRdjcJK6VzRl1cmjn0nw2rw824rRKWURarQCL6Sp9idJX9HoRVn80ZAS0TKq9O1RkkmgTXyqB-A5zftAR9OhNc133L1PaEflSzCoeXzNIzJyEaDrTKOsvoOa1JzE7kJQO8TTx0X_ka4GtNvFdqDwhWxIF2laWAP4wu4ANOJjS3j1A28AoowOtvptO7Lk4oHXMKiUJI6f2dHNFiZkbzqfLKTYED30K-E3-A47_PRouV2L58" alt="Mercedes-Benz S-Class at twilight" />
           </div>
-        </div>
-
-        {/* RIGHT — Form */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 80px' }}>
-          <div style={{ width: '100%', maxWidth: 440 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-              <div className="gold-line" />
-              <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>Join Us</span>
+          <div className="relative z-10 text-center space-y-8 max-w-md">
+            <div className="inline-block p-6 rounded-full border border-primary/20 bg-surface/40 backdrop-blur-xl">
+              <span className="material-symbols-outlined text-7xl text-primary star-glow" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
             </div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 300, color: '#fff', marginBottom: 8 }}>Create Account</h1>
-            <p style={{ fontSize: 14, fontWeight: 300, color: '#6b6880', marginBottom: 36 }}>Please provide your details to begin your journey.</p>
+            <div className="space-y-4">
+              <h1 className="font-headline-h1 text-white text-4xl md:text-5xl lg:text-6xl leading-tight">Join the Mercedes Family</h1>
+              <p className="font-body-lg text-on-surface-variant max-w-xs mx-auto">Enter a world of unparalleled precision, performance, and prestige.</p>
+            </div>
+            <div className="h-px w-24 bg-primary mx-auto opacity-50"></div>
+          </div>
+        </section>
 
-            {/* Name Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
-              <div>
-                <label style={labelStyle}>First Name</label>
-                <div style={{ position: 'relative' }}>
-                  <User size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                  <input style={inputStyle} placeholder="John" value={form.firstName} onChange={(e) => update('firstName', e.target.value)} />
+        {/* Right Side: Registration Form */}
+        <section className="w-full md:w-7/12 flex items-center justify-center p-6 md:p-12 lg:p-20 bg-surface">
+          <div className="w-full max-w-xl space-y-12 animate-fade-in">
+            <div className="space-y-2">
+              <h2 className="font-headline-h2 text-white">Create Account</h2>
+              <p className="font-body-md text-on-surface-variant">Please provide your details to begin your journey.</p>
+            </div>
+
+            <form className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Full Name */}
+                <div className="space-y-2 group">
+                  <label className="block font-label-sm text-on-surface-variant uppercase">Full Name</label>
+                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="Johnathan Doe" type="text" />
+                </div>
+                {/* Email Address */}
+                <div className="space-y-2 group">
+                  <label className="block font-label-sm text-on-surface-variant uppercase">Email Address</label>
+                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="email@example.com" type="email" />
+                </div>
+                {/* Phone Number */}
+                <div className="space-y-2 group">
+                  <label className="block font-label-sm text-on-surface-variant uppercase">Phone Number</label>
+                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="03xx-xxxxxxx" type="tel" />
+                </div>
+                {/* Address */}
+                <div className="space-y-2 group md:col-span-1">
+                  <label className="block font-label-sm text-on-surface-variant uppercase">Address</label>
+                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="Street, City, Province" type="text" />
+                </div>
+                {/* Password */}
+                <div className="space-y-2 group">
+                  <label className="block font-label-sm text-on-surface-variant uppercase">Password</label>
+                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="••••••••" type="password" />
+                </div>
+                {/* Confirm Password */}
+                <div className="space-y-2 group">
+                  <label className="block font-label-sm text-on-surface-variant uppercase">Confirm Password</label>
+                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="••••••••" type="password" />
                 </div>
               </div>
-              <div>
-                <label style={labelStyle}>Last Name</label>
-                <div style={{ position: 'relative' }}>
-                  <User size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                  <input style={inputStyle} placeholder="Doe" value={form.lastName} onChange={(e) => update('lastName', e.target.value)} />
+
+              <div className="flex items-start gap-3">
+                <input className="mt-1 rounded border-outline-variant bg-surface text-primary focus:ring-primary ring-offset-background" id="terms" type="checkbox" />
+                <label className="font-body-md text-sm text-on-surface-variant leading-relaxed" htmlFor="terms">
+                  I agree to the <a className="text-primary hover:underline transition-all" href="#">Terms of Service</a> and <a className="text-primary hover:underline transition-all" href="#">Privacy Policy</a>.
+                </label>
+              </div>
+
+              <div className="pt-6 space-y-6">
+                <button className="w-full py-5 border border-primary text-primary font-label-sm uppercase tracking-[0.2em] transition-all duration-500 hover:bg-primary hover:text-on-primary group flex items-center justify-center gap-3" type="submit">
+                  Create Account
+                  <span className="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </button>
+                <div className="text-center">
+                  <p className="font-body-md text-on-surface-variant">
+                    Already have an account?
+                    <a className="text-primary font-medium hover:text-white transition-colors duration-300 ml-1" href="#">Sign In</a>
+                  </p>
                 </div>
               </div>
-            </div>
+            </form>
+          </div>
+        </section>
+      </main>
 
-            {/* Email */}
-            <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>Email Address</label>
-              <div style={{ position: 'relative' }}>
-                <Mail size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                <input type="email" style={inputStyle} placeholder="john@example.com" value={form.email} onChange={(e) => update('email', e.target.value)} />
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>Phone Number</label>
-              <div style={{ position: 'relative' }}>
-                <Phone size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                <input style={inputStyle} placeholder="+92 300 1234567" value={form.phone} onChange={(e) => update('phone', e.target.value)} />
-              </div>
-            </div>
-
-            {/* City */}
-            <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>City</label>
-              <div style={{ position: 'relative' }}>
-                <MapPin size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                <input style={inputStyle} placeholder="Lahore" value={form.city} onChange={(e) => update('city', e.target.value)} />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div style={{ marginBottom: 8 }}>
-              <label style={labelStyle}>Password</label>
-              <div style={{ position: 'relative' }}>
-                <Lock size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                <input type={showPass ? 'text' : 'password'} style={inputStyle} placeholder="••••••••" value={form.password} onChange={(e) => update('password', e.target.value)} />
-                <button onClick={() => setShowPass(!showPass)} style={{ position: 'absolute', right: 14, top: 13, background: 'none', border: 'none', cursor: 'pointer' }}>
-                  {showPass ? <EyeOff size={16} color="#4e453b" /> : <Eye size={16} color="#4e453b" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Strength Bar */}
-            <div style={{ display: 'flex', gap: 4, marginBottom: 20 }}>
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= strength.level ? strength.color : '#1f1f26', transition: 'all 0.3s' }} />
-              ))}
-              {strength.label && <span style={{ fontSize: 11, color: strength.color, marginLeft: 8 }}>{strength.label}</span>}
-            </div>
-
-            {/* Confirm Password */}
-            <div style={{ marginBottom: 24 }}>
-              <label style={labelStyle}>Confirm Password</label>
-              <div style={{ position: 'relative' }}>
-                <Lock size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                <input type={showConfirm ? 'text' : 'password'} style={inputStyle} placeholder="••••••••" value={form.confirmPassword} onChange={(e) => update('confirmPassword', e.target.value)} />
-                <button onClick={() => setShowConfirm(!showConfirm)} style={{ position: 'absolute', right: 14, top: 13, background: 'none', border: 'none', cursor: 'pointer' }}>
-                  {showConfirm ? <EyeOff size={16} color="#4e453b" /> : <Eye size={16} color="#4e453b" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Terms */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 28 }}>
-              <div onClick={() => setAgreed(!agreed)} style={{
-                width: 20, height: 20, minWidth: 20, borderRadius: 4, border: agreed ? '1px solid #C8A97E' : '1px solid rgba(200,169,126,0.2)',
-                background: agreed ? 'rgba(200,169,126,0.15)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', marginTop: 2, transition: 'all 0.3s'
-              }}>
-                {agreed && <Check size={12} color="#C8A97E" />}
-              </div>
-              <p style={{ fontSize: 12, fontWeight: 300, color: '#6b6880', lineHeight: 1.6 }}>
-                I agree to the <a href="#" style={{ color: '#C8A97E', textDecoration: 'none' }}>Terms of Service</a> and <a href="#" style={{ color: '#C8A97E', textDecoration: 'none' }}>Privacy Policy</a>
-              </p>
-            </div>
-
-            {/* Submit */}
-            <button className="gold-btn" style={{ marginBottom: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-              Create Account <ChevronRight size={16} />
-            </button>
-
-            <p style={{ fontSize: 13, color: '#5a5768', textAlign: 'center' }}>
-              Already have an account? <a href="#" style={{ color: '#C8A97E', fontWeight: 500, textDecoration: 'none' }}>Sign In</a>
-            </p>
+      {/* Footer */}
+      <footer className="w-full py-20 px-6 md:px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div className="space-y-6">
+          <div className="text-lg font-semibold text-white font-['Playfair_Display']">Mercedes-Benz</div>
+          <p className="text-zinc-500 text-sm max-w-xs font-['DM_Sans']">Experiencing excellence in every detail. Join the legacy of automotive perfection.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-8 md:col-span-2">
+          <div className="space-y-4">
+            <h4 className="text-white font-label-sm uppercase tracking-widest text-xs">Quick Links</h4>
+            <ul className="space-y-3">
+              <li><a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200 block" href="#">Cars</a></li>
+              <li><a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200 block" href="#">Test Drive</a></li>
+              <li><a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200 block" href="#">Service</a></li>
+            </ul>
+          </div>
+          <div className="space-y-4">
+            <h4 className="text-white font-label-sm uppercase tracking-widest text-xs">Support</h4>
+            <ul className="space-y-3">
+              <li><a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200 block" href="#">Contact</a></li>
+              <li><a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200 block" href="#">Privacy</a></li>
+              <li><a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm hover:translate-x-1 transition-transform duration-200 block" href="#">Legal</a></li>
+            </ul>
           </div>
         </div>
-      </div>
-
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', padding: '40px 0 20px', background: '#0a0a0f' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Star size={14} color="#C8A97E" />
-              </div>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: '#fff' }}>Mercedes-Benz</span>
-            </div>
-            <p style={{ fontSize: 13, fontWeight: 300, color: '#5a5768', lineHeight: 1.7, maxWidth: 280 }}>Experiencing excellence in every detail. Join the legacy of automotive perfection.</p>
+        <div className="md:col-span-3 pt-10 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-zinc-500 font-['Playfair_Display'] text-sm">© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+          <div className="flex gap-8">
+            <span className="material-symbols-outlined text-zinc-500 cursor-pointer hover:text-primary transition-colors">brand_family</span>
+            <span className="material-symbols-outlined text-zinc-500 cursor-pointer hover:text-primary transition-colors">brand_family</span>
+            <span className="material-symbols-outlined text-zinc-500 cursor-pointer hover:text-primary transition-colors">youtube_ad</span>
           </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Quick Links</h4>
-            {['Cars', 'Test Drive', 'Service'].map((l) => (
-              <a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 12, textDecoration: 'none' }}>{l}</a>
-            ))}
-          </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Support</h4>
-            {['Contact', 'Privacy', 'Legal'].map((l) => (
-              <a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 12, textDecoration: 'none' }}>{l}</a>
-            ))}
-          </div>
-        </div>
-        <div style={{ maxWidth: 1440, margin: '20px auto 0', padding: '16px 80px 0', borderTop: '1px solid rgba(200,169,126,0.08)' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }

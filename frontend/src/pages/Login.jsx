@@ -1,187 +1,153 @@
-import { useState } from 'react';
-import { Star, Eye, EyeOff, Mail, Lock, ChevronRight, AlertCircle } from 'lucide-react';
-
 export default function Login() {
-  const [showPass, setShowPass] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const handleSubmit = () => setError(true); // demo: show error state
-
-  const inputStyle = {
-    width: '100%', padding: '14px 16px 14px 44px', background: '#111118',
-    border: '1px solid rgba(200,169,126,0.12)', borderRadius: 6, color: '#e4e1eb',
-    fontSize: 14, fontFamily: "'DM Sans', sans-serif", outline: 'none', transition: 'border 0.3s',
-  };
-
-  const labelStyle = {
-    fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
-    color: '#6b6880', marginBottom: 8, display: 'block',
-  };
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; width:100%; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        input:focus { border-color: #C8A97E !important; }
-        input::placeholder { color: #3a3748; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Star size={16} color="#C8A97E" />
-            </div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <a href="#" style={{ fontSize: 13, fontWeight: 500, color: '#C8A97E', letterSpacing: '0.05em' }}>Create Account</a>
+    <>
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full z-50 bg-zinc-950/90 backdrop-blur-md border-b border-[#C8A97E]/15 h-20 px-8 md:px-20 flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E]">star</span>
+          <span className="font-['Playfair_Display'] tracking-widest uppercase text-xl font-bold text-[#C8A97E]">Mercedes-Benz</span>
         </div>
-      </nav>
+        <div className="hidden md:flex gap-10">
+          <span className="font-label-sm text-sm text-zinc-400 hover:text-[#C8A97E] transition-colors cursor-pointer">CARS</span>
+          <span className="font-label-sm text-sm text-zinc-400 hover:text-[#C8A97E] transition-colors cursor-pointer">MUSEUM</span>
+          <span className="font-label-sm text-sm text-zinc-400 hover:text-[#C8A97E] transition-colors cursor-pointer">INNOVATION</span>
+        </div>
+      </header>
 
-      {/* MAIN */}
-      <div style={{ paddingTop: 72, display: 'grid', gridTemplateColumns: '1.2fr 1fr', minHeight: '100vh' }}>
-        {/* LEFT — Image & Brand */}
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
-          <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=900&q=80" alt="Mercedes-Benz" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(10,10,15,0.8) 0%, rgba(10,10,15,0.3) 50%, rgba(10,10,15,0.7) 100%)' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent 60%, #0a0a0f 100%)' }} />
-          <div style={{ position: 'absolute', top: '50%', left: 60, transform: 'translateY(-50%)', maxWidth: 460 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-              <div className="gold-line" />
-              <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>Welcome Back</span>
-            </div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 48, fontWeight: 300, color: '#fff', lineHeight: 1.15, marginBottom: 20 }}>
-              Experience Modern <span style={{ color: '#C8A97E' }}>Luxury.</span>
+      <main className="min-h-screen w-full pt-20 flex items-center justify-center relative overflow-hidden bg-[#050508]">
+        {/* Background Decor */}
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#C8A97E]/5 rounded-full blur-[120px]"></div>
+        </div>
+
+        <section className="relative z-10 w-full max-w-[1200px] px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 items-center gap-16 py-10">
+          {/* Branding/Image Side */}
+          <div className="hidden lg:flex flex-col gap-8">
+            <h1 className="font-headline-h1 text-on-surface leading-tight">
+              Experience <br />
+              <span className="text-primary-container italic font-normal">Modern Luxury.</span>
             </h1>
-            <p style={{ fontSize: 15, fontWeight: 300, color: '#9a97a5', lineHeight: 1.7 }}>
+            <p className="font-body-lg text-on-surface-variant max-w-md">
               Access your personalized Mercedes-Benz portal to manage your vehicle fleet, explore bespoke financing, and discover exclusive events.
             </p>
-            <div style={{ marginTop: 40, display: 'flex', gap: 32 }}>
-              {[
-                { val: '130+', label: 'Years of Legacy' },
-                { val: '2.1M', label: 'Vehicles Sold' },
-                { val: '93', label: 'Countries' },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 400, color: '#C8A97E' }}>{s.val}</p>
-                  <p style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.08em', color: '#5a5768', textTransform: 'uppercase', marginTop: 4 }}>{s.label}</p>
-                </div>
-              ))}
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden group">
+              <img alt="Luxury vehicle" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjLOEnry8euE2Ss3F0mJzvWUG3q18izc1qh9LhZO5porZO6imVS6-HkHokWxu08eR9nEI1SOXGh6I0ZqbMgc5TLrfTCdoDTmvjsQG0CoNeNSSS33d6fTDJhJ_s2Vkr-4-G7mFV9bl8SnQzvXoNP1kNDbYaI8lUy_syPcPfef78iMNOK2qmIqxEBt7GJ0XTNNrZQP9k6w974Vl_zUwiuNX1PQzR61zCwiRsNZuuRIv_ZzFPpYKBZvTy9bJd4aoxbsB1gnzN_6pGPn4" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-transparent opacity-60"></div>
             </div>
           </div>
-        </div>
 
-        {/* RIGHT — Form */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 80px' }}>
-          <div style={{ width: '100%', maxWidth: 400 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-              <div className="gold-line" />
-              <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>Authentication</span>
-            </div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 300, color: '#fff', marginBottom: 8 }}>Sign In</h2>
-            <p style={{ fontSize: 14, fontWeight: 300, color: '#6b6880', marginBottom: 36 }}>Enter your credentials to continue.</p>
-
-            {/* Error */}
-            {error && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', background: 'rgba(231,76,60,0.08)', border: '1px solid rgba(231,76,60,0.2)', borderRadius: 6, marginBottom: 24 }}>
-                <AlertCircle size={16} color="#e74c3c" />
-                <p style={{ fontSize: 13, color: '#e74c3c' }}>The email or password you entered is incorrect. Please try again.</p>
-              </div>
-            )}
-
-            {/* Email */}
-            <div style={{ marginBottom: 20 }}>
-              <label style={labelStyle}>Email Address</label>
-              <div style={{ position: 'relative' }}>
-                <Mail size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                <input type="email" style={inputStyle} placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+          {/* Form Side */}
+          <div className="flex flex-col gap-8 w-full max-w-md mx-auto">
+            {/* Error Banner */}
+            <div className="bg-error-container/20 border border-error/20 p-4 flex items-start gap-4 animate-fade-in">
+              <span className="material-symbols-outlined text-error">error_outline</span>
+              <div className="flex flex-col">
+                <span className="text-error font-label-sm uppercase tracking-wider">Authentication Failed</span>
+                <p className="text-on-surface-variant text-sm mt-1">The email or password you entered is incorrect. Please try again.</p>
               </div>
             </div>
 
-            {/* Password */}
-            <div style={{ marginBottom: 12 }}>
-              <label style={labelStyle}>Password</label>
-              <div style={{ position: 'relative' }}>
-                <Lock size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                <input type={showPass ? 'text' : 'password'} style={inputStyle} placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button onClick={() => setShowPass(!showPass)} style={{ position: 'absolute', right: 14, top: 13, background: 'none', border: 'none', cursor: 'pointer' }}>
-                  {showPass ? <EyeOff size={16} color="#4e453b" /> : <Eye size={16} color="#4e453b" />}
+            <div className="glass-card p-10 md:p-12 relative">
+              <div className="flex flex-col gap-2 mb-10">
+                <span className="font-label-sm text-primary-container uppercase tracking-[0.2em]">Welcome Back</span>
+                <h2 className="font-headline-h2 text-3xl">Sign In</h2>
+              </div>
+
+              <form className="flex flex-col gap-6">
+                {/* Email Field */}
+                <div className="flex flex-col gap-2">
+                  <label className="font-label-sm text-on-surface-variant uppercase text-[10px] tracking-widest">Email Address</label>
+                  <div className="relative">
+                    <input className="w-full bg-[#0D0D14] border-b border-outline-variant focus:border-primary-container focus:ring-0 text-on-surface font-body-md py-4 px-0 transition-colors placeholder:text-zinc-700" placeholder="name@luxury.com" type="email" />
+                    <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-zinc-600 text-sm">mail</span>
+                  </div>
+                </div>
+
+                {/* Password Field */}
+                <div className="flex flex-col gap-2">
+                  <div className="flex justify-between items-end">
+                    <label className="font-label-sm text-on-surface-variant uppercase text-[10px] tracking-widest">Password</label>
+                    <a className="font-label-sm text-primary-container hover:text-white transition-colors text-[10px] uppercase underline underline-offset-4 decoration-primary-container/30" href="#">Forgot Password?</a>
+                  </div>
+                  <div className="relative">
+                    <input className="w-full bg-[#0D0D14] border-b border-outline-variant focus:border-primary-container focus:ring-0 text-on-surface font-body-md py-4 px-0 transition-colors placeholder:text-zinc-700" placeholder="••••••••" type="password" />
+                    <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-zinc-400 cursor-pointer hover:text-primary-container transition-colors">visibility</span>
+                  </div>
+                </div>
+
+                {/* Sign In Button */}
+                <button className="mt-8 group relative overflow-hidden border border-primary-container bg-transparent py-4 px-8 flex justify-center items-center gap-3 transition-all duration-300 hover:bg-primary-container">
+                  <span className="relative z-10 font-label-sm text-primary-container group-hover:text-on-primary transition-colors uppercase tracking-[0.15em] font-medium">Sign In</span>
+                  <span className="material-symbols-outlined relative z-10 text-primary-container group-hover:text-on-primary text-lg">arrow_forward</span>
+                </button>
+              </form>
+
+              <div className="mt-10 flex items-center gap-6">
+                <div className="h-[1px] flex-1 bg-outline-variant/30"></div>
+                <span className="font-label-sm text-zinc-600 uppercase text-[10px]">Or continue with</span>
+                <div className="h-[1px] flex-1 bg-outline-variant/30"></div>
+              </div>
+
+              <div className="mt-8 flex gap-4">
+                <button className="flex-1 border border-outline-variant py-3 px-4 flex justify-center items-center hover:bg-white/5 transition-colors">
+                  <span className="material-symbols-outlined text-lg">google</span>
+                </button>
+                <button className="flex-1 border border-outline-variant py-3 px-4 flex justify-center items-center hover:bg-white/5 transition-colors">
+                  <span className="material-symbols-outlined text-lg">ios</span>
                 </button>
               </div>
             </div>
 
-            {/* Remember & Forgot */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }} onClick={() => setRememberMe(!rememberMe)}>
-                <div style={{
-                  width: 18, height: 18, borderRadius: 4, border: rememberMe ? '1px solid #C8A97E' : '1px solid rgba(200,169,126,0.2)',
-                  background: rememberMe ? 'rgba(200,169,126,0.15)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s'
-                }}>
-                  {rememberMe && <div style={{ width: 8, height: 8, borderRadius: 2, background: '#C8A97E' }} />}
-                </div>
-                <span style={{ fontSize: 12, color: '#6b6880' }}>Remember me</span>
-              </div>
-              <a href="#" style={{ fontSize: 12, color: '#C8A97E', fontWeight: 500 }}>Forgot Password?</a>
+            <div className="text-center">
+              <p className="font-body-md text-sm text-zinc-500">
+                Don't have an account?
+                <a className="text-primary-container hover:underline underline-offset-4 font-medium ml-1" href="#">Request Access</a>
+              </p>
             </div>
+          </div>
+        </section>
+      </main>
 
-            {/* Submit */}
-            <button className="gold-btn" onClick={handleSubmit} style={{ marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-              Sign In <ChevronRight size={16} />
-            </button>
-
-            {/* Divider */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
-              <div style={{ flex: 1, height: 1, background: 'rgba(200,169,126,0.1)' }} />
-              <span style={{ fontSize: 11, color: '#3a3748', letterSpacing: '0.1em', textTransform: 'uppercase' }}>or</span>
-              <div style={{ flex: 1, height: 1, background: 'rgba(200,169,126,0.1)' }} />
-            </div>
-
-            <p style={{ fontSize: 13, color: '#5a5768', textAlign: 'center' }}>
-              Don't have an account? <a href="#" style={{ color: '#C8A97E', fontWeight: 500 }}>Request Access</a>
+      {/* Footer */}
+      <footer className="w-full py-20 px-8 md:px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <span className="text-lg font-semibold text-white font-headline-h3">Mercedes-Benz</span>
+            <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 max-w-xs leading-relaxed">
+              Setting the standard in luxury, innovation, and performance since 1886. Engineered for the extraordinary.
             </p>
           </div>
-        </div>
-      </div>
-
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', padding: '40px 0 20px', background: '#0a0a0f' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Star size={14} color="#C8A97E" />
-              </div>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: '#fff' }}>Mercedes-Benz</span>
-            </div>
-            <p style={{ fontSize: 13, fontWeight: 300, color: '#5a5768', lineHeight: 1.7, maxWidth: 280 }}>Setting the standard in luxury, innovation, and performance since 1886.</p>
-          </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Explore</h4>
-            {['Cars', 'Test Drive', 'Service', 'My Orders', 'Wishlist', 'Admin'].map((l) => (
-              <a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10, textDecoration: 'none' }}>{l}</a>
-            ))}
-          </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Legal</h4>
-            {['Privacy Policy', 'Contact Us'].map((l) => (
-              <a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10, textDecoration: 'none' }}>{l}</a>
-            ))}
+          <div className="flex gap-4">
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary transition-colors cursor-pointer">social_leaderboard</span>
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary transition-colors cursor-pointer">photo_camera</span>
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary transition-colors cursor-pointer">brand_awareness</span>
           </div>
         </div>
-        <div style={{ maxWidth: 1440, margin: '20px auto 0', padding: '16px 80px 0', borderTop: '1px solid rgba(200,169,126,0.08)' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+        <div className="grid grid-cols-2 gap-8">
+          <div className="flex flex-col gap-4">
+            <span className="font-label-sm text-white uppercase text-[10px] tracking-widest mb-2">Explore</span>
+            <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-all duration-200" href="#">Cars</a>
+            <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-all duration-200" href="#">Test Drive</a>
+            <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-all duration-200" href="#">Service</a>
+          </div>
+          <div className="flex flex-col gap-4">
+            <span className="font-label-sm text-white uppercase text-[10px] tracking-widest mb-2">Account</span>
+            <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-all duration-200" href="#">My Orders</a>
+            <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-all duration-200" href="#">Wishlist</a>
+            <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-all duration-200" href="#">Admin</a>
+          </div>
+        </div>
+        <div className="flex flex-col gap-8 items-start md:items-end">
+          <div className="flex flex-col gap-4 text-left md:text-right w-full">
+            <span className="font-label-sm text-white uppercase text-[10px] tracking-widest mb-2">Legal</span>
+            <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-all duration-200" href="#">Privacy Policy</a>
+            <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-all duration-200" href="#">Contact Us</a>
+          </div>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-600 mt-auto">
+            © 2024 Mercedes-Benz Pakistan. All rights reserved.
+          </p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
