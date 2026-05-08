@@ -1,184 +1,176 @@
-import { useState } from 'react';
-import { Star, Package, CheckCircle2, Truck, MapPin, Clock, FileText, Phone, MessageSquare, ChevronRight } from 'lucide-react';
-
-const ORDER = {
-  id: 'ORD-2024-002',
-  car: 'AMG GT Coupé',
-  image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=600&q=80',
-  color: 'Obsidian Black',
-  trim: 'AMG GT 63',
-  price: 'PKR 120,000,000',
-  orderDate: 'Jan 12, 2024',
-  estimatedDelivery: 'Jun 15, 2024',
-  dealer: 'Karachi — DHA Phase VI',
-  advisor: 'Fatima Zaidi',
-  advisorPhone: '+92 321 9876543',
-};
-
-const TIMELINE = [
-  { step: 'Order Confirmed', date: 'Jan 12, 2024', time: '02:45 PM', desc: 'Your order has been received and payment verified.', done: true },
-  { step: 'Production Started', date: 'Feb 08, 2024', time: '10:00 AM', desc: 'Your vehicle has entered the production line at Sindelfingen, Germany.', done: true },
-  { step: 'Quality Inspection', date: 'Mar 22, 2024', time: '03:30 PM', desc: 'Final quality checks and road testing completed.', done: true },
-  { step: 'Shipped to Pakistan', date: 'Apr 05, 2024', time: '09:15 AM', desc: 'Vehicle dispatched via secured sea freight to Karachi port.', done: true, active: true },
-  { step: 'Customs Clearance', date: 'Pending', time: '', desc: 'Awaiting customs inspection and documentation.', done: false },
-  { step: 'Dealership Arrival', date: 'Pending', time: '', desc: 'Vehicle arrives at your selected dealership for final prep.', done: false },
-  { step: 'Ready for Delivery', date: 'Pending', time: '', desc: 'Final detailing complete. Schedule your pickup appointment.', done: false },
-];
-
 export default function OrderTracking() {
-  const [selectedOrder, setSelectedOrder] = useState(ORDER.id);
-
-  const currentStep = TIMELINE.findIndex((t) => t.active) + 1;
-  const progress = Math.round((currentStep / TIMELINE.length) * 100);
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={16} color="#C8A97E" /></div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <button className="gold-btn" style={{ padding: '8px 22px', fontSize: 11 }}>My Account</button>
+    <>
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E]">star</span>
+          <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</span>
         </div>
-      </nav>
+        <nav className="hidden md:flex gap-10 items-center">
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Cars</a>
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-[#C8A97E] border-b border-[#C8A97E] pb-1" href="#">My Orders</a>
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Wishlist</a>
+        </nav>
+        <button className="px-6 py-2 border border-[#C8A97E] text-[#C8A97E] font-label-sm uppercase hover:bg-[#C8A97E]/10 transition-colors">
+          Sign In
+        </button>
+      </header>
 
-      {/* CONTENT */}
-      <div style={{ paddingTop: 100, maxWidth: 1440, margin: '0 auto', padding: '100px 80px 60px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-          <div className="gold-line" />
-          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>Order Status</span>
-        </div>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 42, fontWeight: 300, color: '#fff', marginBottom: 8 }}>Track Your Order</h1>
-        <p style={{ fontSize: 15, fontWeight: 300, color: '#6b6880', marginBottom: 48 }}>Follow your vehicle's journey from production to delivery.</p>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 48 }}>
-          {/* LEFT — Vehicle Card & Info */}
+      <main className="pt-40 pb-24 px-8 md:px-20 max-w-container-max mx-auto">
+        {/* Order Identity Header */}
+        <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20 border-b border-outline-variant pb-12">
           <div>
-            {/* Vehicle Card */}
-            <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, overflow: 'hidden', marginBottom: 20 }}>
-              <img src={ORDER.image} alt={ORDER.car} style={{ width: '100%', height: 200, objectFit: 'cover' }} />
-              <div style={{ padding: '24px' }}>
-                <span style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E' }}>{ORDER.id}</span>
-                <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff', margin: '6px 0 16px' }}>{ORDER.car}</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                  {[['Color', ORDER.color], ['Trim', ORDER.trim], ['Ordered', ORDER.orderDate], ['Est. Delivery', ORDER.estimatedDelivery]].map(([k, v]) => (
-                    <div key={k}>
-                      <p style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b' }}>{k}</p>
-                      <p style={{ fontSize: 13, color: '#9a97a5', fontWeight: 500 }}>{v}</p>
-                    </div>
-                  ))}
+            <span className="font-label-sm text-primary uppercase mb-4 block">Order Details</span>
+            <h1 className="font-headline-h1 text-on-background mb-2">Mercedes-Benz S-Class</h1>
+            <div className="flex items-center gap-4">
+              <span className="px-4 py-1 rounded-full bg-surface-container-high border border-outline-variant text-label-sm text-secondary uppercase">AMG Line Premium Plus</span>
+              <span className="text-secondary/60 font-body-md">Order ID: <span className="text-on-background">MB-PAK-2024-8832</span></span>
+            </div>
+          </div>
+          <div className="text-right">
+            <span className="text-secondary/60 text-label-sm uppercase block mb-1">Estimated Arrival</span>
+            <span className="font-headline-h3 text-primary">October 14, 2024</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+          {/* Left Column */}
+          <div className="lg:col-span-2 space-y-16">
+            {/* Visual Status Stepper */}
+            <section className="bg-surface-container-lowest gold-hairline p-10 rounded-lg">
+              <h3 className="font-headline-h3 text-on-background mb-10">Production Timeline</h3>
+              <div className="relative flex justify-between items-start">
+                {/* Connector Lines */}
+                <div className="absolute top-6 left-0 w-full h-[1px] bg-outline-variant z-0"></div>
+                <div className="absolute top-6 left-0 w-2/3 h-[1px] bg-primary z-0"></div>
+
+                {/* Step 1: Pending */}
+                <div className="relative z-10 flex flex-col items-center text-center w-1/3">
+                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center mb-4">
+                    <span className="material-symbols-outlined text-on-primary text-xl">check_circle</span>
+                  </div>
+                  <span className="font-label-sm text-on-background uppercase">Pending</span>
+                  <span className="text-xs text-secondary/60 mt-1">Aug 20, 2024</span>
                 </div>
-                <div style={{ borderTop: '1px solid rgba(200,169,126,0.08)', marginTop: 16, paddingTop: 16, display: 'flex', justifyContent: 'space-between' }}>
-                  <span style={{ fontSize: 13, color: '#6b6880' }}>Total Price</span>
-                  <span style={{ fontSize: 18, fontWeight: 600, color: '#C8A97E' }}>{ORDER.price}</span>
+
+                {/* Step 2: Confirmed (Active) */}
+                <div className="relative z-10 flex flex-col items-center text-center w-1/3">
+                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center mb-4 ring-8 ring-primary/10">
+                    <span className="material-symbols-outlined text-on-primary text-xl">manufacturing</span>
+                  </div>
+                  <span className="font-label-sm text-primary uppercase">Confirmed</span>
+                  <span className="text-xs text-secondary/60 mt-1">Aug 24, 2024</span>
+                </div>
+
+                {/* Step 3: Delivered */}
+                <div className="relative z-10 flex flex-col items-center text-center w-1/3">
+                  <div className="w-12 h-12 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center mb-4">
+                    <span className="material-symbols-outlined text-outline text-xl">auto_transmission</span>
+                  </div>
+                  <span className="font-label-sm text-outline uppercase">Delivered</span>
+                  <span className="text-xs text-secondary/60 mt-1">Expected</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Vehicle Preview Cards */}
+            <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="relative h-80 rounded-lg overflow-hidden group border border-outline-variant">
+                <img alt="Luxury car interior" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbjSHeJ97nJdExaGzslcjsXx4cJjeiBcz6efDeaPiOAjQzK_8bMnJDNUDL-dfr8EZ6zcDiAwk5gyPg-UM99RR1YQSneTED07V6rnHrJfQw8dgf90Uo1FBI8epl5LpqwdjgOMarZwetBykooFmFfoPuS9egssCvlQsczSmLeCldN3WxwE5Hk19ARp7H92SepKtEO9AA6LaRiQi8mt662uLbXxa0__vczkcUPgJg7XtlxfbUP5-90np9xrFOIlK-FQqhC8xstqIgtKc" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+                <div className="absolute bottom-6 left-6">
+                  <p className="text-label-sm text-primary uppercase">Interior Trim</p>
+                  <p className="font-headline-h3 text-white">Nappa Black Leather</p>
+                </div>
+              </div>
+              <div className="relative h-80 rounded-lg overflow-hidden group border border-outline-variant">
+                <img alt="Luxury car wheel" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-kvIK7ynuo3_06id0A5uihUyHL472AArjESGKzUyGrciUK4FkgbE2sWZxvwzVNHNpgcL62DodDiVolUT8HX4lcGkjz8VXxmeHJIMXQ2h44uhB0F-_k9GITt1K4rA174m9YX6IBMuVjg8XHV1LO5SalRy1yeaWAHitUysFTlQDbAeGlp2EXi8rTlBShp4x3IIeNnFK4x3YphcdYx_uVdxoUyEUmE82eHC9scz9SfzmTn02uy1Oytp3G9LyY5uqfx0JEqGZgVicHrM" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
+                <div className="absolute bottom-6 left-6">
+                  <p className="text-label-sm text-primary uppercase">Wheel Selection</p>
+                  <p className="font-headline-h3 text-white">21" AMG Multi-Spoke</p>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          {/* Right Column: Price & Payment */}
+          <aside className="space-y-8">
+            {/* Price Breakdown */}
+            <div className="bg-surface-container-low gold-hairline p-8 rounded-lg">
+              <h4 className="font-headline-h3 text-on-background mb-8 border-b border-outline-variant pb-4">Order Summary</h4>
+              <div className="space-y-4 mb-8">
+                <div className="flex justify-between items-center">
+                  <span className="text-secondary/80 font-body-md">Base Price</span>
+                  <span className="text-on-background font-body-md">PKR 48,500,000</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-secondary/80 font-body-md">AMG Premium Package</span>
+                  <span className="text-on-background font-body-md">PKR 2,200,000</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-secondary/80 font-body-md">Import Duty &amp; Taxes</span>
+                  <span className="text-on-background font-body-md">PKR 18,300,000</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-secondary/80 font-body-md">Delivery &amp; Handling</span>
+                  <span className="text-on-background font-body-md">PKR 150,000</span>
+                </div>
+              </div>
+              <div className="pt-6 border-t border-primary/20 flex justify-between items-end">
+                <div>
+                  <span className="text-label-sm text-primary uppercase block">Total Amount</span>
+                  <span className="font-headline-h2 text-primary">PKR 69.1M</span>
                 </div>
               </div>
             </div>
 
-            {/* Progress Bar */}
-            <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: '#e4e1eb' }}>Overall Progress</span>
-                <span style={{ fontSize: 13, fontWeight: 600, color: '#C8A97E' }}>{progress}%</span>
-              </div>
-              <div style={{ height: 8, background: '#1f1f26', borderRadius: 4, overflow: 'hidden' }}>
-                <div style={{ width: `${progress}%`, height: '100%', background: 'linear-gradient(90deg, #C8A97E, #e5c497)', borderRadius: 4, transition: 'width 1s ease' }} />
-              </div>
-              <p style={{ fontSize: 11, color: '#4e453b', marginTop: 10 }}>Step {currentStep} of {TIMELINE.length}</p>
-            </div>
-
-            {/* Contact Advisor */}
-            <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px', marginTop: 20 }}>
-              <h3 style={{ fontSize: 13, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 16 }}>Your Advisor</h3>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
-                <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(200,169,126,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Star size={18} color="#C8A97E" />
+            {/* Payment Method */}
+            <div className="bg-surface-container-highest/30 gold-hairline p-6 rounded-lg flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-8 bg-zinc-800 rounded flex items-center justify-center border border-outline-variant">
+                  <span className="material-symbols-outlined text-primary text-xl">account_balance</span>
                 </div>
                 <div>
-                  <p style={{ fontSize: 15, fontWeight: 500, color: '#fff' }}>{ORDER.advisor}</p>
-                  <p style={{ fontSize: 12, color: '#6b6880' }}>{ORDER.dealer}</p>
+                  <p className="text-label-sm text-on-background uppercase">Payment Method</p>
+                  <p className="text-secondary/60 text-xs">Standard Chartered Bank Transfer</p>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: 10 }}>
-                <button style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '10px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                  <Phone size={14} /> Call
-                </button>
-                <button style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '10px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                  <MessageSquare size={14} /> Message
-                </button>
-              </div>
+              <span className="material-symbols-outlined text-green-500">verified</span>
             </div>
-          </div>
 
-          {/* RIGHT — Timeline */}
-          <div>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff', marginBottom: 32 }}>Delivery Timeline</h2>
-            <div style={{ position: 'relative' }}>
-              {TIMELINE.map((step, i) => {
-                const isLast = i === TIMELINE.length - 1;
-                return (
-                  <div key={step.step} style={{ display: 'flex', gap: 20, marginBottom: isLast ? 0 : 8 }}>
-                    {/* Dot & Line */}
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 32 }}>
-                      <div style={{
-                        width: step.active ? 20 : 16, height: step.active ? 20 : 16, borderRadius: '50%',
-                        background: step.done ? (step.active ? '#C8A97E' : 'rgba(46,204,113,0.2)') : '#1f1f26',
-                        border: step.done ? (step.active ? '3px solid rgba(200,169,126,0.3)' : '2px solid #2ecc71') : '2px solid #2a2931',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2, flexShrink: 0,
-                        boxShadow: step.active ? '0 0 12px rgba(200,169,126,0.4)' : 'none',
-                      }}>
-                        {step.done && !step.active && <CheckCircle2 size={10} color="#2ecc71" />}
-                      </div>
-                      {!isLast && (
-                        <div style={{ width: 2, flex: 1, minHeight: 50, background: step.done ? 'rgba(46,204,113,0.2)' : '#1f1f26' }} />
-                      )}
-                    </div>
-
-                    {/* Content */}
-                    <div style={{
-                      flex: 1, paddingBottom: isLast ? 0 : 24,
-                      background: step.active ? 'rgba(200,169,126,0.04)' : 'transparent',
-                      border: step.active ? '1px solid rgba(200,169,126,0.12)' : '1px solid transparent',
-                      borderRadius: step.active ? 8 : 0, padding: step.active ? '18px 20px' : '4px 0',
-                    }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
-                        <h4 style={{ fontSize: 15, fontWeight: 500, color: step.done ? '#fff' : '#3a3748' }}>{step.step}</h4>
-                        {step.active && <span style={{ fontSize: 10, fontWeight: 500, padding: '3px 10px', background: 'rgba(200,169,126,0.12)', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 20, color: '#C8A97E' }}>Current</span>}
-                      </div>
-                      <p style={{ fontSize: 12, color: step.done ? '#6b6880' : '#2a2931', marginBottom: 4 }}>{step.desc}</p>
-                      {step.date !== 'Pending' && (
-                        <div style={{ display: 'flex', gap: 12, marginTop: 6 }}>
-                          <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#4e453b' }}><Clock size={11} /> {step.date}</span>
-                          {step.time && <span style={{ fontSize: 11, color: '#4e453b' }}>{step.time}</span>}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+            {/* Action Button */}
+            <button className="w-full py-5 border border-primary text-primary font-label-sm uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all duration-300 group">
+              Download Configuration PDF
+              <span className="material-symbols-outlined align-middle ml-2 group-hover:translate-y-1 transition-transform">download</span>
+            </button>
+          </aside>
         </div>
-      </div>
+      </main>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', marginTop: 80, padding: '40px 0 20px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+      {/* Footer */}
+      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div>
+          <span className="text-lg font-semibold text-white font-['Playfair_Display'] block mb-6">Mercedes-Benz Pakistan</span>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500">Excellence in every detail. Crafting the future of mobility with heritage and precision.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Cars</a>
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">My Orders</a>
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Wishlist</a>
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Test Drive</a>
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Service</a>
+          <a className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Contact</a>
+        </div>
+        <div className="text-right flex flex-col justify-between">
+          <div className="space-x-4">
+            <span className="material-symbols-outlined text-[#C8A97E] cursor-pointer hover:scale-110 transition-transform">share</span>
+            <span className="material-symbols-outlined text-[#C8A97E] cursor-pointer hover:scale-110 transition-transform">public</span>
+          </div>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 mt-8">© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
