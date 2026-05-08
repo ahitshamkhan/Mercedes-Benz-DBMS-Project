@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Star, IdCard, UserCheck, BadgeCheck, Calendar, Clock, MapPin, Car, ChevronRight, ChevronLeft, Check } from 'lucide-react';
+import { Star, CreditCard, UserCheck, BadgeCheck, Calendar, Clock, MapPin, Car, ChevronRight, ChevronLeft, Check } from 'lucide-react';
 
 const CARS = [
   { id: 1, name: 'S-Class 500', category: 'Sedan', image: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=400&q=80' },
@@ -17,7 +17,7 @@ const DEALERSHIPS = [
 const TIME_SLOTS = ['09:00 AM', '10:30 AM', '12:00 PM', '02:00 PM', '03:30 PM', '05:00 PM'];
 
 const REQUIREMENTS = [
-  { icon: <IdCard size={20} color="#C8A97E" />, label: 'Valid Driving License' },
+  { icon: <CreditCard size={20} color="#C8A97E" />, label: 'Valid Driving License' },
   { icon: <UserCheck size={20} color="#C8A97E" />, label: 'Proof of Identity' },
   { icon: <BadgeCheck size={20} color="#C8A97E" />, label: 'Appointment Confirmation' },
 ];
