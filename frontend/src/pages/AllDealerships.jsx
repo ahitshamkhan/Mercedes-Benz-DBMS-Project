@@ -1,179 +1,172 @@
-import { useState } from 'react';
-import { Star, MapPin, Phone, Clock, ChevronRight, Search, Navigation, Award, Users, Car } from 'lucide-react';
-
-const DEALERSHIPS = [
-  { id: 1, name: 'Mercedes-Benz Lahore Central', city: 'Lahore', address: 'Main Boulevard, Gulberg III, Lahore', phone: '+92 42 3571 2345', hours: 'Mon-Sat: 9AM - 8PM', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80', rating: 4.9, reviews: 128, type: 'Flagship', services: ['Sales', 'Service', 'AMG Center'], lat: 31.52, lng: 74.35 },
-  { id: 2, name: 'Mercedes-Benz Karachi DHA', city: 'Karachi', address: 'Khayaban-e-Ittehad, DHA Phase VI, Karachi', phone: '+92 21 3584 6789', hours: 'Mon-Sat: 9AM - 9PM', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80', rating: 4.8, reviews: 215, type: 'Flagship', services: ['Sales', 'Service', 'EQ Center', 'AMG Center'], lat: 24.81, lng: 67.06 },
-  { id: 3, name: 'Mercedes-Benz Islamabad', city: 'Islamabad', address: 'Jinnah Avenue, Blue Area, Islamabad', phone: '+92 51 2876 5432', hours: 'Mon-Sat: 9AM - 7PM', image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80', rating: 4.7, reviews: 89, type: 'Authorized', services: ['Sales', 'Service'], lat: 33.72, lng: 73.04 },
-  { id: 4, name: 'Mercedes-Benz Faisalabad', city: 'Faisalabad', address: 'Jaranwala Road, Faisalabad', phone: '+92 41 2634 7890', hours: 'Mon-Sat: 10AM - 7PM', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80', rating: 4.6, reviews: 52, type: 'Authorized', services: ['Sales', 'Service'], lat: 31.42, lng: 73.08 },
-  { id: 5, name: 'Mercedes-Benz Multan', city: 'Multan', address: 'Bosan Road, Multan', phone: '+92 61 4512 3456', hours: 'Mon-Sat: 10AM - 6PM', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80', rating: 4.5, reviews: 38, type: 'Service Partner', services: ['Service'], lat: 30.20, lng: 71.45 },
-  { id: 6, name: 'Mercedes-Benz Peshawar', city: 'Peshawar', address: 'University Road, Peshawar', phone: '+92 91 5842 1234', hours: 'Mon-Sat: 10AM - 6PM', image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80', rating: 4.4, reviews: 31, type: 'Service Partner', services: ['Service'], lat: 34.01, lng: 71.58 },
-];
-
-const TYPE_COLORS = { Flagship: '#C8A97E', Authorized: '#2ecc71', 'Service Partner': '#3498db' };
-const CITIES = ['All', ...new Set(DEALERSHIPS.map((d) => d.city))];
-
 export default function AllDealerships() {
-  const [search, setSearch] = useState('');
-  const [cityFilter, setCityFilter] = useState('All');
-  const [viewMode, setViewMode] = useState('grid');
-
-  const filtered = DEALERSHIPS.filter((d) => {
-    const matchSearch = d.name.toLowerCase().includes(search.toLowerCase()) || d.city.toLowerCase().includes(search.toLowerCase());
-    const matchCity = cityFilter === 'All' || d.city === cityFilter;
-    return matchSearch && matchCity;
-  });
+  const dealerships = [
+    {
+      city: 'Islamabad',
+      name: 'The Central Hub',
+      address: 'Sector I-9/3, Industrial Area, Islamabad, 44000',
+      phone: '+92 51 111 623 623',
+      email: 'info@mercedes-islamabad.com',
+      hours: { weekday: '09:00 - 18:00', sunday: 'Closed' },
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuARh7tWS6VzFnnFccc6CGf7mP5W4JvsbywN0Jnm3N9nrnXBeCbfPV6lNkME4h2Hib9Ti1O59VHJ1tngjZ6B4XhrtcTkVTJlRM_Wb7wALLkXThIBO9a-Cck7M-PH5CS9my6U8b46Y2_Fkl3XC1JeegTSXmNVia6Jleb0rvjwF_GLqrT3wDH5OJ7ie5Q0WEp0UFLIoLk_ZM4juijxv-M6DDFAm-pYHHdHMr4GH0TEp2TVi0p0A5yDmWq4iKlaOVZDVt7G-AEIAKPpqHQ',
+    },
+    {
+      city: 'Karachi',
+      name: 'Oceanic Avenue',
+      address: 'Main Shahrah-e-Faisal, Karachi City, Sindh 75350',
+      phone: '+92 21 345 3444 8',
+      email: 'sales@mercedes-karachi.pk',
+      hours: { weekday: '10:00 - 20:00', sunday: '12:00 - 17:00' },
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDjoFLDrg1DRiUpt6qrSba0agvUXJu8mXvmCGqnsKETOrGzfAYpV-0cj42-bOgoLZ42Ymmtt6qZsqAl4tgGd5V3t7fzJw8aAPGAdk3ADRTBSa9im1U2rB6pRubDgN_Brflt41_1XoKj72kaaMPIR9xMlReYdarIYVdkhHX-dgUbfft1gIRqL05genkiOIDhm1a9qihIXRzB9nIoGwJGYYfCTvUYHa3e2aDc8t-S7Hmf13dEK3PHMfZbaUgyZqQ3S9BripCcGrp07VM',
+    },
+    {
+      city: 'Lahore',
+      name: 'The Grand Boulevard',
+      address: 'Main Gulberg Boulevard, Gulberg III, Lahore, 54000',
+      phone: '+92 42 111 637 637',
+      email: 'concierge@mercedes-lahore.com',
+      hours: { weekday: '09:00 - 19:00', sunday: 'Closed' },
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAhWH_7pafyV8DhLYyS38uM-kYME-VgEsD5d_fw3tcC2MLY1LZRQvnyEy4m2Eo9al15LS2nh7CzHBjihQXklDkdQ4DeW6Y595jsblXttHa4DXl2pCuOR4peYQP_aUs6vM5OqLKDAT71Rasj21g03PU8x1luMsreqh2SBqkZaOeXYAorJxsVdA4jqDbCR6-CrPJeiMjYmOmtiFYpxDE9JPchPPNjF0_o1leuT2Pi-bMnjgJ7Q8d0XAHLqtJSW6Kww9yMLE3bv6UD13M',
+    },
+  ];
 
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        .card-hover { transition:transform 0.4s, box-shadow 0.4s; }
-        .card-hover:hover { transform:translateY(-6px); box-shadow:0 8px 30px rgba(200,169,126,0.08); }
-        input:focus { border-color:#C8A97E !important; outline:none; }
-        input::placeholder { color:#3a3748; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={16} color="#C8A97E" /></div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <div style={{ display: 'flex', gap: 36 }}>
-            {['Cars', 'Dealerships', 'Service', 'My Orders'].map((l) => (
-              <a key={l} href="#" style={{ fontSize: 13, fontWeight: l === 'Dealerships' ? 500 : 300, color: l === 'Dealerships' ? '#C8A97E' : '#b0adb8', letterSpacing: '0.05em' }}>{l}</a>
-            ))}
-          </div>
-          <button className="gold-btn" style={{ padding: '8px 22px', fontSize: 11 }}>My Account</button>
+    <>
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E] text-2xl" style={{ fontVariationSettings: "'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24" }}>star</span>
+          <h1 className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</h1>
         </div>
-      </nav>
-
-      <div style={{ paddingTop: 100, maxWidth: 1440, margin: '0 auto', padding: '100px 80px 60px' }}>
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-          <div className="gold-line" />
-          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>Our Network</span>
+        <nav className="hidden md:flex items-center gap-10">
+          <a className="relative font-label-sm text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Cars</a>
+          <a className="relative font-label-sm text-[#C8A97E] border-b border-[#C8A97E] pb-1" href="#">Dealerships</a>
+          <a className="relative font-label-sm text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Service</a>
+          <a className="relative font-label-sm text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Experience</a>
+        </nav>
+        <div className="flex items-center gap-6">
+          <button className="font-label-sm text-[#C8A97E] uppercase tracking-widest hover:text-white transition-colors">Sign In</button>
+          <span className="material-symbols-outlined text-white">menu</span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 40 }}>
-          <div>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 42, fontWeight: 300, color: '#fff', marginBottom: 8 }}>Dealerships</h1>
-            <p style={{ fontSize: 15, fontWeight: 300, color: '#6b6880' }}>Find your nearest Mercedes-Benz experience center across Pakistan.</p>
-          </div>
-          <button className="gold-btn" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px' }}>
-            <Navigation size={14} /> Find Nearest
-          </button>
+      </header>
+
+      <main className="pt-32 pb-40 px-80 max-w-[1440px] mx-auto">
+        {/* Page Header */}
+        <div className="mb-24 space-y-6">
+          <span className="font-label-sm text-primary tracking-[0.3em] uppercase">Official Retail Partners</span>
+          <h2 className="font-headline-h1 text-on-background leading-tight">
+            Find your local <br />
+            <span className="italic font-normal">authorized center.</span>
+          </h2>
         </div>
 
-        {/* Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 36 }}>
-          {[
-            { label: 'Dealerships', value: DEALERSHIPS.length, icon: <MapPin size={18} color="#C8A97E" /> },
-            { label: 'Cities Covered', value: new Set(DEALERSHIPS.map((d) => d.city)).size, icon: <Navigation size={18} color="#C8A97E" /> },
-            { label: 'Avg. Rating', value: (DEALERSHIPS.reduce((s, d) => s + d.rating, 0) / DEALERSHIPS.length).toFixed(1), icon: <Award size={18} color="#C8A97E" /> },
-          ].map((s) => (
-            <div key={s.label} style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '22px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(200,169,126,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{s.icon}</div>
-              <div>
-                <p style={{ fontSize: 24, fontWeight: 600, color: '#fff' }}>{s.value}</p>
-                <p style={{ fontSize: 11, color: '#5a5768' }}>{s.label}</p>
+        {/* Dealership Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {dealerships.map((d, i) => (
+            <div key={i} className="group glass-card overflow-hidden flex flex-col h-full transition-all duration-500 hover:border-primary/40">
+              <div className="relative h-64 overflow-hidden">
+                <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={d.img} alt={d.name} />
+                <div className="absolute top-4 left-4 bg-primary/90 text-on-primary px-3 py-1 font-label-sm uppercase text-[10px] tracking-widest">{d.city}</div>
+              </div>
+              <div className="p-8 flex flex-col flex-grow">
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="font-headline-h3 text-white">{d.name}</h3>
+                  <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
+                </div>
+                <div className="space-y-4 mb-8 text-zinc-400 font-body-md">
+                  <div className="flex items-start gap-3">
+                    <span className="material-symbols-outlined text-primary text-sm mt-1">map</span>
+                    <p className="text-sm">{d.address}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-primary text-sm">call</span>
+                    <p className="text-sm">{d.phone}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="material-symbols-outlined text-primary text-sm">mail</span>
+                    <p className="text-sm">{d.email}</p>
+                  </div>
+                </div>
+                <div className="pt-6 border-t border-white/5 mb-8">
+                  <p className="font-label-sm text-primary mb-3 uppercase tracking-tighter text-[10px]">Opening Hours</p>
+                  <div className="grid grid-cols-2 gap-y-1 text-[12px] text-zinc-500">
+                    <span>Mon - Sat</span>
+                    <span className="text-right">{d.hours.weekday}</span>
+                    <span>Sunday</span>
+                    <span className={`text-right ${d.hours.sunday === 'Closed' ? 'italic' : ''}`}>{d.hours.sunday}</span>
+                  </div>
+                </div>
+                <div className="mt-auto space-y-3">
+                  <button className="w-full border border-primary/30 py-4 font-label-sm uppercase tracking-widest text-primary transition-all duration-300 hover:bg-primary hover:text-on-primary">Get Directions</button>
+                  <button className="w-full bg-white/5 py-4 font-label-sm uppercase tracking-widest text-white transition-all duration-300 hover:bg-white/10">Book Test Drive</button>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Search + Filters */}
-        <div style={{ display: 'flex', gap: 16, marginBottom: 32 }}>
-          <div style={{ flex: 1, position: 'relative' }}>
-            <Search size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 13 }} />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search dealerships or cities..."
-              style={{ width: '100%', padding: '12px 16px 12px 44px', background: '#111118', border: '1px solid rgba(200,169,126,0.12)', borderRadius: 6, color: '#e4e1eb', fontSize: 13, fontFamily: "'DM Sans', sans-serif" }} />
-          </div>
-          <div style={{ display: 'flex', gap: 6 }}>
-            {CITIES.map((c) => (
-              <button key={c} onClick={() => setCityFilter(c)} style={{
-                padding: '8px 18px', fontSize: 12, fontWeight: 500,
-                border: cityFilter === c ? '1px solid #C8A97E' : '1px solid rgba(200,169,126,0.15)',
-                background: cityFilter === c ? '#C8A97E' : 'transparent',
-                color: cityFilter === c ? '#0a0a0f' : '#7a7788',
-                borderRadius: 2, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
-              }}>{c}</button>
-            ))}
-          </div>
-        </div>
-
-        {/* Cards Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
-          {filtered.map((dealer) => (
-            <div key={dealer.id} className="card-hover" style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, overflow: 'hidden' }}>
-              <div style={{ position: 'relative' }}>
-                <img src={dealer.image} alt={dealer.name} style={{ width: '100%', height: 180, objectFit: 'cover' }} />
-                <span style={{ position: 'absolute', top: 12, left: 12, padding: '4px 12px', background: `${TYPE_COLORS[dealer.type]}20`, border: `1px solid ${TYPE_COLORS[dealer.type]}40`, borderRadius: 20, fontSize: 10, fontWeight: 600, color: TYPE_COLORS[dealer.type], backdropFilter: 'blur(6px)' }}>
-                  {dealer.type}
-                </span>
-              </div>
-              <div style={{ padding: '22px 24px' }}>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 400, color: '#fff', marginBottom: 12 }}>{dealer.name}</h3>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                    <MapPin size={13} color="#4e453b" style={{ marginTop: 2, flexShrink: 0 }} />
-                    <span style={{ fontSize: 12, color: '#6b6880', lineHeight: 1.5 }}>{dealer.address}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Phone size={13} color="#4e453b" />
-                    <span style={{ fontSize: 12, color: '#6b6880' }}>{dealer.phone}</span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Clock size={13} color="#4e453b" />
-                    <span style={{ fontSize: 12, color: '#6b6880' }}>{dealer.hours}</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <Star size={12} color="#C8A97E" fill="#C8A97E" />
-                    <span style={{ fontSize: 13, fontWeight: 500, color: '#C8A97E' }}>{dealer.rating}</span>
-                    <span style={{ fontSize: 11, color: '#4e453b' }}>({dealer.reviews} reviews)</span>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 18 }}>
-                  {dealer.services.map((s) => (
-                    <span key={s} style={{ padding: '3px 10px', background: 'rgba(200,169,126,0.06)', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 20, fontSize: 10, fontWeight: 500, color: '#7a7788' }}>{s}</span>
-                  ))}
-                </div>
-
-                <button style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '10px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                  View Details <ChevronRight size={14} />
-                </button>
-              </div>
+        {/* Decorative Map Section */}
+        <div className="mt-40 relative h-[500px] w-full overflow-hidden border border-white/10">
+          <div className="absolute inset-0 grayscale opacity-30">
+            <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
+              <span className="material-symbols-outlined text-zinc-700 text-9xl">public</span>
             </div>
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <MapPin size={40} color="#2a2931" style={{ marginBottom: 16 }} />
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 300, color: '#fff', marginBottom: 8 }}>No dealerships found</h2>
-            <p style={{ fontSize: 14, color: '#5a5768' }}>Try adjusting your search or city filter.</p>
           </div>
-        )}
-      </div>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="relative">
+              <span className="material-symbols-outlined text-primary text-5xl drop-shadow-[0_0_15px_rgba(200,169,126,0.6)]" style={{ fontVariationSettings: "'FILL' 1" }}>location_on</span>
+              <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-primary px-4 py-2 text-on-primary font-label-sm text-[10px] whitespace-nowrap uppercase tracking-widest">Lahore Showroom</div>
+            </div>
+          </div>
+          <div className="absolute bottom-8 left-8 glass-card p-6 border-primary/20 max-w-sm">
+            <p className="font-label-sm text-primary mb-2 uppercase tracking-widest">Global Standards</p>
+            <p className="text-zinc-400 text-sm leading-relaxed">Every authorized Mercedes-Benz dealership in Pakistan adheres to the Mercedes-Benz MAR2020 international standards of retail excellence.</p>
+          </div>
+        </div>
+      </main>
 
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', marginTop: 80, padding: '40px 0 20px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+      {/* Footer */}
+      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div className="space-y-8">
+          <h4 className="text-lg font-semibold text-white font-['Playfair_Display']">Mercedes-Benz</h4>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 leading-relaxed max-w-xs">Experience the pinnacle of automotive engineering and luxury. Our legacy of innovation continues to define the future of mobility.</p>
+          <div className="flex gap-6">
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary transition-colors cursor-pointer">social_leaderboard</span>
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary transition-colors cursor-pointer">photo_camera</span>
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary transition-colors cursor-pointer">movie</span>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h5 className="font-label-sm text-primary uppercase mb-6">Discovery</h5>
+            <ul className="space-y-3 font-['Playfair_Display'] text-sm">
+              <li><a className="text-zinc-500 hover:text-white transition-all hover:translate-x-1 inline-block" href="#">Cars</a></li>
+              <li><a className="text-zinc-500 hover:text-white transition-all hover:translate-x-1 inline-block" href="#">Service</a></li>
+              <li><a className="text-zinc-500 hover:text-white transition-all hover:translate-x-1 inline-block" href="#">Test Drive</a></li>
+              <li><a className="text-zinc-500 hover:text-white transition-all hover:translate-x-1 inline-block" href="#">My Orders</a></li>
+            </ul>
+          </div>
+          <div className="space-y-4">
+            <h5 className="font-label-sm text-primary uppercase mb-6">Corporate</h5>
+            <ul className="space-y-3 font-['Playfair_Display'] text-sm">
+              <li><a className="text-zinc-500 hover:text-white transition-all hover:translate-x-1 inline-block" href="#">Admin</a></li>
+              <li><a className="text-zinc-500 hover:text-white transition-all hover:translate-x-1 inline-block" href="#">Contact</a></li>
+              <li><a className="text-zinc-500 hover:text-white transition-all hover:translate-x-1 inline-block" href="#">Legal</a></li>
+              <li><a className="text-zinc-500 hover:text-white transition-all hover:translate-x-1 inline-block" href="#">Privacy</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="space-y-8">
+          <h5 className="font-label-sm text-primary uppercase">Newsletter</h5>
+          <div className="flex flex-col gap-4">
+            <p className="text-xs text-zinc-500">Subscribe to receive the latest updates on new models and exclusive events.</p>
+            <div className="relative border-b border-zinc-800 pb-2 flex justify-between items-center group focus-within:border-primary transition-colors">
+              <input className="bg-transparent border-none focus:ring-0 text-sm w-full text-white placeholder:text-zinc-700" placeholder="Your email address" type="email" />
+              <span className="material-symbols-outlined text-zinc-700 group-focus-within:text-primary">arrow_forward</span>
+            </div>
+          </div>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 mt-auto">© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }

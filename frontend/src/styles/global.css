@@ -214,3 +214,16 @@ input[type="range"]::-webkit-slider-thumb {
 body {
   min-height: max(884px, 100dvh);
 }
+
+.luxury-hover {
+  transition: all 0.3s ease;
+}
+.luxury-hover:hover {
+  box-shadow: 0 0 20px rgba(200, 169, 126, 0.1);
+  transform: translateY(-2px);
+}
+
+.glass-effect {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}

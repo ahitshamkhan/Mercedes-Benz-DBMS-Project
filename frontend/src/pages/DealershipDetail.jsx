@@ -1,226 +1,232 @@
-import { useState } from 'react';
-import { Star, MapPin, Phone, Clock, Mail, Globe, ChevronRight, Calendar, Car, Wrench, Award, Users, MessageSquare, Navigation, ExternalLink } from 'lucide-react';
-
-const DEALER = {
-  name: 'Mercedes-Benz Lahore Central',
-  type: 'Flagship Dealership',
-  address: 'Main Boulevard, Gulberg III, Lahore, Pakistan',
-  phone: '+92 42 3571 2345',
-  email: 'lahore@mercedes-benz.pk',
-  website: 'www.mercedes-benz-lahore.pk',
-  hours: [
-    { day: 'Monday - Friday', time: '9:00 AM - 8:00 PM' },
-    { day: 'Saturday', time: '10:00 AM - 6:00 PM' },
-    { day: 'Sunday', time: 'Closed' },
-  ],
-  rating: 4.9,
-  reviews: 128,
-  image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80',
-  gallery: [
-    'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80',
-    'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=80',
-    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80',
-  ],
-  services: ['New Car Sales', 'Certified Pre-Owned', 'Service Center', 'AMG Performance Center', 'Parts & Accessories', 'Finance & Insurance'],
-  team: [
-    { name: 'Imran Malik', role: 'General Manager', image: null },
-    { name: 'Sara Qureshi', role: 'Sales Director', image: null },
-    { name: 'Ali Hassan', role: 'Service Manager', image: null },
-    { name: 'Fatima Zaidi', role: 'Customer Relations', image: null },
-  ],
-  inventory: { sedans: 12, suvs: 8, amg: 5, electric: 3 },
-};
-
-const REVIEWS = [
-  { name: 'Hamza A.', rating: 5, date: 'Apr 2024', text: 'Absolutely stellar experience. The team made my S-Class purchase feel truly special. White-glove service from start to finish.' },
-  { name: 'Ayesha K.', rating: 5, date: 'Mar 2024', text: 'Best dealership in Pakistan. The AMG center is incredible — they let me configure every detail of my GT.' },
-  { name: 'Omar R.', rating: 4, date: 'Feb 2024', text: 'Great service department. Quick turnaround on my G-Class maintenance. Staff is knowledgeable and professional.' },
-];
-
 export default function DealershipDetail() {
-  const [activeTab, setActiveTab] = useState('Overview');
-  const tabs = ['Overview', 'Services', 'Team', 'Reviews'];
+  const staff = [
+    {
+      role: 'General Manager',
+      name: 'Julian Sterling',
+      subtitle: '15 Years Expertise',
+      badgeStyle: 'bg-primary/10 border-primary/20 text-primary',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDV8vHn-M1SjikeQrf1AoKzypZmflosjoaRLjetyrxwJTabnADWLBNPNBKHPNmaemly2bzAPT1NCwVSVcqh8Rf863Ov0UjDIFbaBCFoOIpFnXLDYrNy3jJWGyJVoj9_Q15GLWlNmkDPke_BrTQw5SUp5jaqlAB-iZgDMwig6_mPaS6sJFk3muOm-x0vfN6Y1-pLCfQSfyT1sKeR2pmdNCf3LHPPpyxpnMNbv20LNU2FO2hYY5jUH7vr6JjRCRrKx3F7F7BZDKiKpBo',
+    },
+    {
+      role: 'Sales Director',
+      name: 'Elena Rossi',
+      subtitle: 'AMG Specialist',
+      badgeStyle: 'bg-zinc-800 border-zinc-700 text-zinc-300',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8OWMbTJn1V9ZqdYRNuobvZ_4bL6pLa66eY8htRz6krR0iQTaqq_YwMpUX_WYy-ZqopEoPPGFu69ZLigDV_EpJaEEfsReGqJbu2MIuY4kE2xZbcfUt7hjRjTO7QyWXTY5uS2pL_zyvzTyGAZCu5HD-kuknCy7upIEy5BLJVKNIwXUGQjn5frV9CIeJHzP1KuaI0RtwPATnp-iooT0qPU_qKagMQgCY1hMibXqNzbQB38svHg5rke4VMYhM-0GRJmaAiF3dYMnXjjA',
+    },
+    {
+      role: 'Master Technician',
+      name: 'Marcus Thorne',
+      subtitle: 'Service Lead',
+      badgeStyle: 'bg-zinc-800 border-zinc-700 text-zinc-300',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHZb4zgQU1MYI8uU77Cv8ul-WhGLltM5Kdr0B5Np6eKTwOP_-bTw8EQY-2pHMliSYKfPnR6mMkpw_JDQP3rZ-lBkw6g0PfO8W7tiQWXdVcVU-EdrGLAYDezeMcdxTD3PzPnW0Ss-iWIjNHETetwjG1f02tCWVPjQNN8_WDX22mJZ0TiXPZWLqNB1Wq2wK4WUM2hsFykQ6Ply7U-IzFU5BhC5cmbLBb1PPzizJCqioPwI0iu9zX1-ZMXClqVfvC6Ilh_1ccQYbQ0FQ',
+    },
+    {
+      role: 'Concierge',
+      name: 'Adrian Vane',
+      subtitle: 'Client Experiences',
+      badgeStyle: 'bg-zinc-800 border-zinc-700 text-zinc-300',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA3BnkBrR3au_MEEyDU0z-LfkQGKJZjKyy8nN_CZOLgLN05gg8gYhiXb_BIZGyW3AodXC-GcgvC4CI_76tLemhCgleotGOpi6vftJosnOlIxGxt8Ajvxt3NTHRGNpyezu9U7H1GSYAnP-snmv5hU6KdON4cJfws7hRRGKdp1q-MN7QyikkL35pJhilN1psek9WaXYQomNIbNk5w353ccZdfYTgDgSxSILA8HChciZG02YLVtqbCEvpf59MBx6LmsqBfBJIk75Wh6_Y',
+    },
+  ];
+
+  const inventory = [
+    {
+      model: '2024 AMG GT 63 S',
+      desc: 'Obsidian Black Metallic / Nappa Leather',
+      status: 'Last 1 in Stock',
+      statusStyle: 'bg-red-950/30 text-red-400 border-red-900/50',
+      price: '$182,500',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA50pdmem2D9yTVL8cnxIhENlcfegFgGoBy-oUrnrw_258Yi0KOVJLX_U_9J6SAycI693IldpIr9KZse8cDmhciG1z02GH5dAk8BH4jvhP94WCU03T8UW6m9RH-lB-R-jj3ixUoM2nXNZ3J0GlKM0GY4c0nMfUJ8aKnxuUwoxFoC_lbjLxJZZZYpyi0uDwJVTPJDwPqyPuyTQEH0vnlEGOiVYIDPd8_r91TDyZQs0PfxcvlFu07P1C4-v9j9v39egpeOcakt0lM-NI',
+    },
+    {
+      model: '2024 S-Class Sedan',
+      desc: 'Diamond White Bright / Macchiato Beige',
+      status: '4 Units Available',
+      statusStyle: 'bg-zinc-800 text-zinc-400 border-zinc-700',
+      price: '$114,300',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCfUcBBM73EJ2maDX7OGxYWmLvtBayE106F-s9XWw0P2Fxvs5bU9UKBXurz42FtS99ybSI6NHmKtzjiXHT2-sCYoztN2_6H6pR9ahKK-7oNG5CL6m8R8IF-UjHP4GvF-DGtlxT7tJYc3KG90NJ_9XSX1SYFYVQU3e0j_emcN1NAVsCTshk8S3XFODi4xlb5O5EKZYY_D2WsUJ7z2OA7DwtHLPHeKU9wIvPmREXEkdRsww9ZKkVQIITeTbcuHWoWg7TW_JiOrXGr-NY',
+    },
+    {
+      model: '2024 EQS 580 4MATIC',
+      desc: 'Nautical Blue Metallic / Space Grey',
+      status: 'Low Stock',
+      statusStyle: 'bg-red-950/30 text-red-400 border-red-900/50',
+      price: '$125,950',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDbrZr7DfqZ_xgfwEf5qlPqxNIFN84q_J6ulO3C6M_uZITK5dIc9xPxG18Xlyez5XfVfvV8ijk_nK0-v31xkmuVdSXE6BWa6DpIF666XZ02yj7C0fhIYBXCFcfWtRlDCH5-I_ifO7VdrW2JSsJqzcEHx5BKtRfCrMUM7dHNzi5cbzDmJ1clGrL3y-SjEG-yJzz8FfHyICQE1x194zmyL6Yr7nP_2d7L99USddm_TgSfWc0arpUAiZPA0fEm--JCEb6QphazfN-yfGg',
+    },
+  ];
 
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
+    <>
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+          <h1 className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</h1>
+        </div>
+        <nav className="hidden md:flex gap-10 items-center">
+          <a className="font-['DM_Sans'] text-sm tracking-widest uppercase relative text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Cars</a>
+          <a className="font-['DM_Sans'] text-sm tracking-widest uppercase relative text-[#C8A97E] border-b border-[#C8A97E] pb-1" href="#">Dealerships</a>
+          <a className="font-['DM_Sans'] text-sm tracking-widest uppercase relative text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Service</a>
+        </nav>
+        <button className="font-['DM_Sans'] text-sm tracking-widest uppercase px-6 py-2 border border-[#C8A97E]/40 text-[#C8A97E] hover:bg-[#C8A97E] hover:text-zinc-950 transition-all duration-300">
+          Sign In
+        </button>
+      </header>
 
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={16} color="#C8A97E" /></div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
+      <main className="pt-20">
+        {/* Hero Section */}
+        <section className="relative h-[618px] w-full overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background z-10"></div>
+          <img alt="Luxury Dealership" className="w-full h-full object-cover grayscale-[20%]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6hzDL3MVayukwYvG-xZw_8Ok-FYxUkciyxqlV5aqvZQRiw5Hx2bWPMrMq0crlQnfpZMpu3BjFR5luhzAG_u2TJ96wQyxYdWKT8Gf-v04zcyRgaHMCXTZ0Cq4oI19rv0-5HYyynQxjkM2kXKhlScFzhWG1f3FVQrY1qv1RqXKngYPWmvrVNTvzotV1cHRuE0BKJz_zfXs00ekDsBXCnXITAIg7T5BwoyDVzGqyrEY-AeSNtp7zsdsHvW_FeKJoP6MdjtvpJWGYxXM" />
+          <div className="absolute bottom-20 left-20 z-20">
+            <p className="font-label-sm text-label-sm text-primary mb-4 uppercase">Authorized Flagship Partner</p>
+            <h2 className="font-display-lg text-display-lg text-white max-w-3xl">Manhattan West Experience Center</h2>
           </div>
-          <button className="gold-btn" style={{ padding: '8px 22px', fontSize: 11 }}>Back to All</button>
-        </div>
-      </nav>
+        </section>
 
-      {/* HERO */}
-      <div style={{ position: 'relative', height: 380, overflow: 'hidden', marginTop: 72 }}>
-        <img src={DEALER.image} alt={DEALER.name} style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.3)' }} />
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '0 80px 48px' }}>
-          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 8 }}>{DEALER.type}</span>
-          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 44, fontWeight: 300, color: '#fff', marginBottom: 12 }}>{DEALER.name}</h1>
-          <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#9a97a5' }}><MapPin size={14} color="#C8A97E" /> {DEALER.address}</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, color: '#C8A97E' }}><Star size={13} color="#C8A97E" fill="#C8A97E" /> {DEALER.rating} ({DEALER.reviews} reviews)</span>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px' }}>
-        {/* TABS */}
-        <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid rgba(200,169,126,0.08)', marginBottom: 40 }}>
-          {tabs.map((t) => (
-            <button key={t} onClick={() => setActiveTab(t)} style={{
-              padding: '18px 28px', fontSize: 13, fontWeight: 500,
-              background: 'none', border: 'none', borderBottom: activeTab === t ? '2px solid #C8A97E' : '2px solid transparent',
-              color: activeTab === t ? '#C8A97E' : '#5a5768', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
-            }}>{t}</button>
-          ))}
-        </div>
-
-        {activeTab === 'Overview' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 48, marginBottom: 80 }}>
+        {/* Info & Contact Section */}
+        <section className="px-20 py-section-gap grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div className="col-span-2 space-y-12">
             <div>
-              {/* Contact Info */}
-              <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, padding: '28px', marginBottom: 24 }}>
-                <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff', marginBottom: 20 }}>Contact Information</h3>
-                {[
-                  { icon: <Phone size={16} color="#C8A97E" />, label: 'Phone', val: DEALER.phone },
-                  { icon: <Mail size={16} color="#C8A97E" />, label: 'Email', val: DEALER.email },
-                  { icon: <Globe size={16} color="#C8A97E" />, label: 'Website', val: DEALER.website },
-                  { icon: <MapPin size={16} color="#C8A97E" />, label: 'Address', val: DEALER.address },
-                ].map((item) => (
-                  <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(200,169,126,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{item.icon}</div>
-                    <div>
-                      <p style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b' }}>{item.label}</p>
-                      <p style={{ fontSize: 14, color: '#9a97a5' }}>{item.val}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Gallery */}
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff', marginBottom: 16 }}>Gallery</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-                {DEALER.gallery.map((img, i) => (
-                  <img key={i} src={img} alt={`Gallery ${i + 1}`} style={{ width: '100%', height: 120, objectFit: 'cover', borderRadius: 6, border: '1px solid rgba(200,169,126,0.08)' }} />
-                ))}
-              </div>
+              <h3 className="font-headline-h2 text-headline-h3 text-white mb-6">Redefining Excellence</h3>
+              <p className="font-body-lg text-body-lg text-zinc-400 leading-relaxed max-w-2xl">
+                Located in the heart of the automotive district, our Manhattan West flagship offers an unparalleled journey into the world of Mercedes-Benz. From personalized consultations to bespoke service, every interaction is crafted for the discerning enthusiast.
+              </p>
             </div>
-
-            {/* Right Sidebar */}
-            <div>
-              {/* Hours */}
-              <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, padding: '28px', marginBottom: 20 }}>
-                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#fff', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}><Clock size={16} color="#C8A97E" /> Business Hours</h3>
-                {DEALER.hours.map((h) => (
-                  <div key={h.day} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <span style={{ fontSize: 13, color: '#6b6880' }}>{h.day}</span>
-                    <span style={{ fontSize: 13, color: h.time === 'Closed' ? '#e74c3c' : '#C8A97E', fontWeight: 500 }}>{h.time}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Inventory */}
-              <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, padding: '28px', marginBottom: 20 }}>
-                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#fff', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}><Car size={16} color="#C8A97E" /> Current Inventory</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                  {Object.entries(DEALER.inventory).map(([k, v]) => (
-                    <div key={k} style={{ textAlign: 'center', padding: '14px', background: 'rgba(200,169,126,0.04)', borderRadius: 6, border: '1px solid rgba(200,169,126,0.06)' }}>
-                      <p style={{ fontSize: 22, fontWeight: 600, color: '#fff' }}>{v}</p>
-                      <p style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#5a5768' }}>{k}</p>
-                    </div>
-                  ))}
+            <div className="grid grid-cols-2 gap-8">
+              <div className="glass-card p-8 luxury-hover">
+                <span className="material-symbols-outlined text-primary mb-4">schedule</span>
+                <h4 className="font-label-sm text-label-sm text-white mb-2 uppercase">Operating Hours</h4>
+                <div className="text-zinc-500 font-body-md text-sm space-y-1">
+                  <p>Mon - Fri: 09:00 - 19:00</p>
+                  <p>Saturday: 10:00 - 17:00</p>
+                  <p>Sunday: Closed</p>
                 </div>
               </div>
-
-              {/* Actions */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                <button className="gold-btn" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}><Calendar size={14} /> Book Appointment</button>
-                <button style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 0, color: '#7a7788', fontSize: 13, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}><Navigation size={14} /> Get Directions</button>
+              <div className="glass-card p-8 luxury-hover">
+                <span className="material-symbols-outlined text-primary mb-4">location_on</span>
+                <h4 className="font-label-sm text-label-sm text-white mb-2 uppercase">Location</h4>
+                <address className="text-zinc-500 font-body-md text-sm not-italic">
+                  770 11th Ave<br />
+                  New York, NY 10019
+                </address>
+                <a className="text-primary font-label-sm text-xs mt-4 block hover:underline uppercase tracking-tighter" href="#">Get Directions</a>
               </div>
             </div>
           </div>
-        )}
+          <div className="glass-card p-10 flex flex-col justify-between border-primary/20">
+            <div>
+              <h4 className="font-headline-h3 text-2xl text-white mb-8">Inquire Now</h4>
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <span className="material-symbols-outlined text-primary">call</span>
+                  <span className="font-body-md text-zinc-300">+1 (212) 555-0192</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="material-symbols-outlined text-primary">mail</span>
+                  <span className="font-body-md text-zinc-300">concierge@mb-manhattan.com</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-12 space-y-4">
+              <button className="w-full py-4 border border-primary text-primary font-label-sm uppercase hover:bg-primary hover:text-background transition-all">Book Test Drive</button>
+              <button className="w-full py-4 text-zinc-400 font-label-sm uppercase hover:text-white transition-all">Download Brochure</button>
+            </div>
+          </div>
+        </section>
 
-        {activeTab === 'Services' && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 80 }}>
-            {DEALER.services.map((s) => (
-              <div key={s} style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '28px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
-                <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'rgba(200,169,126,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Wrench size={20} color="#C8A97E" />
+        {/* Staff Section */}
+        <section className="bg-[#0D0D14] py-section-gap px-20">
+          <div className="mb-16">
+            <p className="font-label-sm text-label-sm text-primary mb-4 uppercase">The Experts</p>
+            <h3 className="font-headline-h2 text-headline-h2 text-white">Our Dedicated Team</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {staff.map((s, i) => (
+              <div key={i} className="group">
+                <div className="aspect-[3/4] overflow-hidden mb-6 glass-card border-none">
+                  <img alt={s.role} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" src={s.img} />
                 </div>
-                <div>
-                  <p style={{ fontSize: 15, fontWeight: 500, color: '#fff' }}>{s}</p>
-                  <p style={{ fontSize: 12, color: '#4e453b' }}>Available at this location</p>
-                </div>
+                <span className={`px-3 py-1 border font-label-sm text-[10px] uppercase rounded-full ${s.badgeStyle}`}>{s.role}</span>
+                <h5 className="font-headline-h3 text-xl text-white mt-4">{s.name}</h5>
+                <p className="font-body-md text-zinc-500 text-sm">{s.subtitle}</p>
               </div>
             ))}
           </div>
-        )}
+        </section>
 
-        {activeTab === 'Team' && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 80 }}>
-            {DEALER.team.map((m) => (
-              <div key={m.name} style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '32px 24px', textAlign: 'center' }}>
-                <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'linear-gradient(135deg, rgba(200,169,126,0.15), rgba(200,169,126,0.05))', border: '2px solid rgba(200,169,126,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-                  <Users size={28} color="#C8A97E" />
+        {/* Inventory List */}
+        <section className="py-section-gap px-20">
+          <div className="flex justify-between items-end mb-16">
+            <div>
+              <p className="font-label-sm text-label-sm text-primary mb-4 uppercase">Showroom Inventory</p>
+              <h3 className="font-headline-h2 text-headline-h2 text-white">Available Models</h3>
+            </div>
+            <div className="flex gap-4">
+              <button className="px-6 py-2 border border-zinc-800 text-zinc-400 font-label-sm uppercase hover:border-primary transition-all">Filter</button>
+              <button className="px-6 py-2 border border-zinc-800 text-zinc-400 font-label-sm uppercase hover:border-primary transition-all">View All</button>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-6">
+            {inventory.map((v, i) => (
+              <div key={i} className="glass-card flex items-center p-6 gap-12 luxury-hover">
+                <div className="w-48 h-32 overflow-hidden flex-shrink-0">
+                  <img alt={v.model} className="w-full h-full object-cover" src={v.img} />
                 </div>
-                <h4 style={{ fontSize: 16, fontWeight: 500, color: '#fff', marginBottom: 4 }}>{m.name}</h4>
-                <p style={{ fontSize: 12, color: '#C8A97E', marginBottom: 16 }}>{m.role}</p>
-                <button style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, padding: '8px 16px', background: 'none', border: '1px solid rgba(200,169,126,0.15)', borderRadius: 4, color: '#6b6880', fontSize: 11, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif", margin: '0 auto' }}>
-                  <MessageSquare size={12} /> Contact
+                <div className="flex-grow">
+                  <h4 className="font-headline-h3 text-xl text-white">{v.model}</h4>
+                  <p className="font-body-md text-zinc-500 text-sm">{v.desc}</p>
+                </div>
+                <div className="text-right flex flex-col items-end gap-2">
+                  <span className={`px-2 py-1 border text-[10px] font-label-sm uppercase rounded ${v.statusStyle}`}>{v.status}</span>
+                  <p className="font-headline-h3 text-lg text-primary">{v.price}</p>
+                </div>
+                <button className="p-4 border-l border-zinc-800/50 hover:text-primary transition-colors">
+                  <span className="material-symbols-outlined">arrow_forward</span>
                 </button>
               </div>
             ))}
           </div>
-        )}
+        </section>
+      </main>
 
-        {activeTab === 'Reviews' && (
-          <div style={{ maxWidth: 700, marginBottom: 80 }}>
-            {REVIEWS.map((r, i) => (
-              <div key={i} style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '24px 28px', marginBottom: 16 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(200,169,126,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <span style={{ fontSize: 16, fontWeight: 600, color: '#C8A97E' }}>{r.name[0]}</span>
-                    </div>
-                    <div>
-                      <p style={{ fontSize: 14, fontWeight: 500, color: '#fff' }}>{r.name}</p>
-                      <p style={{ fontSize: 11, color: '#4e453b' }}>{r.date}</p>
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', gap: 2 }}>
-                    {[...Array(5)].map((_, j) => (
-                      <Star key={j} size={13} color="#C8A97E" fill={j < r.rating ? '#C8A97E' : 'none'} />
-                    ))}
-                  </div>
-                </div>
-                <p style={{ fontSize: 13, color: '#9a97a5', lineHeight: 1.7 }}>{r.text}</p>
-              </div>
-            ))}
+      {/* Footer */}
+      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div>
+          <h5 className="text-lg font-semibold text-white font-['Playfair_Display'] mb-8 uppercase tracking-widest">Mercedes-Benz</h5>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 leading-relaxed max-w-xs">
+            The pinnacle of automotive engineering and luxury since 1926.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <a className="block text-zinc-500 hover:text-white transition-transform duration-200 hover:translate-x-1 font-['Playfair_Display'] text-sm" href="#">Cars</a>
+            <a className="block text-zinc-500 hover:text-white transition-transform duration-200 hover:translate-x-1 font-['Playfair_Display'] text-sm" href="#">My Orders</a>
+            <a className="block text-zinc-500 hover:text-white transition-transform duration-200 hover:translate-x-1 font-['Playfair_Display'] text-sm" href="#">Wishlist</a>
+            <a className="block text-zinc-500 hover:text-white transition-transform duration-200 hover:translate-x-1 font-['Playfair_Display'] text-sm" href="#">Test Drive</a>
           </div>
-        )}
-      </div>
-
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', padding: '40px 0 20px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+          <div className="space-y-4">
+            <a className="block text-zinc-500 hover:text-white transition-transform duration-200 hover:translate-x-1 font-['Playfair_Display'] text-sm" href="#">Service</a>
+            <a className="block text-zinc-500 hover:text-white transition-transform duration-200 hover:translate-x-1 font-['Playfair_Display'] text-sm" href="#">Contact</a>
+            <a className="block text-zinc-500 hover:text-white transition-transform duration-200 hover:translate-x-1 font-['Playfair_Display'] text-sm" href="#">Legal</a>
+            <a className="block text-zinc-500 hover:text-white transition-transform duration-200 hover:translate-x-1 font-['Playfair_Display'] text-sm" href="#">Privacy</a>
+          </div>
+        </div>
+        <div className="text-right">
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-500 mb-4">Newsletter</p>
+          <div className="flex border-b border-[#C8A97E]/30 pb-2">
+            <input className="bg-transparent border-none focus:ring-0 text-sm w-full text-white placeholder-zinc-700" placeholder="Email Address" type="email" />
+            <button className="text-primary hover:translate-x-2 transition-transform">
+              <span className="material-symbols-outlined">east</span>
+            </button>
+          </div>
+          <p className="font-['Playfair_Display'] text-sm tracking-tight text-zinc-600 mt-12">
+            © 2024 Mercedes-Benz Pakistan. All rights reserved.
+          </p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
