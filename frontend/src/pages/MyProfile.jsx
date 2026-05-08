@@ -1,233 +1,144 @@
-import { useState } from 'react';
-import { Star, User, Mail, Phone, MapPin, Camera, Edit3, Save, X, Shield, Car, ShoppingCart, Heart, Calendar } from 'lucide-react';
-
-const PROFILE = {
-  firstName: 'Ahmed',
-  lastName: 'Khan',
-  email: 'ahmed.khan@example.com',
-  phone: '+92 300 1234567',
-  city: 'Lahore',
-  address: 'House 42, DHA Phase V, Lahore',
-  memberSince: 'March 2022',
-  tier: 'Platinum',
-};
-
-const STATS = [
-  { label: 'Vehicles Owned', value: '3', icon: <Car size={18} color="#C8A97E" /> },
-  { label: 'Active Orders', value: '2', icon: <ShoppingCart size={18} color="#C8A97E" /> },
-  { label: 'Wishlist Items', value: '5', icon: <Heart size={18} color="#C8A97E" /> },
-  { label: 'Test Drives', value: '7', icon: <Calendar size={18} color="#C8A97E" /> },
-];
-
 export default function MyProfile() {
-  const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState(PROFILE);
-
-  const update = (k, v) => setForm((p) => ({ ...p, [k]: v }));
-
-  const handleSave = () => setEditing(false);
-  const handleCancel = () => { setForm(PROFILE); setEditing(false); };
-
-  const inputStyle = (disabled) => ({
-    width: '100%', padding: '14px 16px 14px 44px', background: disabled ? '#0d0d14' : '#111118',
-    border: `1px solid ${disabled ? 'rgba(200,169,126,0.06)' : 'rgba(200,169,126,0.12)'}`, borderRadius: 6,
-    color: disabled ? '#6b6880' : '#e4e1eb', fontSize: 14, fontFamily: "'DM Sans', sans-serif", outline: 'none', transition: 'border 0.3s',
-  });
-
-  const labelStyle = { fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#6b6880', marginBottom: 8, display: 'block' };
-
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        .gold-btn { border:1px solid #C8A97E; background:transparent; color:#C8A97E; padding:14px 32px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.4s; }
-        .gold-btn:hover { background:#C8A97E; color:#0a0a0f; }
-        .glass { background:rgba(10,10,15,0.85); backdrop-filter:blur(12px); }
-        .gold-line { width:60px; height:1px; background:#C8A97E; }
-        input:focus { border-color:#C8A97E !important; }
-        input::placeholder { color:#3a3748; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
-
-      {/* NAVBAR */}
-      <nav className="glass" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, borderBottom: '1px solid rgba(200,169,126,0.12)', padding: '0 40px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 72 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Star size={16} color="#C8A97E" />
-            </div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 400, color: '#fff' }}>Mercedes-Benz</span>
-          </div>
-          <div style={{ display: 'flex', gap: 36 }}>
-            {['Cars', 'My Orders', 'Wishlist', 'Service'].map((l) => (
-              <a key={l} href="#" style={{ fontSize: 13, fontWeight: 300, color: '#b0adb8', letterSpacing: '0.05em' }}>{l}</a>
-            ))}
-          </div>
-          <button className="gold-btn" style={{ padding: '8px 22px', fontSize: 11 }}>Sign Out</button>
+    <>
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+          <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</span>
         </div>
-      </nav>
+        <nav className="hidden md:flex items-center gap-10">
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-['Playfair_Display'] text-sm tracking-tight" href="#">Cars</a>
+          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-['Playfair_Display'] text-sm tracking-tight" href="#">Service</a>
+          <a className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-['Playfair_Display'] text-sm tracking-tight" href="#">Profile</a>
+        </nav>
+        <button className="px-6 py-2 border border-[#C8A97E]/50 text-[#C8A97E] hover:bg-[#C8A97E] hover:text-zinc-950 transition-all duration-300 text-sm tracking-widest uppercase font-medium">
+          Sign In
+        </button>
+      </header>
 
-      {/* CONTENT */}
-      <div style={{ paddingTop: 100, maxWidth: 1440, margin: '0 auto', padding: '100px 80px 60px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-          <div className="gold-line" />
-          <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#C8A97E' }}>Account</span>
+      <main className="pt-40 pb-20 px-20 max-w-[1440px] mx-auto min-h-screen">
+        {/* Page Heading */}
+        <div className="mb-20">
+          <h1 className="font-headline-h1 text-headline-h1 text-primary-fixed-dim">Your Profile</h1>
+          <div className="h-px w-32 bg-primary-container mt-4"></div>
         </div>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 42, fontWeight: 300, color: '#fff', marginBottom: 48 }}>My Profile</h1>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 48 }}>
-          {/* LEFT — Avatar & Info */}
-          <div>
-            <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, padding: '40px 32px', textAlign: 'center' }}>
-              <div style={{ position: 'relative', display: 'inline-block', marginBottom: 24 }}>
-                <div style={{ width: 120, height: 120, borderRadius: '50%', background: 'linear-gradient(135deg, rgba(200,169,126,0.2), rgba(200,169,126,0.05))', border: '2px solid rgba(200,169,126,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <User size={48} color="#C8A97E" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+          {/* Left Side: Profile Identity */}
+          <section className="lg:col-span-4 flex flex-col items-center text-center p-12 bg-surface-container-lowest hairline-border rounded-lg shadow-2xl">
+            <div className="relative mb-8">
+              <div className="w-40 h-40 rounded-full border-2 border-primary-container p-1 flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+                  <span className="text-display-lg font-display-lg text-primary">MS</span>
                 </div>
-                <button style={{ position: 'absolute', bottom: 4, right: 4, width: 32, height: 32, borderRadius: '50%', background: '#C8A97E', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                  <Camera size={14} color="#0a0a0f" />
+              </div>
+              <button className="absolute bottom-1 right-1 w-10 h-10 bg-primary rounded-full flex items-center justify-center text-on-primary shadow-lg hover:scale-105 transition-transform">
+                <span className="material-symbols-outlined text-sm">edit</span>
+              </button>
+            </div>
+            <h2 className="font-headline-h3 text-headline-h3 text-on-background mb-1">Muneeb Sharif</h2>
+            <p className="text-zinc-500 font-body-md mb-6">muneeb.sharif@luxury.pk</p>
+            <div className="w-full pt-6 border-t border-[#C8A97E]/10 flex flex-col gap-4 text-left">
+              <div className="flex justify-between items-center">
+                <span className="text-zinc-500 text-sm font-label-sm uppercase tracking-widest">Membership</span>
+                <span className="text-primary-container text-sm">Titanium Elite</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-zinc-500 text-sm font-label-sm uppercase tracking-widest">Member Since</span>
+                <span className="text-on-background text-sm">October 2022</span>
+              </div>
+            </div>
+          </section>
+
+          {/* Right Side: Editable Form */}
+          <section className="lg:col-span-8 bg-surface-container-lowest hairline-border p-12 rounded-lg">
+            <div className="flex items-center gap-4 mb-10">
+              <span className="material-symbols-outlined text-primary-container">person_edit</span>
+              <h3 className="font-headline-h3 text-headline-h3 text-on-background">Personal Details</h3>
+            </div>
+            <form className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="block text-zinc-500 font-label-sm uppercase tracking-widest text-xs">Full Name</label>
+                  <input className="w-full bg-transparent border-b border-zinc-800 focus:border-primary-container outline-none py-3 text-on-background font-body-md transition-colors" type="text" defaultValue="Muneeb Sharif" />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-zinc-500 font-label-sm uppercase tracking-widest text-xs">Phone Number</label>
+                  <input className="w-full bg-transparent border-b border-zinc-800 focus:border-primary-container outline-none py-3 text-on-background font-body-md transition-colors" type="tel" defaultValue="+92 300 1234567" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-zinc-500 font-label-sm uppercase tracking-widest text-xs">Residential Address</label>
+                <textarea className="w-full bg-transparent border-b border-zinc-800 focus:border-primary-container outline-none py-3 text-on-background font-body-md transition-colors resize-none" rows="4" defaultValue="House 42, Street 18, Phase 6, DHA, Karachi, Pakistan" />
+              </div>
+              <div className="pt-8 flex justify-end">
+                <button className="px-12 py-4 border border-primary-container text-primary-container font-label-sm uppercase tracking-widest hover:bg-primary-container hover:text-on-primary transition-all duration-300" type="submit">
+                  Save Changes
                 </button>
               </div>
-              <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff', marginBottom: 4 }}>{form.firstName} {form.lastName}</h2>
-              <p style={{ fontSize: 13, color: '#6b6880', marginBottom: 16 }}>{form.email}</p>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 16px', background: 'rgba(200,169,126,0.08)', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 20 }}>
-                <Shield size={14} color="#C8A97E" />
-                <span style={{ fontSize: 12, fontWeight: 500, color: '#C8A97E' }}>{PROFILE.tier} Member</span>
-              </div>
-              <p style={{ fontSize: 12, color: '#4e453b', marginTop: 16 }}>Member since {PROFILE.memberSince}</p>
-            </div>
+            </form>
+          </section>
+        </div>
 
-            {/* STATS */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 16 }}>
-              {STATS.map((s) => (
-                <div key={s.label} style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '20px 16px', textAlign: 'center' }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(200,169,126,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px' }}>{s.icon}</div>
-                  <p style={{ fontSize: 22, fontWeight: 600, color: '#fff' }}>{s.value}</p>
-                  <p style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#5a5768', marginTop: 4 }}>{s.label}</p>
-                </div>
-              ))}
+        {/* Quick Stats Section */}
+        <section className="mt-20">
+          <h4 className="font-headline-h3 text-headline-h3 text-on-background mb-8">Account Overview</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Card 1 */}
+            <div className="p-8 bg-surface-container-lowest hairline-border rounded-lg group hover:border-primary-container/40 transition-colors">
+              <span className="material-symbols-outlined text-zinc-500 mb-4 group-hover:text-primary-container transition-colors">shopping_bag</span>
+              <p className="text-zinc-500 font-label-sm uppercase tracking-widest mb-2">Total Orders</p>
+              <p className="text-headline-h2 font-headline-h2 text-primary-container">03</p>
+              <p className="text-xs text-zinc-600 mt-4">Total spent: PKR 84,500,000</p>
+            </div>
+            {/* Card 2 */}
+            <div className="p-8 bg-surface-container-lowest hairline-border rounded-lg group hover:border-primary-container/40 transition-colors">
+              <span className="material-symbols-outlined text-zinc-500 mb-4 group-hover:text-primary-container transition-colors">speed</span>
+              <p className="text-zinc-500 font-label-sm uppercase tracking-widest mb-2">Test Drives Booked</p>
+              <p className="text-headline-h2 font-headline-h2 text-primary-container">12</p>
+              <p className="text-xs text-zinc-600 mt-4">Next drive: EQS Sedan (Pending)</p>
+            </div>
+            {/* Card 3 */}
+            <div className="p-8 bg-surface-container-lowest hairline-border rounded-lg group hover:border-primary-container/40 transition-colors">
+              <span className="material-symbols-outlined text-zinc-500 mb-4 group-hover:text-primary-container transition-colors">build_circle</span>
+              <p className="text-zinc-500 font-label-sm uppercase tracking-widest mb-2">Services Scheduled</p>
+              <p className="text-headline-h2 font-headline-h2 text-primary-container">05</p>
+              <p className="text-xs text-zinc-600 mt-4">Last service: 12 July 2023</p>
             </div>
           </div>
+        </section>
+      </main>
 
-          {/* RIGHT — Form */}
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
-              <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 400, color: '#fff' }}>Personal Information</h2>
-              {!editing ? (
-                <button onClick={() => setEditing(true)} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '10px 20px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', borderRadius: 4, color: '#C8A97E', fontSize: 12, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                  <Edit3 size={14} /> Edit
-                </button>
-              ) : (
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <button onClick={handleCancel} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '10px 18px', background: 'none', border: '1px solid rgba(200,169,126,0.15)', borderRadius: 4, color: '#6b6880', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                    <X size={14} /> Cancel
-                  </button>
-                  <button onClick={handleSave} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '10px 18px', background: '#C8A97E', border: '1px solid #C8A97E', borderRadius: 4, color: '#0a0a0f', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>
-                    <Save size={14} /> Save
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.1)', borderRadius: 8, padding: '36px 32px' }}>
-              {/* Name Row */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
-                <div>
-                  <label style={labelStyle}>First Name</label>
-                  <div style={{ position: 'relative' }}>
-                    <User size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                    <input disabled={!editing} style={inputStyle(!editing)} value={form.firstName} onChange={(e) => update('firstName', e.target.value)} />
-                  </div>
-                </div>
-                <div>
-                  <label style={labelStyle}>Last Name</label>
-                  <div style={{ position: 'relative' }}>
-                    <User size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                    <input disabled={!editing} style={inputStyle(!editing)} value={form.lastName} onChange={(e) => update('lastName', e.target.value)} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Email */}
-              <div style={{ marginBottom: 20 }}>
-                <label style={labelStyle}>Email Address</label>
-                <div style={{ position: 'relative' }}>
-                  <Mail size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                  <input disabled={!editing} type="email" style={inputStyle(!editing)} value={form.email} onChange={(e) => update('email', e.target.value)} />
-                </div>
-              </div>
-
-              {/* Phone */}
-              <div style={{ marginBottom: 20 }}>
-                <label style={labelStyle}>Phone Number</label>
-                <div style={{ position: 'relative' }}>
-                  <Phone size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                  <input disabled={!editing} style={inputStyle(!editing)} value={form.phone} onChange={(e) => update('phone', e.target.value)} />
-                </div>
-              </div>
-
-              {/* City */}
-              <div style={{ marginBottom: 20 }}>
-                <label style={labelStyle}>City</label>
-                <div style={{ position: 'relative' }}>
-                  <MapPin size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                  <input disabled={!editing} style={inputStyle(!editing)} value={form.city} onChange={(e) => update('city', e.target.value)} />
-                </div>
-              </div>
-
-              {/* Address */}
-              <div>
-                <label style={labelStyle}>Address</label>
-                <div style={{ position: 'relative' }}>
-                  <MapPin size={16} color="#4e453b" style={{ position: 'absolute', left: 16, top: 15 }} />
-                  <input disabled={!editing} style={inputStyle(!editing)} value={form.address} onChange={(e) => update('address', e.target.value)} />
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 24 }}>
-              {[
-                { label: 'Change Password', desc: 'Update your security credentials' },
-                { label: 'My Test Drives', desc: 'View upcoming appointments' },
-                { label: 'Service History', desc: 'Past maintenance records' },
-                { label: 'Order Tracking', desc: 'Track your vehicle deliveries' },
-              ].map((link) => (
-                <a key={link.label} href="#" style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '18px 20px', display: 'block', transition: 'border-color 0.3s' }}
-                  onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(200,169,126,0.25)'}
-                  onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(200,169,126,0.08)'}>
-                  <p style={{ fontSize: 14, fontWeight: 500, color: '#e4e1eb', marginBottom: 4 }}>{link.label}</p>
-                  <p style={{ fontSize: 12, color: '#4e453b' }}>{link.desc}</p>
-                </a>
-              ))}
-            </div>
+      {/* Footer */}
+      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div className="space-y-6">
+          <span className="text-lg font-semibold text-white font-['Playfair_Display']">Mercedes-Benz</span>
+          <p className="text-zinc-500 font-['Playfair_Display'] text-sm tracking-tight max-w-xs">Experience the pinnacle of automotive engineering and luxury. Our legacy continues through every precision-crafted detail.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col gap-4">
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 font-['Playfair_Display'] text-sm tracking-tight" href="#">Cars</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 font-['Playfair_Display'] text-sm tracking-tight" href="#">My Orders</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 font-['Playfair_Display'] text-sm tracking-tight" href="#">Wishlist</a>
+          </div>
+          <div className="flex flex-col gap-4">
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 font-['Playfair_Display'] text-sm tracking-tight" href="#">Test Drive</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 font-['Playfair_Display'] text-sm tracking-tight" href="#">Service</a>
+            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200 font-['Playfair_Display'] text-sm tracking-tight" href="#">Contact</a>
           </div>
         </div>
-      </div>
-
-      {/* FOOTER */}
-      <footer style={{ borderTop: '1px solid rgba(200,169,126,0.1)', marginTop: 80, padding: '40px 0 20px' }}>
-        <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 80px', display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: 40 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={14} color="#C8A97E" /></div>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: '#fff' }}>Mercedes-Benz</span>
-            </div>
-            <p style={{ fontSize: 13, fontWeight: 300, color: '#5a5768', lineHeight: 1.7, maxWidth: 280 }}>Your trusted automotive luxury partner since 1886.</p>
+        <div className="space-y-6">
+          <p className="text-zinc-500 font-['Playfair_Display'] text-sm tracking-tight">Subscribe to our newsletter for exclusive previews and global events.</p>
+          <div className="flex">
+            <input className="bg-transparent border-b border-zinc-800 py-2 focus:border-primary-container outline-none text-white text-sm w-full font-['Playfair_Display']" placeholder="Email Address" type="email" />
+            <button className="ml-4 text-primary-container">
+              <span className="material-symbols-outlined">arrow_forward</span>
+            </button>
           </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Explore</h4>
-            {['Cars', 'Test Drive', 'Service'].map((l) => (<a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10 }}>{l}</a>))}
-          </div>
-          <div>
-            <h4 style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C8A97E', marginBottom: 20 }}>Account</h4>
-            {['My Orders', 'Wishlist', 'Profile'].map((l) => (<a key={l} href="#" style={{ display: 'block', fontSize: 13, fontWeight: 300, color: '#6b6880', marginBottom: 10 }}>{l}</a>))}
-          </div>
-        </div>
-        <div style={{ maxWidth: 1440, margin: '20px auto 0', padding: '16px 80px 0', borderTop: '1px solid rgba(200,169,126,0.08)' }}>
-          <p style={{ fontSize: 12, color: '#3a3748', textAlign: 'center' }}>© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+          <p className="text-zinc-700 text-xs mt-8">© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
         </div>
       </footer>
-    </div>
+    </>
   );
 }
