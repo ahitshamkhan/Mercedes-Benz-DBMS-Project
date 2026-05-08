@@ -76,6 +76,11 @@ input:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+.step-active {
+  width: 100%;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .timeline-line {
   background: linear-gradient(to bottom, transparent, #c8a97e 15%, #c8a97e 85%, transparent);
   width: 1px;
