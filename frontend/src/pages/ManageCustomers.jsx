@@ -1,229 +1,179 @@
-import { useState } from 'react';
-import { Star, LayoutDashboard, Car, Warehouse, ShoppingCart, Users, Search, Eye, Mail, Phone, X, Shield, Crown, User, ChevronDown, MoreVertical, Ban, CheckCircle2 } from 'lucide-react';
-
-const CUSTOMERS = [
-  { id: 1, name: 'Ahmed Malik', email: 'ahmed@example.com', phone: '+92 321 1234567', joinDate: 'Jan 2023', tier: 'Platinum', orders: 5, totalSpent: 340000000, vehicles: ['S-Class 500', 'G-Class G63'], status: 'Active' },
-  { id: 2, name: 'Fatima Zaidi', email: 'fatima@example.com', phone: '+92 333 9876543', joinDate: 'Mar 2023', tier: 'Gold', orders: 3, totalSpent: 200000000, vehicles: ['AMG GT Coupé'], status: 'Active' },
-  { id: 3, name: 'Ali Hassan', email: 'ali@example.com', phone: '+92 300 5551234', joinDate: 'Jun 2022', tier: 'Platinum', orders: 7, totalSpent: 520000000, vehicles: ['Maybach S680', 'EQS 580', 'C-Class 300'], status: 'Active' },
-  { id: 4, name: 'Sara Qureshi', email: 'sara@example.com', phone: '+92 312 4445678', joinDate: 'Sep 2023', tier: 'Silver', orders: 1, totalSpent: 45000000, vehicles: ['C-Class 300'], status: 'Active' },
-  { id: 5, name: 'Omar Raza', email: 'omar@example.com', phone: '+92 345 7778901', joinDate: 'Nov 2023', tier: 'Silver', orders: 2, totalSpent: 95000000, vehicles: ['GLE 450'], status: 'Inactive' },
-  { id: 6, name: 'Hina Shah', email: 'hina@example.com', phone: '+92 311 2223456', joinDate: 'Feb 2024', tier: 'Gold', orders: 2, totalSpent: 175000000, vehicles: ['EQS 580'], status: 'Active' },
-  { id: 7, name: 'Zain Aslam', email: 'zain@example.com', phone: '+92 322 8889012', joinDate: 'Apr 2024', tier: 'Silver', orders: 1, totalSpent: 98000000, vehicles: ['AMG C63 S'], status: 'Suspended' },
-];
-
-const TIER_COLORS = { Platinum: '#C8A97E', Gold: '#f39c12', Silver: '#9a97a5' };
-const STATUS_COLORS = { Active: '#2ecc71', Inactive: '#6b6880', Suspended: '#e74c3c' };
-
-const SIDEBAR = [
-  { label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
-  { label: 'Manage Cars', icon: <Car size={18} /> },
-  { label: 'Orders', icon: <ShoppingCart size={18} /> },
-  { label: 'Customers', icon: <Users size={18} />, active: true },
-  { label: 'Inventory', icon: <Warehouse size={18} /> },
-];
+import React from 'react';
 
 export default function ManageCustomers() {
-  const [customers, setCustomers] = useState(CUSTOMERS);
-  const [search, setSearch] = useState('');
-  const [tierFilter, setTierFilter] = useState('All');
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [actionMenu, setActionMenu] = useState(null);
+  const stats = [
+    { label: 'Total Clients', value: '2,482', badge: '+12%', badgeColor: 'text-emerald-500' },
+    { label: 'Active Sessions', value: '142', badge: 'Live', badgeColor: 'text-zinc-500' },
+    { label: 'Pending Deposits', value: '18', badge: 'High Priority', badgeColor: 'text-primary', valueColor: 'text-primary' },
+    { label: 'Average LTV', value: '$142k', badge: 'Annual', badgeColor: 'text-zinc-500' },
+  ];
 
-  const tiers = ['All', 'Platinum', 'Gold', 'Silver'];
-  const filtered = customers.filter((c) => {
-    const ms = c.name.toLowerCase().includes(search.toLowerCase()) || c.email.toLowerCase().includes(search.toLowerCase());
-    const mt = tierFilter === 'All' || c.tier === tierFilter;
-    return ms && mt;
-  });
-
-  const fmt = (n) => `PKR ${(n / 1000000).toFixed(0)}M`;
-  const totalCustomers = customers.length;
-  const activeCount = customers.filter((c) => c.status === 'Active').length;
-  const topSpender = [...customers].sort((a, b) => b.totalSpent - a.totalSpent)[0];
-
-  const toggleStatus = (id, newStatus) => {
-    setCustomers((prev) => prev.map((c) => c.id === id ? { ...c, status: newStatus } : c));
-    setActionMenu(null);
-  };
+  const customers = [
+    { name: 'Maximilian von Weber', tier: 'Platinum Tier', tierColor: 'text-primary', email: 'm.weber@executive.de', phone: '+49 172 902 4432', since: 'Oct 14, 2021', orders: '08', status: 'Active', statusStyle: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBDwsR2bwmDgIOHBPZfjkKUv6VIsD0zuL9ktfMAC8uoMvb4ySTLaC2GfLWTHBuPg8u_lPloYnHpnoi8pPIlMcf1dopOtaVciDtHSBHxKA519CrLw0JHske2f9y4Ce4NgVXR21n2i0w5zMvnLZw7GeNVOvDTojX1NMtBaPSO_J8QIAqiDOnjOYrKU1VHk5Q6B_FdaVTAInCiGUxWgpQqViphX3VpPXJ5pTF5q327kZVIHm38TaoF7GVOsy_JbsCgSn65Mu1YlYLMvng', expanded: true },
+    { name: 'Elena Rodriguez', tier: 'Standard Tier', tierColor: 'text-zinc-500', email: 'elena.rod@techfoundry.io', phone: '+1 (555) 012-9983', since: 'Jan 02, 2024', orders: '01', status: 'Inactive', statusStyle: 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBaU6hmi-fBCmm6-a23KA6jQSOL-vAKWJFjPCVOqYDVqsFkagZgFuhkl9xId_1KYbmx-6PKBf6fRIrQFrL0PrINRLhlbnmA5v-YwC1_D-7Cil0ERBRIx7lyCukg2bocsVlF1OIIokTxA3dL5weC8Ok3VWw9K0F5eN46uau8E25Zh5acRuFf-6GoVX8thFVEVIs7go2AqV4kEanhG0aEA69dFm_5rX50Wd4KR6c2P1V_YSVVztS9Wmf7Wlt86PwKDhCrl38AjFqBNCI', expanded: false },
+    { name: 'Jameson Sterling', tier: 'VIP Collector', tierColor: 'text-[#C8A97E]', email: 'j.sterling@sterling-holdings.com', phone: '+44 20 7946 0958', since: 'Mar 22, 2019', orders: '24', status: 'Active', statusStyle: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA75-EV1Kq1wJKUIcmCL8bRjgpqvDmwfuedCrQ9gfcq49qjxuJuy2jgeO__nyDHVXwitOcw70R1PuhxG9AE2df4krOl8-phjd81cdMrvRCyJ-qqrwhf9TWKhVgbKkXcAEYRZqdUs7F6AE6XIIpLOuI17LI9ZCwcPez27K2JbctaWGDdp9nFWOCeXnq3SYFB9G0AlleXWiRyLqMXQ5kLe0AJvrew86DGbbZ-X8X_iGKhgPuqeSwvDVwgMnLStXyE83eoVlM0QlkyFYM', expanded: false },
+  ];
 
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#0a0a0f', color: '#e4e1eb', minHeight: '100vh', display: 'flex' }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-        * { margin:0; padding:0; box-sizing:border-box; }
-        input:focus { border-color:#C8A97E !important; outline:none; }
-        input::placeholder { color:#3a3748; }
-        a { text-decoration:none; color:inherit; }
-      `}</style>
+    <>
+      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-[#C8A97E]">star</span>
+          <h1 className="font-['Playfair_Display'] tracking-widest uppercase text-xl font-bold text-[#C8A97E]">Mercedes-Benz</h1>
+        </div>
+        <nav className="hidden md:flex gap-12 items-center">
+          <a className="font-['Playfair_Display'] text-sm text-zinc-400 hover:text-[#C8A97E] transition-colors" href="#">Cars</a>
+          <a className="font-['Playfair_Display'] text-sm text-[#C8A97E] border-b border-[#C8A97E] pb-1" href="#">Admin</a>
+          <a className="font-['Playfair_Display'] text-sm text-zinc-400 hover:text-[#C8A97E] transition-colors" href="#">Service</a>
+          <button className="ml-4 px-6 py-2 border border-[#C8A97E] text-[#C8A97E] font-label-sm uppercase hover:bg-[#C8A97E] hover:text-black transition-all">Sign Out</button>
+        </nav>
+      </header>
 
-      {/* SIDEBAR */}
-      <aside style={{ width: 240, background: '#0d0d14', borderRight: '1px solid rgba(200,169,126,0.08)', padding: '28px 0', position: 'fixed', top: 0, bottom: 0 }}>
-        <div style={{ padding: '0 24px', marginBottom: 36 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid #C8A97E', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Star size={14} color="#C8A97E" /></div>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: '#fff' }}>MB Admin</span>
+      <main className="pt-32 pb-40 px-20 max-w-[1440px] mx-auto min-h-screen">
+        <div className="mb-16 flex flex-col md:flex-row justify-between items-end gap-8">
+          <div className="space-y-4">
+            <p className="text-primary font-label-sm uppercase tracking-widest">Administrative Control</p>
+            <h2 className="font-headline-h1 text-on-background">Customer Directory</h2>
+            <p className="text-zinc-500 font-body-lg max-w-xl">Manage the global database of distinguished owners and prospective clients with precision and security.</p>
+          </div>
+          <div className="w-full md:w-96">
+            <div className="relative group">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-primary transition-colors">search</span>
+              <input className="w-full bg-surface-container-lowest border border-outline-variant/30 px-12 py-4 focus:ring-1 focus:ring-primary focus:border-primary outline-none font-body-md text-on-surface transition-all" placeholder="Search by name, email, or VIN..." type="text" />
+            </div>
           </div>
         </div>
-        <nav>
-          {SIDEBAR.map((link) => (
-            <div key={link.label} style={{
-              display: 'flex', alignItems: 'center', gap: 12, padding: '11px 24px', cursor: 'pointer',
-              background: link.active ? 'rgba(200,169,126,0.06)' : 'transparent',
-              borderLeft: link.active ? '2px solid #C8A97E' : '2px solid transparent',
-              color: link.active ? '#C8A97E' : '#5a5768', fontSize: 13,
-            }}>{link.icon} {link.label}</div>
-          ))}
-        </nav>
-      </aside>
 
-      {/* MAIN */}
-      <main style={{ marginLeft: 240, flex: 1, padding: '32px 40px' }}>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 300, color: '#fff', marginBottom: 4 }}>Manage Customers</h1>
-        <p style={{ fontSize: 13, color: '#5a5768', marginBottom: 28 }}>View and manage your customer base</p>
-
-        {/* Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 28 }}>
-          {[
-            { label: 'Total Customers', value: totalCustomers, icon: <Users size={18} color="#C8A97E" /> },
-            { label: 'Active', value: activeCount, icon: <CheckCircle2 size={18} color="#2ecc71" /> },
-            { label: 'Total Revenue', value: fmt(customers.reduce((s, c) => s + c.totalSpent, 0)), icon: <Star size={18} color="#C8A97E" /> },
-            { label: 'Top Spender', value: topSpender.name, icon: <Crown size={18} color="#f39c12" /> },
-          ].map((s) => (
-            <div key={s.label} style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'rgba(200,169,126,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{s.icon}</div>
-              <div>
-                <p style={{ fontSize: 18, fontWeight: 600, color: '#fff' }}>{s.value}</p>
-                <p style={{ fontSize: 10, color: '#5a5768' }}>{s.label}</p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+          {stats.map((s, i) => (
+            <div key={i} className="glass-panel p-8 flex flex-col justify-between">
+              <span className="text-zinc-500 font-label-sm uppercase">{s.label}</span>
+              <div className="mt-4 flex items-baseline gap-2">
+                <span className={`text-4xl font-headline-h2 ${s.valueColor || 'text-on-background'}`}>{s.value}</span>
+                <span className={`font-label-sm text-xs ${s.badgeColor}`}>{s.badge}</span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Filters */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-          <div style={{ flex: 1, position: 'relative' }}>
-            <Search size={15} color="#4e453b" style={{ position: 'absolute', left: 14, top: 12 }} />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by name or email..."
-              style={{ width: '100%', padding: '11px 14px 11px 40px', background: '#111118', border: '1px solid rgba(200,169,126,0.12)', borderRadius: 4, color: '#e4e1eb', fontSize: 13, fontFamily: "'DM Sans', sans-serif" }} />
-          </div>
-          <div style={{ display: 'flex', gap: 4 }}>
-            {tiers.map((t) => (
-              <button key={t} onClick={() => setTierFilter(t)} style={{
-                padding: '7px 16px', fontSize: 11, fontWeight: 500,
-                border: tierFilter === t ? '1px solid #C8A97E' : '1px solid rgba(200,169,126,0.12)',
-                background: tierFilter === t ? '#C8A97E' : 'transparent',
-                color: tierFilter === t ? '#0a0a0f' : '#6b6880',
-                borderRadius: 2, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
-              }}>{t}</button>
-            ))}
-          </div>
-        </div>
-
-        {/* TABLE */}
-        <div style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.08)', borderRadius: 8, overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                {['Customer', 'Contact', 'Tier', 'Orders', 'Spent', 'Status', 'Actions'].map((h) => (
-                  <th key={h} style={{ textAlign: 'left', padding: '13px 18px', fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b', borderBottom: '1px solid rgba(200,169,126,0.06)' }}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((c) => (
-                <tr key={c.id} style={{ borderBottom: '1px solid rgba(200,169,126,0.04)' }}>
-                  <td style={{ padding: '14px 18px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <div style={{ width: 38, height: 38, borderRadius: '50%', background: `${TIER_COLORS[c.tier]}15`, border: `1px solid ${TIER_COLORS[c.tier]}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <span style={{ fontSize: 14, fontWeight: 600, color: TIER_COLORS[c.tier] }}>{c.name[0]}</span>
-                      </div>
-                      <div>
-                        <p style={{ fontSize: 14, fontWeight: 500, color: '#e4e1eb' }}>{c.name}</p>
-                        <p style={{ fontSize: 11, color: '#4e453b' }}>Since {c.joinDate}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td style={{ padding: '14px 18px' }}>
-                    <p style={{ fontSize: 12, color: '#6b6880', display: 'flex', alignItems: 'center', gap: 4 }}><Mail size={11} /> {c.email}</p>
-                    <p style={{ fontSize: 12, color: '#6b6880', display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}><Phone size={11} /> {c.phone}</p>
-                  </td>
-                  <td style={{ padding: '14px 18px' }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 10px', background: `${TIER_COLORS[c.tier]}15`, border: `1px solid ${TIER_COLORS[c.tier]}30`, borderRadius: 20, fontSize: 11, fontWeight: 500, color: TIER_COLORS[c.tier] }}>
-                      <Crown size={11} /> {c.tier}
-                    </span>
-                  </td>
-                  <td style={{ padding: '14px 18px', fontSize: 14, fontWeight: 500, color: '#e4e1eb' }}>{c.orders}</td>
-                  <td style={{ padding: '14px 18px', fontSize: 13, fontWeight: 500, color: '#C8A97E' }}>{fmt(c.totalSpent)}</td>
-                  <td style={{ padding: '14px 18px' }}>
-                    <span style={{ padding: '3px 10px', background: `${STATUS_COLORS[c.status]}15`, border: `1px solid ${STATUS_COLORS[c.status]}30`, borderRadius: 20, fontSize: 11, color: STATUS_COLORS[c.status] }}>{c.status}</span>
-                  </td>
-                  <td style={{ padding: '14px 18px' }}>
-                    <div style={{ display: 'flex', gap: 6 }}>
-                      <button onClick={() => setSelectedCustomer(c)} style={{ width: 32, height: 32, borderRadius: 4, background: 'rgba(200,169,126,0.06)', border: '1px solid rgba(200,169,126,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                        <Eye size={14} color="#C8A97E" />
-                      </button>
-                      <div style={{ position: 'relative' }}>
-                        <button onClick={() => setActionMenu(actionMenu === c.id ? null : c.id)} style={{ width: 32, height: 32, borderRadius: 4, background: 'rgba(200,169,126,0.06)', border: '1px solid rgba(200,169,126,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-                          <MoreVertical size={14} color="#6b6880" />
-                        </button>
-                        {actionMenu === c.id && (
-                          <div style={{ position: 'absolute', right: 0, top: 36, background: '#1a1a22', border: '1px solid rgba(200,169,126,0.12)', borderRadius: 6, padding: '6px 0', zIndex: 10, minWidth: 140, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}>
-                            {c.status !== 'Active' && <button onClick={() => toggleStatus(c.id, 'Active')} style={{ width: '100%', padding: '8px 14px', background: 'none', border: 'none', color: '#2ecc71', fontSize: 12, cursor: 'pointer', textAlign: 'left', fontFamily: "'DM Sans',sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}><CheckCircle2 size={12} /> Activate</button>}
-                            {c.status !== 'Suspended' && <button onClick={() => toggleStatus(c.id, 'Suspended')} style={{ width: '100%', padding: '8px 14px', background: 'none', border: 'none', color: '#e74c3c', fontSize: 12, cursor: 'pointer', textAlign: 'left', fontFamily: "'DM Sans',sans-serif", display: 'flex', alignItems: 'center', gap: 6 }}><Ban size={12} /> Suspend</button>}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </td>
+        <div className="glass-panel overflow-hidden">
+          <div className="overflow-x-auto custom-scrollbar">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-surface-container-lowest/50 border-b border-outline-variant/20">
+                  <th className="px-8 py-6 font-label-sm uppercase text-zinc-500 tracking-widest">Client</th>
+                  <th className="px-8 py-6 font-label-sm uppercase text-zinc-500 tracking-widest">Contact Info</th>
+                  <th className="px-8 py-6 font-label-sm uppercase text-zinc-500 tracking-widest">Member Since</th>
+                  <th className="px-8 py-6 font-label-sm uppercase text-zinc-500 tracking-widest text-center">Orders</th>
+                  <th className="px-8 py-6 font-label-sm uppercase text-zinc-500 tracking-widest">Status</th>
+                  <th className="px-8 py-6 font-label-sm uppercase text-zinc-500 tracking-widest text-right">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-outline-variant/10">
+                {customers.map((c, i) => (
+                  <React.Fragment key={i}>
+                    <tr className="hover:bg-primary/5 transition-colors group cursor-pointer">
+                      <td className="px-8 py-6">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-full overflow-hidden border border-primary/20">
+                            <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src={c.img} alt={c.name} />
+                          </div>
+                          <div>
+                            <div className="font-headline-h3 text-lg text-on-background">{c.name}</div>
+                            <div className={`text-xs uppercase tracking-tighter ${c.tierColor}`}>{c.tier}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-8 py-6">
+                        <div className="space-y-1">
+                          <div className="text-sm text-zinc-300 flex items-center gap-2"><span className="material-symbols-outlined text-[16px]">mail</span>{c.email}</div>
+                          <div className="text-sm text-zinc-500 flex items-center gap-2"><span className="material-symbols-outlined text-[16px]">phone</span>{c.phone}</div>
+                        </div>
+                      </td>
+                      <td className="px-8 py-6 text-zinc-400">{c.since}</td>
+                      <td className="px-8 py-6 text-center"><span className="bg-surface-container-high px-3 py-1 rounded text-on-surface">{c.orders}</span></td>
+                      <td className="px-8 py-6"><span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${c.statusStyle}`}>{c.status}</span></td>
+                      <td className="px-8 py-6 text-right">
+                        <div className="flex justify-end gap-4">
+                          <button className="text-zinc-500 hover:text-primary transition-colors"><span className="material-symbols-outlined">edit</span></button>
+                          <button className="text-zinc-500 hover:text-error transition-colors"><span className="material-symbols-outlined">block</span></button>
+                        </div>
+                      </td>
+                    </tr>
+                    {c.expanded && (
+                      <tr className="bg-surface-container-lowest/30">
+                        <td className="px-8 py-0" colSpan="6">
+                          <div className="py-8 grid grid-cols-3 gap-12 border-t border-primary/5">
+                            <div>
+                              <h4 className="font-label-sm uppercase text-primary mb-4">Recent Acquisitions</h4>
+                              <ul className="space-y-3">
+                                <li className="flex justify-between text-sm"><span className="text-zinc-300">2024 EQS Sedan</span><span className="text-zinc-500">Delivered</span></li>
+                                <li className="flex justify-between text-sm"><span className="text-zinc-300">2023 G-Class 63</span><span className="text-zinc-500">Serviced</span></li>
+                              </ul>
+                            </div>
+                            <div>
+                              <h4 className="font-label-sm uppercase text-primary mb-4">Account Security</h4>
+                              <div className="flex items-center justify-between p-4 border border-outline-variant/20 rounded bg-background">
+                                <div className="space-y-1"><p className="text-sm font-medium">Disable Client Access</p><p className="text-xs text-zinc-500">Immediately revoke all platform privileges.</p></div>
+                                <button className="w-12 h-6 bg-surface-container-highest rounded-full relative flex items-center px-1 hover:bg-zinc-700"><span className="w-4 h-4 bg-zinc-400 rounded-full"></span></button>
+                              </div>
+                            </div>
+                            <div>
+                              <h4 className="font-label-sm uppercase text-primary mb-4">Notes</h4>
+                              <p className="text-sm text-zinc-400 italic">"Client prefers direct communication via encrypted channels. Interested in Maybach Night Series launch."</p>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="px-8 py-6 border-t border-outline-variant/20 flex items-center justify-between">
+            <p className="text-zinc-500 font-label-sm text-xs">Showing 1 to 10 of 2,482 entries</p>
+            <div className="flex gap-2">
+              <button className="p-2 border border-outline-variant/30 hover:border-primary text-zinc-500 hover:text-primary transition-all"><span className="material-symbols-outlined">chevron_left</span></button>
+              <button className="px-4 py-2 border border-primary bg-primary/10 text-primary font-label-sm">1</button>
+              <button className="px-4 py-2 border border-outline-variant/30 hover:border-primary text-zinc-400 hover:text-primary transition-all font-label-sm">2</button>
+              <button className="px-4 py-2 border border-outline-variant/30 hover:border-primary text-zinc-400 hover:text-primary transition-all font-label-sm">3</button>
+              <span className="px-4 py-2 text-zinc-600">...</span>
+              <button className="px-4 py-2 border border-outline-variant/30 hover:border-primary text-zinc-400 hover:text-primary transition-all font-label-sm">249</button>
+              <button className="p-2 border border-outline-variant/30 hover:border-primary text-zinc-500 hover:text-primary transition-all"><span className="material-symbols-outlined">chevron_right</span></button>
+            </div>
+          </div>
         </div>
       </main>
 
-      {/* CUSTOMER DETAIL MODAL */}
-      {selectedCustomer && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setSelectedCustomer(null)}>
-          <div onClick={(e) => e.stopPropagation()} style={{ background: '#111118', border: '1px solid rgba(200,169,126,0.15)', borderRadius: 8, padding: '32px', width: 480 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 24 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                <div style={{ width: 52, height: 52, borderRadius: '50%', background: `${TIER_COLORS[selectedCustomer.tier]}15`, border: `2px solid ${TIER_COLORS[selectedCustomer.tier]}40`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontSize: 20, fontWeight: 600, color: TIER_COLORS[selectedCustomer.tier] }}>{selectedCustomer.name[0]}</span>
-                </div>
-                <div>
-                  <h3 style={{ fontSize: 18, fontWeight: 500, color: '#fff' }}>{selectedCustomer.name}</h3>
-                  <span style={{ fontSize: 12, color: TIER_COLORS[selectedCustomer.tier], fontWeight: 500 }}>{selectedCustomer.tier} Member</span>
-                </div>
-              </div>
-              <button onClick={() => setSelectedCustomer(null)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><X size={18} color="#5a5768" /></button>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-              {[['Email', selectedCustomer.email], ['Phone', selectedCustomer.phone], ['Member Since', selectedCustomer.joinDate], ['Total Orders', selectedCustomer.orders], ['Total Spent', fmt(selectedCustomer.totalSpent)], ['Status', selectedCustomer.status]].map(([k, v]) => (
-                <div key={k}>
-                  <p style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b', marginBottom: 4 }}>{k}</p>
-                  <p style={{ fontSize: 14, color: '#e4e1eb', fontWeight: 500 }}>{v}</p>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ marginBottom: 24 }}>
-              <p style={{ fontSize: 10, fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4e453b', marginBottom: 10 }}>Owned Vehicles</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {selectedCustomer.vehicles.map((v) => (
-                  <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: 'rgba(200,169,126,0.04)', borderRadius: 4, border: '1px solid rgba(200,169,126,0.06)' }}>
-                    <Car size={14} color="#C8A97E" />
-                    <span style={{ fontSize: 13, color: '#e4e1eb' }}>{v}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <button onClick={() => setSelectedCustomer(null)} style={{ width: '100%', padding: '12px', background: 'none', border: '1px solid rgba(200,169,126,0.2)', color: '#6b6880', fontSize: 13, fontWeight: 500, cursor: 'pointer', fontFamily: "'DM Sans', sans-serif" }}>Close</button>
+      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+        <div className="space-y-6">
+          <h3 className="font-['Playfair_Display'] text-lg font-semibold text-white tracking-widest uppercase">Mercedes-Benz</h3>
+          <p className="text-zinc-500 font-['Playfair_Display'] text-sm leading-relaxed">The pinnacle of automotive engineering and administrative excellence.</p>
+          <p className="text-zinc-600 font-['Playfair_Display'] text-xs">© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-8">
+          <ul className="space-y-4">
+            <li><a className="font-['Playfair_Display'] text-sm text-zinc-500 hover:text-white hover:translate-x-1 transition-transform block" href="#">Cars</a></li>
+            <li><a className="font-['Playfair_Display'] text-sm text-[#C8A97E] hover:translate-x-1 transition-transform block" href="#">Admin</a></li>
+            <li><a className="font-['Playfair_Display'] text-sm text-zinc-500 hover:text-white hover:translate-x-1 transition-transform block" href="#">Test Drive</a></li>
+          </ul>
+          <ul className="space-y-4">
+            <li><a className="font-['Playfair_Display'] text-sm text-zinc-500 hover:text-white hover:translate-x-1 transition-transform block" href="#">Legal</a></li>
+            <li><a className="font-['Playfair_Display'] text-sm text-zinc-500 hover:text-white hover:translate-x-1 transition-transform block" href="#">Privacy</a></li>
+            <li><a className="font-['Playfair_Display'] text-sm text-zinc-500 hover:text-white hover:translate-x-1 transition-transform block" href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div className="space-y-6">
+          <h4 className="font-['Playfair_Display'] text-xs font-bold text-white tracking-[0.2em] uppercase">Connect</h4>
+          <div className="flex gap-6">
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary cursor-pointer transition-colors">share</span>
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary cursor-pointer transition-colors">public</span>
+            <span className="material-symbols-outlined text-zinc-500 hover:text-primary cursor-pointer transition-colors">language</span>
           </div>
         </div>
-      )}
-    </div>
+      </footer>
+    </>
   );
 }
+
