@@ -16,20 +16,14 @@ import ChangePassword from './pages/ChangePassword'
 import MyTestDrives from './pages/MyTestDrives'
 import MyServiceHistory from './pages/MyServiceHistory'
 import OrderTracking from './pages/OrderTracking'
-import CarComparison from './pages/CarComparison'
 import SearchResults from './pages/SearchResults'
 import CategoryPage from './pages/CategoryPage'
 import NewArrivals from './pages/NewArrivals'
-import SpecialOffers from './pages/SpecialOffers'
 import AllDealerships from './pages/AllDealerships'
 import DealershipDetail from './pages/DealershipDetail'
-import FindDealer from './pages/FindDealer'
 import ManageCars from './pages/ManageCars'
 import ManageOrders from './pages/ManageOrders'
 import ManageCustomers from './pages/ManageCustomers'
-import InventoryManager from './pages/InventoryManager'
-import EmployeeManager from './pages/EmployeeManager'
-import AboutPage from './pages/AboutPage'
 import CustomerChat from './pages/CustomerChat'
 import AdminChat from './pages/AdminChat'
 
@@ -52,20 +46,14 @@ function App() {
         <Route path="/my-test-drives" element={<MyTestDrives />} />
         <Route path="/my-service-history" element={<MyServiceHistory />} />
         <Route path="/order-tracking/:id" element={<OrderTracking />} />
-        <Route path="/compare" element={<CarComparison />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/category/:type" element={<CategoryPage />} />
         <Route path="/new-arrivals" element={<NewArrivals />} />
-        <Route path="/special-offers" element={<SpecialOffers />} />
         <Route path="/dealerships" element={<AllDealerships />} />
         <Route path="/dealership/:id" element={<DealershipDetail />} />
-        <Route path="/find-dealer" element={<FindDealer />} />
         <Route path="/admin/cars" element={<ManageCars />} />
         <Route path="/admin/orders" element={<ManageOrders />} />
         <Route path="/admin/customers" element={<ManageCustomers />} />
-        <Route path="/admin/inventory" element={<InventoryManager />} />
-        <Route path="/admin/employees" element={<EmployeeManager />} />
-        <Route path="/about" element={<AboutPage />} />
         <Route path="/chat" element={<CustomerChat />} />
         <Route path="/admin/chat" element={<AdminChat />} />
       </Routes>
