@@ -6,7 +6,7 @@ import './styles/global.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>   {/* 👈 Blanket wraps everything */}
+    <AuthProvider>   
       <App />
     </AuthProvider>
   </React.StrictMode>
