@@ -1,11 +1,41 @@
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { loginUser } from '../api/auth'
+
 export default function Login() {
+
+  const [email, setEmail]           = useState('')
+  const [password, setPassword]     = useState('')
+  const [error, setError]           = useState('')
+  const [loading, setLoading]       = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const { login } = useAuth()
+  const navigate  = useNavigate()
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    try {
+      const res = await loginUser(email, password)
+      login(res.data.user, res.data.token)
+      navigate('/')
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
-      {/* TopAppBar */}
       <header className="fixed top-0 w-full z-50 bg-zinc-950/90 backdrop-blur-md border-b border-[#C8A97E]/15 h-20 px-8 md:px-20 flex justify-between items-center">
         <div className="flex items-center gap-4">
           <span className="material-symbols-outlined text-[#C8A97E]">star</span>
-          <span className="font-['Playfair_Display'] tracking-widest uppercase text-xl font-bold text-[#C8A97E]">Mercedes-Benz</span>
+          <Link to="/" className="font-['Playfair_Display'] tracking-widest uppercase text-xl font-bold text-[#C8A97E]">Mercedes-Benz</Link>
         </div>
         <div className="hidden md:flex gap-10">
           <span className="font-label-sm text-sm text-zinc-400 hover:text-[#C8A97E] transition-colors cursor-pointer">CARS</span>
@@ -15,13 +45,11 @@ export default function Login() {
       </header>
 
       <main className="min-h-screen w-full pt-20 flex items-center justify-center relative overflow-hidden bg-[#050508]">
-        {/* Background Decor */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#C8A97E]/5 rounded-full blur-[120px]"></div>
         </div>
 
         <section className="relative z-10 w-full max-w-[1200px] px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 items-center gap-16 py-10">
-          {/* Branding/Image Side */}
           <div className="hidden lg:flex flex-col gap-8">
             <h1 className="font-headline-h1 text-on-surface leading-tight">
               Experience <br />
@@ -36,16 +64,17 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Form Side */}
           <div className="flex flex-col gap-8 w-full max-w-md mx-auto">
-            {/* Error Banner */}
-            <div className="bg-error-container/20 border border-error/20 p-4 flex items-start gap-4 animate-fade-in">
-              <span className="material-symbols-outlined text-error">error_outline</span>
-              <div className="flex flex-col">
-                <span className="text-error font-label-sm uppercase tracking-wider">Authentication Failed</span>
-                <p className="text-on-surface-variant text-sm mt-1">The email or password you entered is incorrect. Please try again.</p>
+
+            {error && (
+              <div className="bg-error-container/20 border border-error/20 p-4 flex items-start gap-4 animate-fade-in">
+                <span className="material-symbols-outlined text-error">error_outline</span>
+                <div className="flex flex-col">
+                  <span className="text-error font-label-sm uppercase tracking-wider">Authentication Failed</span>
+                  <p className="text-on-surface-variant text-sm mt-1">{error}</p>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="glass-card p-10 md:p-12 relative">
               <div className="flex flex-col gap-2 mb-10">
@@ -53,32 +82,57 @@ export default function Login() {
                 <h2 className="font-headline-h2 text-3xl">Sign In</h2>
               </div>
 
-              <form className="flex flex-col gap-6">
-                {/* Email Field */}
+              <form className="flex flex-col gap-6" onSubmit={handleLogin}>
+
                 <div className="flex flex-col gap-2">
                   <label className="font-label-sm text-on-surface-variant uppercase text-[10px] tracking-widest">Email Address</label>
                   <div className="relative">
-                    <input className="w-full bg-[#0D0D14] border-b border-outline-variant focus:border-primary-container focus:ring-0 text-on-surface font-body-md py-4 px-0 transition-colors placeholder:text-zinc-700" placeholder="name@luxury.com" type="email" />
+                    <input
+                      className="w-full bg-[#0D0D14] border-b border-outline-variant focus:border-primary-container focus:ring-0 text-on-surface font-body-md py-4 px-0 transition-colors placeholder:text-zinc-700"
+                      placeholder="name@luxury.com"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
                     <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-zinc-600 text-sm">mail</span>
                   </div>
                 </div>
 
-                {/* Password Field */}
                 <div className="flex flex-col gap-2">
                   <div className="flex justify-between items-end">
                     <label className="font-label-sm text-on-surface-variant uppercase text-[10px] tracking-widest">Password</label>
                     <a className="font-label-sm text-primary-container hover:text-white transition-colors text-[10px] uppercase underline underline-offset-4 decoration-primary-container/30" href="#">Forgot Password?</a>
                   </div>
                   <div className="relative">
-                    <input className="w-full bg-[#0D0D14] border-b border-outline-variant focus:border-primary-container focus:ring-0 text-on-surface font-body-md py-4 px-0 transition-colors placeholder:text-zinc-700" placeholder="••••••••" type="password" />
-                    <span className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-zinc-400 cursor-pointer hover:text-primary-container transition-colors">visibility</span>
+                    <input
+                      className="w-full bg-[#0D0D14] border-b border-outline-variant focus:border-primary-container focus:ring-0 text-on-surface font-body-md py-4 px-0 transition-colors placeholder:text-zinc-700"
+                      placeholder="••••••••"
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <span
+                      className="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-zinc-400 cursor-pointer hover:text-primary-container transition-colors"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? 'visibility_off' : 'visibility'}
+                    </span>
                   </div>
                 </div>
 
-                {/* Sign In Button */}
-                <button className="mt-8 group relative overflow-hidden border border-primary-container bg-transparent py-4 px-8 flex justify-center items-center gap-3 transition-all duration-300 hover:bg-primary-container">
-                  <span className="relative z-10 font-label-sm text-primary-container group-hover:text-on-primary transition-colors uppercase tracking-[0.15em] font-medium">Sign In</span>
-                  <span className="material-symbols-outlined relative z-10 text-primary-container group-hover:text-on-primary text-lg">arrow_forward</span>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="mt-8 group relative overflow-hidden border border-primary-container bg-transparent py-4 px-8 flex justify-center items-center gap-3 transition-all duration-300 hover:bg-primary-container disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span className="relative z-10 font-label-sm text-primary-container group-hover:text-on-primary transition-colors uppercase tracking-[0.15em] font-medium">
+                    {loading ? 'Signing In...' : 'Sign In'}
+                  </span>
+                  {!loading && (
+                    <span className="material-symbols-outlined relative z-10 text-primary-container group-hover:text-on-primary text-lg">arrow_forward</span>
+                  )}
                 </button>
               </form>
 
@@ -101,14 +155,13 @@ export default function Login() {
             <div className="text-center">
               <p className="font-body-md text-sm text-zinc-500">
                 Don't have an account?
-                <a className="text-primary-container hover:underline underline-offset-4 font-medium ml-1" href="#">Request Access</a>
+                <Link className="text-primary-container hover:underline underline-offset-4 font-medium ml-1" to="/register">Request Access</Link>
               </p>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="w-full py-20 px-8 md:px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4">
