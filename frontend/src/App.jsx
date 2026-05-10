@@ -27,7 +27,6 @@ import ManageOrders from './pages/ManageOrders'
 import ManageCustomers from './pages/ManageCustomers'
 import CustomerChat from './pages/CustomerChat'
 import AdminChat from './pages/AdminChat'
-import About from './pages/About'
 
 // Protected Routes
 import {
