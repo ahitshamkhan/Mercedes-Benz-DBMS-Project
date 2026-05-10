@@ -1,195 +1,152 @@
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { getMyTestDrives, cancelTestDrive } from '../api/bookings'
+
+const FALLBACK = [
+  { id: 1, status: 'Pending', car: 'GLE 450 4MATIC', variant: 'Obsidian Black Metallic', dealer: 'Mercedes-Benz Karachi Central', date: 'Nov 12, 2024', time: '10:30 AM', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBgZN5d7rvEau8lSrp7PI9ePpGFwOZv08bxeYOqGnf4cPoahWgz3zAP0OZmlTcaR4UhgeI79gO10eo92r5KCls2Wl4P3KAUlci33A7p5gCe2VViRxI3C6UOUuJOqEFccIxkrFoUMzRo9QUxZRISfZtedwlEQ32tTsFM1AbT0bxVm2hqnxblECcwG0ShBcvFnOwRSmBjONZy-Hm5fxIyZlTy58cUnltm6pwCsse47FvD4NOWgEcm-tAQHDCSv_JCagF-kXwp0IFIvQQ' },
+  { id: 2, status: 'Confirmed', car: 'S-Class S 500', variant: 'High-Tech Silver', dealer: 'Mercedes-Benz Lahore Signature', date: 'Oct 28, 2024', time: '02:00 PM', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC8ln03Ovuk6sYGDir8vbYiaplx_86SyHfMd9jX2y2T6uOGcT4_SDlsVWA55ozVh9tSd2xigo1V1hXjCRR2HgBRrf_20QuityFc32MZX_2PHhK9S9Pd585x3Lo-CdrN4KFtEetN9LjimJGTkvQOREQ_wJOzCa63wYiFcC3gbYTt0M03bDI1rMVt60P6Sn2kfofvFfdqKCt3wDltJuYRF4flYAdOYXCqIjW6sO1dRv_xAb5soGdx3ICR24xR9A-CWPTcpv6T9EzFtQE' },
+  { id: 3, status: 'Completed', car: 'EQS 580 4MATIC', variant: 'Nautical Blue', dealer: 'Mercedes-Benz Islamabad Hub', date: 'Sep 15, 2024', time: '11:00 AM', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCaKVpyWL2QnIFkqmY9TyHE588Jew-yOaFbM4uph8887rrGiY4Sl9_AaiqzjRVDjT6kce_Ek1WP822lA_NTUAfPB7Yt0eiBO1j4m8_fiNikVQKKQYyutHOGLsOUYgWCyI758CqovQwgScT7WL_zNwp3udPvDN71Bbnc4bSXhecKYehstysiujdKHmWoR1z_8sRcTTi4CSguWAZHgQVYabBCiJuSPODHc_7rlKr5m_cplnYST5xzTMyLcOPJPspk52S3zuDkRJPnLHM' },
+]
+
+const badgeStyle = (s) => {
+  if (s === 'Pending') return 'bg-amber-500/10 text-amber-500'
+  if (s === 'Confirmed') return 'bg-blue-500/10 text-blue-500'
+  return 'bg-[#C8A97E]/10 text-[#C8A97E]'
+}
+
+const dotColor = (s) => {
+  if (s === 'Pending') return 'bg-amber-500 animate-pulse'
+  if (s === 'Confirmed') return 'bg-blue-500'
+  return 'bg-[#C8A97E]'
+}
+
 export default function MyTestDrives() {
+  const { logout } = useAuth()
+  const [drives, setDrives] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getMyTestDrives()
+        setDrives(res.data)
+      } catch { setDrives(FALLBACK) }
+      finally { setLoading(false) }
+    }
+    fetchData()
+  }, [])
+
+  const handleCancel = async (id) => {
+    try { await cancelTestDrive(id) } catch {}
+    setDrives(prev => prev.filter(d => d.id !== id))
+  }
+
   return (
     <>
-      {/* TopAppBar */}
-      <nav className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase z-50 border-b border-[#C8A97E]/15">
+      <nav className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
         <div className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-2xl">star</span>
-          <span className="text-xl font-bold text-[#C8A97E]">Mercedes-Benz</span>
+          <span className="material-symbols-outlined text-[#C8A97E] text-2xl">star</span>
+          <Link to="/" className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</Link>
         </div>
-        <div className="hidden md:flex gap-12 font-label-sm text-label-sm tracking-widest">
-          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Cars</a>
-          <a className="text-[#C8A97E] border-b border-[#C8A97E] pb-1" href="#">My Bookings</a>
-          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Wishlist</a>
-          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300" href="#">Service</a>
+        <div className="hidden md:flex gap-12 font-label-sm tracking-widest">
+          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors" to="/">Cars</Link>
+          <Link className="text-[#C8A97E] border-b border-[#C8A97E] pb-1" to="/my-test-drives">My Bookings</Link>
+          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors" to="/wishlist">Wishlist</Link>
+          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors" to="/service-booking">Service</Link>
         </div>
-        <button className="px-8 py-2 border border-[#C8A97E]/30 text-xs tracking-widest hover:bg-[#C8A97E] hover:text-zinc-950 transition-all duration-500">
-          SIGN IN
-        </button>
+        <button className="px-8 py-2 border border-[#C8A97E]/30 text-[#C8A97E] text-xs tracking-widest hover:bg-[#C8A97E] hover:text-zinc-950 transition-all" onClick={logout}>SIGN OUT</button>
       </nav>
 
-      <main className="min-h-screen pt-40 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-        {/* Header */}
+      <main className="min-h-screen pt-40 pb-section-gap px-6 md:px-20 max-w-[1440px] mx-auto">
         <header className="mb-20">
-          <h1 className="font-headline-h1 text-headline-h1 text-on-background mb-4">Your Test Drive History</h1>
-          <p className="font-body-lg text-body-lg text-outline max-w-2xl">
-            Manage and track your upcoming and past experiences with the world's most desirable vehicles.
-          </p>
+          <h1 className="font-headline-h1 text-on-background mb-4">Your Test Drive History</h1>
+          <p className="font-body-lg text-outline max-w-2xl">Manage and track your upcoming and past experiences.</p>
         </header>
 
-        {/* Timeline Layout */}
-        <section className="relative timeline-line-pseudo">
-          {/* Booking Card 1: Pending */}
-          <div className="relative flex flex-col md:flex-row items-center mb-16 gap-8 group">
-            <div className="hidden md:flex flex-1 justify-end text-right pr-12">
-              <div>
-                <p className="font-label-sm text-label-sm text-primary uppercase mb-1">Upcoming</p>
-                <p className="font-headline-h3 text-headline-h3">Nov 12, 2024</p>
-                <p className="font-body-md text-body-md text-outline">10:30 AM</p>
-              </div>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+          </div>
+        ) : drives.length === 0 ? (
+          <section className="flex flex-col items-center justify-center py-40 text-center">
+            <div className="w-24 h-24 rounded-full border border-primary/20 flex items-center justify-center mb-8">
+              <span className="material-symbols-outlined text-4xl text-primary/40">car_rental</span>
             </div>
-            <div className="z-10 w-10 h-10 rounded-full border border-primary bg-background flex items-center justify-center">
-              <div className="w-2 h-2 bg-primary rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-            </div>
-            <div className="flex-1 w-full">
-              <div className="bg-surface-container-lowest border border-primary/15 p-8 hover:border-primary/40 transition-all duration-500 group-hover:-translate-y-1">
-                <div className="flex flex-col md:flex-row justify-between gap-6">
-                  <div className="flex flex-col gap-4">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-bold tracking-widest uppercase w-fit">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                      Pending
-                    </span>
-                    <h3 className="font-headline-h3 text-headline-h3">GLE 450 4MATIC</h3>
-                    <div className="space-y-1">
-                      <p className="font-body-md text-body-md text-on-surface">Variant: <span className="text-outline">Obsidian Black Metallic</span></p>
-                      <p className="font-body-md text-body-md text-on-surface">Dealership: <span className="text-outline">Mercedes-Benz Karachi Central</span></p>
+            <h2 className="font-headline-h2 mb-4">No test drives scheduled</h2>
+            <p className="font-body-lg text-outline mb-12 max-w-md mx-auto">Experience the pinnacle of automotive excellence. Book your personal test drive today.</p>
+            <Link to="/book-test-drive" className="px-12 py-4 border border-primary text-primary hover:bg-primary hover:text-background transition-all font-label-sm tracking-widest uppercase">Explore Inventory</Link>
+          </section>
+        ) : (
+          <section className="relative">
+            {drives.map((drive, i) => {
+              const isPast = drive.status === 'Completed'
+              return (
+                <div key={drive.id} className={`relative flex flex-col md:flex-row items-center mb-16 gap-8 group ${isPast ? 'opacity-60 hover:opacity-100 transition-opacity' : ''}`}>
+                  <div className="hidden md:flex flex-1 justify-end text-right pr-12">
+                    <div>
+                      <p className="font-label-sm text-primary uppercase mb-1">{isPast ? 'Past' : drive.status === 'Confirmed' ? 'Confirmed' : 'Upcoming'}</p>
+                      <p className="font-headline-h3">{drive.date}</p>
+                      <p className="font-body-md text-outline">{drive.time}</p>
                     </div>
                   </div>
-                  <div className="w-full md:w-48 aspect-video overflow-hidden border border-white/5 bg-zinc-900">
-                    <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgZN5d7rvEau8lSrp7PI9ePpGFwOZv08bxeYOqGnf4cPoahWgz3zAP0OZmlTcaR4UhgeI79gO10eo92r5KCls2Wl4P3KAUlci33A7p5gCe2VViRxI3C6UOUuJOqEFccIxkrFoUMzRo9QUxZRISfZtedwlEQ32tTsFM1AbT0bxVm2hqnxblECcwG0ShBcvFnOwRSmBjONZy-Hm5fxIyZlTy58cUnltm6pwCsse47FvD4NOWgEcm-tAQHDCSv_JCagF-kXwp0IFIvQQ" alt="GLE 450 4MATIC" />
+                  <div className="z-10 w-10 h-10 rounded-full border border-primary/30 bg-background flex items-center justify-center">
+                    <div className={`w-2 h-2 rounded-full ${dotColor(drive.status)} group-hover:scale-150 transition-transform`}></div>
                   </div>
-                </div>
-                <div className="mt-8 pt-6 border-t border-white/5 flex justify-end gap-6">
-                  <button className="font-label-sm text-label-sm text-outline hover:text-white transition-colors uppercase">Reschedule</button>
-                  <button className="font-label-sm text-label-sm text-error/80 hover:text-error transition-colors uppercase">Cancel</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Booking Card 2: Confirmed */}
-          <div className="relative flex flex-col md:flex-row items-center mb-16 gap-8 group">
-            <div className="hidden md:flex flex-1 justify-end text-right pr-12">
-              <div>
-                <p className="font-label-sm text-label-sm text-primary uppercase mb-1">Confirmed</p>
-                <p className="font-headline-h3 text-headline-h3">Oct 28, 2024</p>
-                <p className="font-body-md text-body-md text-outline">02:00 PM</p>
-              </div>
-            </div>
-            <div className="z-10 w-10 h-10 rounded-full border border-primary/30 bg-background flex items-center justify-center">
-              <div className="w-2 h-2 bg-primary/40 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
-            </div>
-            <div className="flex-1 w-full">
-              <div className="bg-surface-container-lowest border border-primary/15 p-8 hover:border-primary/40 transition-all duration-500 group-hover:-translate-y-1">
-                <div className="flex flex-col md:flex-row justify-between gap-6">
-                  <div className="flex flex-col gap-4">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-500 text-[10px] font-bold tracking-widest uppercase w-fit">
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                      Confirmed
-                    </span>
-                    <h3 className="font-headline-h3 text-headline-h3">S-Class S 500</h3>
-                    <div className="space-y-1">
-                      <p className="font-body-md text-body-md text-on-surface">Variant: <span className="text-outline">High-Tech Silver</span></p>
-                      <p className="font-body-md text-body-md text-on-surface">Dealership: <span className="text-outline">Mercedes-Benz Lahore Signature</span></p>
+                  <div className="flex-1 w-full">
+                    <div className="bg-surface-container-lowest border border-primary/15 p-8 hover:border-primary/40 transition-all group-hover:-translate-y-1">
+                      <div className="flex flex-col md:flex-row justify-between gap-6">
+                        <div className="flex flex-col gap-4">
+                          <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase w-fit ${badgeStyle(drive.status)}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${dotColor(drive.status)}`}></span>
+                            {drive.status}
+                          </span>
+                          <h3 className="font-headline-h3">{drive.car}</h3>
+                          <div className="space-y-1">
+                            <p className="font-body-md text-on-surface">Variant: <span className="text-outline">{drive.variant}</span></p>
+                            <p className="font-body-md text-on-surface">Dealership: <span className="text-outline">{drive.dealer}</span></p>
+                          </div>
+                        </div>
+                        <div className="w-full md:w-48 aspect-video overflow-hidden border border-white/5 bg-zinc-900">
+                          <img className={`w-full h-full object-cover ${isPast ? 'grayscale' : 'grayscale group-hover:grayscale-0'} transition-all duration-700`} src={drive.image} alt={drive.car} />
+                        </div>
+                      </div>
+                      {!isPast && (
+                        <div className="mt-8 pt-6 border-t border-white/5 flex justify-end gap-6">
+                          <button className="font-label-sm text-outline hover:text-white transition-colors uppercase">Reschedule</button>
+                          <button className="font-label-sm text-error/80 hover:text-error transition-colors uppercase" onClick={() => handleCancel(drive.id)}>Cancel</button>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="w-full md:w-48 aspect-video overflow-hidden border border-white/5 bg-zinc-900">
-                    <img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8ln03Ovuk6sYGDir8vbYiaplx_86SyHfMd9jX2y2T6uOGcT4_SDlsVWA55ozVh9tSd2xigo1V1hXjCRR2HgBRrf_20QuityFc32MZX_2PHhK9S9Pd585x3Lo-CdrN4KFtEetN9LjimJGTkvQOREQ_wJOzCa63wYiFcC3gbYTt0M03bDI1rMVt60P6Sn2kfofvFfdqKCt3wDltJuYRF4flYAdOYXCqIjW6sO1dRv_xAb5soGdx3ICR24xR9A-CWPTcpv6T9EzFtQE" alt="S-Class S 500" />
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Booking Card 3: Completed */}
-          <div className="relative flex flex-col md:flex-row items-center mb-16 gap-8 group">
-            <div className="hidden md:flex flex-1 justify-end text-right pr-12 opacity-60">
-              <div>
-                <p className="font-label-sm text-label-sm text-primary uppercase mb-1">Past</p>
-                <p className="font-headline-h3 text-headline-h3">Sep 15, 2024</p>
-                <p className="font-body-md text-body-md text-outline">11:00 AM</p>
-              </div>
-            </div>
-            <div className="z-10 w-10 h-10 rounded-full border border-primary/20 bg-background flex items-center justify-center opacity-50">
-              <div className="w-2 h-2 bg-primary/20 rounded-full"></div>
-            </div>
-            <div className="flex-1 w-full opacity-60 group-hover:opacity-100 transition-opacity duration-500">
-              <div className="bg-surface-container-lowest border border-primary/10 p-8 hover:border-primary/30 transition-all duration-500">
-                <div className="flex flex-col md:flex-row justify-between gap-6">
-                  <div className="flex flex-col gap-4">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C8A97E]/10 text-[#C8A97E] text-[10px] font-bold tracking-widest uppercase w-fit">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#C8A97E]"></span>
-                      Completed
-                    </span>
-                    <h3 className="font-headline-h3 text-headline-h3">EQS 580 4MATIC</h3>
-                    <div className="space-y-1">
-                      <p className="font-body-md text-body-md text-on-surface">Variant: <span className="text-outline">Nautical Blue</span></p>
-                      <p className="font-body-md text-body-md text-on-surface">Dealership: <span className="text-outline">Mercedes-Benz Islamabad Hub</span></p>
-                    </div>
-                  </div>
-                  <div className="w-full md:w-48 aspect-video overflow-hidden border border-white/5 bg-zinc-900">
-                    <img className="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaKVpyWL2QnIFkqmY9TyHE588Jew-yOaFbM4uph8887rrGiY4Sl9_AaiqzjRVDjT6kce_Ek1WP822lA_NTUAfPB7Yt0eiBO1j4m8_fiNikVQKKQYyutHOGLsOUYgWCyI758CqovQwgScT7WL_zNwp3udPvDN71Bbnc4bSXhecKYehstysiujdKHmWoR1z_8sRcTTi4CSguWAZHgQVYabBCiJuSPODHc_7rlKr5m_cplnYST5xzTMyLcOPJPspk52S3zuDkRJPnLHM" alt="EQS 580 4MATIC" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Empty State (Hidden) */}
-        <section className="hidden flex-col items-center justify-center py-40 text-center">
-          <div className="w-24 h-24 rounded-full border border-primary/20 flex items-center justify-center mb-8">
-            <span className="material-symbols-outlined text-4xl text-primary/40">car_rental</span>
-          </div>
-          <h2 className="font-headline-h2 text-headline-h2 mb-4">No test drives scheduled</h2>
-          <p className="font-body-lg text-body-lg text-outline mb-12 max-w-md mx-auto">
-            Experience the pinnacle of automotive excellence. Discover our fleet and book your personal test drive today.
-          </p>
-          <button className="px-12 py-4 border border-primary text-primary hover:bg-primary hover:text-background transition-all duration-500 font-label-sm text-label-sm tracking-widest uppercase">
-            Explore Inventory
-          </button>
-        </section>
+              )
+            })}
+          </section>
+        )}
       </main>
 
-      {/* Footer */}
-      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] font-['Playfair_Display'] text-sm tracking-tight border-t border-[#C8A97E]/10">
+      <footer className="w-full py-20 px-6 md:px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
         <div className="space-y-8">
-          <h2 className="text-lg font-semibold text-white uppercase tracking-widest">Mercedes-Benz</h2>
-          <p className="text-zinc-500 max-w-xs leading-relaxed">
-            The best or nothing. Defining luxury and automotive performance since 1926.
-          </p>
-          <div className="flex gap-6">
-            <span className="material-symbols-outlined text-zinc-500 hover:text-[#C8A97E] cursor-pointer transition-colors">social_leaderboard</span>
-            <span className="material-symbols-outlined text-zinc-500 hover:text-[#C8A97E] cursor-pointer transition-colors">retweet</span>
-            <span className="material-symbols-outlined text-zinc-500 hover:text-[#C8A97E] cursor-pointer transition-colors">video_youtube</span>
-          </div>
+          <Link to="/" className="text-lg font-semibold text-white font-['Playfair_Display'] uppercase tracking-widest">Mercedes-Benz</Link>
+          <p className="text-zinc-500 max-w-xs text-sm leading-relaxed">The best or nothing. Defining luxury since 1926.</p>
         </div>
         <div className="grid grid-cols-2 gap-8">
           <div className="flex flex-col gap-4">
-            <h4 className="text-white uppercase tracking-widest mb-2 font-bold">Discover</h4>
-            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Cars</a>
-            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Test Drive</a>
-            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Service</a>
+            <h4 className="text-white uppercase tracking-widest font-bold text-xs mb-2">Discover</h4>
+            <Link className="text-zinc-500 hover:text-white text-sm hover:translate-x-1 transition-transform" to="/">Cars</Link>
+            <Link className="text-zinc-500 hover:text-white text-sm hover:translate-x-1 transition-transform" to="/book-test-drive">Test Drive</Link>
+            <Link className="text-zinc-500 hover:text-white text-sm hover:translate-x-1 transition-transform" to="/service-booking">Service</Link>
           </div>
           <div className="flex flex-col gap-4">
-            <h4 className="text-white uppercase tracking-widest mb-2 font-bold">Account</h4>
-            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">My Orders</a>
-            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Wishlist</a>
-            <a className="text-zinc-500 hover:text-white hover:translate-x-1 transition-transform duration-200" href="#">Admin</a>
+            <h4 className="text-white uppercase tracking-widest font-bold text-xs mb-2">Account</h4>
+            <Link className="text-zinc-500 hover:text-white text-sm hover:translate-x-1 transition-transform" to="/my-orders">My Orders</Link>
+            <Link className="text-zinc-500 hover:text-white text-sm hover:translate-x-1 transition-transform" to="/wishlist">Wishlist</Link>
+            <Link className="text-zinc-500 hover:text-white text-sm hover:translate-x-1 transition-transform" to="/profile">Profile</Link>
           </div>
         </div>
         <div className="flex flex-col gap-6">
-          <h4 className="text-white uppercase tracking-widest font-bold">Stay Informed</h4>
-          <p className="text-zinc-500">Subscribe for the latest releases and private events.</p>
-          <div className="relative">
-            <input className="w-full bg-zinc-900/50 border-b border-[#C8A97E]/30 py-3 px-0 focus:border-[#C8A97E] outline-none text-[#C8A97E] placeholder-zinc-700 transition-all" placeholder="Email Address" type="email" />
-            <button className="absolute right-0 bottom-3 text-[#C8A97E] hover:translate-x-1 transition-transform">
-              <span className="material-symbols-outlined">arrow_forward</span>
-            </button>
-          </div>
-          <p className="text-[10px] text-zinc-600 mt-auto">
-            © 2024 Mercedes-Benz Pakistan. All rights reserved.
-          </p>
+          <p className="text-[10px] text-zinc-600 mt-auto">© 2024 Mercedes-Benz Pakistan. All rights reserved.</p>
         </div>
       </footer>
     </>
