@@ -1,4 +1,10 @@
+import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+
 export default function About() {
+
+  const { isLoggedIn, user, logout } = useAuth()
+
   const timeline = [
     { year: '1886', title: 'The Birth', desc: 'Carl Benz applies for a patent for his "vehicle powered by a gas engine."', top: true },
     { year: '1954', title: 'The Legend', desc: 'The 300 SL Gullwing debuts, becoming the world\'s fastest production car.', top: false },
@@ -17,23 +23,28 @@ export default function About() {
 
   return (
     <>
-      {/* TopAppBar */}
-      <header className="fixed top-0 w-full flex justify-between items-center px-20 h-20 bg-zinc-950/90 backdrop-blur-md text-[#C8A97E] z-50 border-b border-[#C8A97E]/15">
+      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md text-[#C8A97E] z-50 border-b border-[#C8A97E]/15">
         <div className="flex items-center gap-4">
           <span className="material-symbols-outlined text-2xl">star</span>
-          <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</span>
+          <Link to="/" className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</Link>
         </div>
         <nav className="hidden md:flex items-center gap-10">
-          <a className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-['Playfair_Display'] tracking-widest uppercase text-sm" href="#">About</a>
-          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-['Playfair_Display'] tracking-widest uppercase text-sm" href="#">Models</a>
-          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-['Playfair_Display'] tracking-widest uppercase text-sm" href="#">Experience</a>
-          <a className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-['Playfair_Display'] tracking-widest uppercase text-sm" href="#">Innovation</a>
+          <Link className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-['Playfair_Display'] tracking-widest uppercase text-sm" to="/about">About</Link>
+          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-['Playfair_Display'] tracking-widest uppercase text-sm" to="/">Models</Link>
+          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-['Playfair_Display'] tracking-widest uppercase text-sm" to="/new-arrivals">Experience</Link>
+          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors duration-300 font-['Playfair_Display'] tracking-widest uppercase text-sm" to="/category/Electric (EQ)">Innovation</Link>
         </nav>
-        <button className="px-6 py-2 border border-[#C8A97E] text-xs font-['Playfair_Display'] tracking-widest uppercase hover:bg-[#C8A97E]/10 transition-all duration-300">Sign In</button>
+        {isLoggedIn ? (
+          <div className="flex items-center gap-4">
+            <Link to="/profile" className="text-xs font-['Playfair_Display'] tracking-widest uppercase text-zinc-400 hover:text-[#C8A97E] transition-colors">{user?.name || 'Profile'}</Link>
+            <button className="px-6 py-2 border border-[#C8A97E] text-xs font-['Playfair_Display'] tracking-widest uppercase hover:bg-[#C8A97E]/10 transition-all duration-300" onClick={logout}>Logout</button>
+          </div>
+        ) : (
+          <Link to="/login" className="px-6 py-2 border border-[#C8A97E] text-xs font-['Playfair_Display'] tracking-widest uppercase hover:bg-[#C8A97E]/10 transition-all duration-300">Sign In</Link>
+        )}
       </header>
 
       <main>
-        {/* Hero Section */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMZjcsXG9LL5UqJQB4d6kuehpfz39JObYxlEqvy_RO8RV42detjALlUAgJUeS4dy5EZ-GZ0F1VWbFq6JZnvZCrwDP9z19ianUlZ_XcXh2CKQ_Wpcz_jp2hNlLro2YaAqvOuImhXZXvB8mBfxmn69eNng9Smvql-F4IGEtS_LWYmOFYyQywcK50er3lPrv8LfVtDlMJkSFeSMSalqOBjDuVy4VQe9cvgURAviGxyPDUBZBOuZhu5tPPt11CNQwqVhxqcOWicZre4Bk" alt="Mercedes-Benz 300 SL Gullwing" />
@@ -48,7 +59,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* Timeline Section */}
         <section className="py-section-gap px-6 md:px-20 overflow-hidden">
           <div className="max-w-container-max mx-auto">
             <div className="flex justify-between items-end mb-24">
@@ -77,7 +87,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* Pillars Section */}
         <section className="py-section-gap bg-surface-container-lowest">
           <div className="px-6 md:px-20 max-w-container-max mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
@@ -92,7 +101,6 @@ export default function About() {
           </div>
         </section>
 
-        {/* Pakistan Operations Section */}
         <section className="py-section-gap px-6 md:px-20">
           <div className="max-w-container-max mx-auto flex flex-col md:flex-row gap-20 items-center">
             <div className="w-full md:w-1/2">
@@ -104,25 +112,24 @@ export default function About() {
               <p className="font-body-lg text-body-lg text-on-surface-variant mb-12">Serving the nation's most discerning drivers with a dedicated network of flagship showrooms, state-of-the-art service centers, and a commitment to the highest standards of automotive excellence.</p>
               <div className="grid grid-cols-2 gap-4">
                 {locations.map((loc, i) => (
-                  <div key={i} className="p-6 border border-primary/10 flex items-center justify-between hover:bg-primary/5 transition-colors cursor-default">
+                  <Link key={i} to="/dealerships" className="p-6 border border-primary/10 flex items-center justify-between hover:bg-primary/5 transition-colors">
                     <span className="font-label-sm text-on-background">{loc}</span>
                     <span className="material-symbols-outlined text-primary text-sm">location_on</span>
-                  </div>
+                  </Link>
                 ))}
               </div>
-              <button className="mt-12 group flex items-center gap-4 text-primary font-label-sm uppercase tracking-widest">
+              <Link to="/dealerships" className="mt-12 group flex items-center gap-4 text-primary font-label-sm uppercase tracking-widest">
                 View Service Network
                 <span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
-              </button>
+              </Link>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="w-full py-20 px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
+      <footer className="w-full py-20 px-6 md:px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
         <div>
-          <span className="text-lg font-semibold text-white font-['Playfair_Display'] tracking-widest uppercase mb-8 block">Mercedes-Benz</span>
+          <Link to="/" className="text-lg font-semibold text-white font-['Playfair_Display'] tracking-widest uppercase mb-8 block">Mercedes-Benz</Link>
           <p className="text-zinc-500 font-['Playfair_Display'] text-sm leading-relaxed mb-8">Crafting automotive excellence since 1886. Every vehicle is a testament to our dedication to the art of driving.</p>
           <div className="flex gap-4">
             <span className="material-symbols-outlined text-zinc-500 hover:text-[#C8A97E] cursor-pointer transition-colors">social_leaderboard</span>
@@ -132,14 +139,14 @@ export default function About() {
         </div>
         <div className="grid grid-cols-2 gap-8">
           <div className="flex flex-col gap-4">
-            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" href="#">Cars</a>
-            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" href="#">My Orders</a>
-            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" href="#">Wishlist</a>
-            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" href="#">Test Drive</a>
+            <Link className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" to="/">Cars</Link>
+            <Link className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" to="/my-orders">My Orders</Link>
+            <Link className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" to="/wishlist">Wishlist</Link>
+            <Link className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" to="/book-test-drive">Test Drive</Link>
           </div>
           <div className="flex flex-col gap-4">
-            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" href="#">Service</a>
-            <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" href="#">Contact</a>
+            <Link className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" to="/service-booking">Service</Link>
+            <Link className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" to="/about">Contact</Link>
             <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" href="#">Legal</a>
             <a className="text-zinc-500 hover:text-white font-['Playfair_Display'] text-sm transition-transform duration-200 hover:translate-x-1" href="#">Privacy</a>
           </div>
