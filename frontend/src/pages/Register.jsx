@@ -1,17 +1,61 @@
+import { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { registerUser } from '../api/auth'
+
 export default function Register() {
+
+  const [name, setName]               = useState('')
+  const [email, setEmail]             = useState('')
+  const [phone, setPhone]             = useState('')
+  const [address, setAddress]         = useState('')
+  const [password, setPassword]       = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [agreedTerms, setAgreedTerms] = useState(false)
+  const [error, setError]             = useState('')
+  const [loading, setLoading]         = useState(false)
+
+  const { login } = useAuth()
+  const navigate  = useNavigate()
+
+  const handleRegister = async (e) => {
+    e.preventDefault()
+    setError('')
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.')
+      return
+    }
+
+    if (!agreedTerms) {
+      setError('You must agree to the Terms of Service.')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const res = await registerUser(name, email, password, phone)
+      login(res.data.user, res.data.token)
+      navigate('/')
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
-      {/* Header */}
       <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
-        <div className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase flex items-center gap-3">
+        <Link to="/" className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase flex items-center gap-3">
           <span className="material-symbols-outlined text-2xl star-glow" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
           Mercedes-Benz
-        </div>
-        <a className="text-sm font-label-sm text-[#C8A97E] hover:text-white transition-colors tracking-widest uppercase" href="#">Sign In</a>
+        </Link>
+        <Link className="text-sm font-label-sm text-[#C8A97E] hover:text-white transition-colors tracking-widest uppercase" to="/login">Sign In</Link>
       </header>
 
       <main className="min-h-screen pt-20 flex flex-col md:flex-row items-stretch">
-        {/* Left Side: Brand Narrative */}
         <section className="relative w-full md:w-5/12 min-h-[353px] md:min-h-screen flex flex-col items-center justify-center p-8 md:p-20 overflow-hidden bg-black">
           <div className="absolute inset-0 opacity-40">
             <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCXUx6bIwlUkvhD1R8jSwxyyM2vzXy9QRdjcJK6VzRl1cmjn0nw2rw824rRKWURarQCL6Sp9idJX9HoRVn80ZAS0TKq9O1RkkmgTXyqB-A5zftAR9OhNc133L1PaEflSzCoeXzNIzJyEaDrTKOsvoOa1JzE7kJQO8TTx0X_ka4GtNvFdqDwhWxIF2laWAP4wu4ANOJjS3j1A28AoowOtvptO7Lk4oHXMKiUJI6f2dHNFiZkbzqfLKTYED30K-E3-A47_PRouV2L58" alt="Mercedes-Benz S-Class at twilight" />
@@ -28,7 +72,6 @@ export default function Register() {
           </div>
         </section>
 
-        {/* Right Side: Registration Form */}
         <section className="w-full md:w-7/12 flex items-center justify-center p-6 md:p-12 lg:p-20 bg-surface">
           <div className="w-full max-w-xl space-y-12 animate-fade-in">
             <div className="space-y-2">
@@ -36,56 +79,110 @@ export default function Register() {
               <p className="font-body-md text-on-surface-variant">Please provide your details to begin your journey.</p>
             </div>
 
-            <form className="space-y-8">
+            {error && (
+              <div className="bg-error-container/20 border border-error/20 p-4 flex items-start gap-4 animate-fade-in">
+                <span className="material-symbols-outlined text-error">error_outline</span>
+                <p className="text-on-surface-variant text-sm">{error}</p>
+              </div>
+            )}
+
+            <form className="space-y-8" onSubmit={handleRegister}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Full Name */}
                 <div className="space-y-2 group">
                   <label className="block font-label-sm text-on-surface-variant uppercase">Full Name</label>
-                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="Johnathan Doe" type="text" />
+                  <input
+                    className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700"
+                    placeholder="Johnathan Doe"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
                 </div>
-                {/* Email Address */}
                 <div className="space-y-2 group">
                   <label className="block font-label-sm text-on-surface-variant uppercase">Email Address</label>
-                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="email@example.com" type="email" />
+                  <input
+                    className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700"
+                    placeholder="email@example.com"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
                 </div>
-                {/* Phone Number */}
                 <div className="space-y-2 group">
                   <label className="block font-label-sm text-on-surface-variant uppercase">Phone Number</label>
-                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="03xx-xxxxxxx" type="tel" />
+                  <input
+                    className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700"
+                    placeholder="03xx-xxxxxxx"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
                 </div>
-                {/* Address */}
                 <div className="space-y-2 group md:col-span-1">
                   <label className="block font-label-sm text-on-surface-variant uppercase">Address</label>
-                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="Street, City, Province" type="text" />
+                  <input
+                    className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700"
+                    placeholder="Street, City, Province"
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
                 </div>
-                {/* Password */}
                 <div className="space-y-2 group">
                   <label className="block font-label-sm text-on-surface-variant uppercase">Password</label>
-                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="••••••••" type="password" />
+                  <input
+                    className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700"
+                    placeholder="••••••••"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
                 </div>
-                {/* Confirm Password */}
                 <div className="space-y-2 group">
                   <label className="block font-label-sm text-on-surface-variant uppercase">Confirm Password</label>
-                  <input className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700" placeholder="••••••••" type="password" />
+                  <input
+                    className="w-full bg-transparent border-b border-outline-variant py-4 focus:outline-none focus:border-primary transition-colors text-white font-body-md placeholder:text-zinc-700"
+                    placeholder="••••••••"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                  />
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <input className="mt-1 rounded border-outline-variant bg-surface text-primary focus:ring-primary ring-offset-background" id="terms" type="checkbox" />
+                <input
+                  className="mt-1 rounded border-outline-variant bg-surface text-primary focus:ring-primary ring-offset-background"
+                  id="terms"
+                  type="checkbox"
+                  checked={agreedTerms}
+                  onChange={(e) => setAgreedTerms(e.target.checked)}
+                />
                 <label className="font-body-md text-sm text-on-surface-variant leading-relaxed" htmlFor="terms">
                   I agree to the <a className="text-primary hover:underline transition-all" href="#">Terms of Service</a> and <a className="text-primary hover:underline transition-all" href="#">Privacy Policy</a>.
                 </label>
               </div>
 
               <div className="pt-6 space-y-6">
-                <button className="w-full py-5 border border-primary text-primary font-label-sm uppercase tracking-[0.2em] transition-all duration-500 hover:bg-primary hover:text-on-primary group flex items-center justify-center gap-3" type="submit">
-                  Create Account
-                  <span className="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                <button
+                  className="w-full py-5 border border-primary text-primary font-label-sm uppercase tracking-[0.2em] transition-all duration-500 hover:bg-primary hover:text-on-primary group flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? 'Creating Account...' : 'Create Account'}
+                  {!loading && (
+                    <span className="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  )}
                 </button>
                 <div className="text-center">
                   <p className="font-body-md text-on-surface-variant">
                     Already have an account?
-                    <a className="text-primary font-medium hover:text-white transition-colors duration-300 ml-1" href="#">Sign In</a>
+                    <Link className="text-primary font-medium hover:text-white transition-colors duration-300 ml-1" to="/login">Sign In</Link>
                   </p>
                 </div>
               </div>
@@ -94,7 +191,6 @@ export default function Register() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="w-full py-20 px-6 md:px-20 grid grid-cols-1 md:grid-cols-3 gap-16 bg-[#050508] border-t border-[#C8A97E]/10">
         <div className="space-y-6">
           <div className="text-lg font-semibold text-white font-['Playfair_Display']">Mercedes-Benz</div>
