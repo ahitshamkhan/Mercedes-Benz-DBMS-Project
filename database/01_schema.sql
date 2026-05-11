@@ -53,8 +53,7 @@ CREATE TABLE orders (
     user_id         INT             NOT NULL,
     car_id          INT             NOT NULL,
     total_price     DECIMAL(12,2)   NOT NULL,
-    status          ENUM('pending', 'confirmed', 'preparing', 'in_transit', 'delivered', 'cancelled')
-                                    DEFAULT 'pending',
+    status          ENUM('pending', 'confirmed', 'preparing', 'in_transit', 'delivered', 'cancelled') DEFAULT 'pending',
     payment_method  VARCHAR(50),
     created_at      TIMESTAMP       DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT,
