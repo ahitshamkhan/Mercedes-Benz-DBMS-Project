@@ -4,8 +4,8 @@ const { getMyOrders, getOrderById, placeOrder, getOrderTracking } = require('../
 const { protect } = require('../middleware/authMiddleware');
 
 router.get('/my', protect, getMyOrders);
-router.get('/:id', protect, getOrderById);
 router.get('/:id/tracking', protect, getOrderTracking);
+router.get('/:id', protect, getOrderById);
 router.post('/', protect, placeOrder);
 
 module.exports = router;
