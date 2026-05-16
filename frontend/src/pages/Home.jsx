@@ -74,7 +74,13 @@ export default function Home() {
     const fetchCars = async () => {
       try {
         const res = await getAllCars()
-        setCars(res.data)
+        const mapped = res.data.map(c => ({
+          ...c,
+          name: c.model || c.name,
+          image: c.primary_image || c.image,
+          is_new: c.is_new_arrival || c.is_new || false,
+        }))
+        setCars(mapped)
       } catch (err) {
         setCars(FALLBACK_CARS)
       } finally {
