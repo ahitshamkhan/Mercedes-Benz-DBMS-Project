@@ -34,42 +34,47 @@ export default function ManageCars() {
 
   return (
     <>
-      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
-        <Link to="/" className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-[#C8A97E]">star</span>
-          <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</span>
+      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 glass-nav z-50 border-b border-[#C8A97E]/15">
+        <Link to="/" className="flex items-center gap-4 group hover:opacity-80 transition-opacity">
+          <span className="material-symbols-outlined text-[#C8A97E] text-2xl star-glow" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+          <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase hover:text-[#e5c497] transition-colors">Mercedes-Benz</span>
         </Link>
-        <nav className="hidden md:flex gap-8">
-          <Link className="text-zinc-400 hover:text-[#C8A97E] font-label-sm uppercase" to="/admin">Dashboard</Link>
-          <Link className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-label-sm uppercase" to="/admin/cars">Inventory</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] font-label-sm uppercase" to="/admin/orders">Orders</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] font-label-sm uppercase" to="/admin/customers">Customers</Link>
+        <nav className="hidden md:flex gap-12">
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] font-label-sm uppercase text-xs tracking-wider opacity-70 hover:opacity-100 transition-all" to="/admin">Dashboard</Link>
+          <Link className="text-[#C8A97E] border-b-2 border-[#C8A97E] pb-1 font-label-sm uppercase text-xs tracking-wider" to="/admin/cars">Inventory</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] font-label-sm uppercase text-xs tracking-wider opacity-70 hover:opacity-100 transition-all" to="/admin/orders">Orders</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] font-label-sm uppercase text-xs tracking-wider opacity-70 hover:opacity-100 transition-all" to="/admin/customers">Customers</Link>
         </nav>
         <div className="flex items-center gap-3 pl-8 border-l border-white/10">
-          <div className="w-8 h-8 rounded-full bg-primary-container/20 flex items-center justify-center text-primary-container"><span className="material-symbols-outlined text-sm">person</span></div>
-          <button className="font-label-sm text-zinc-300" onClick={logout}>SIGN OUT</button>
+          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary"><span className="material-symbols-outlined text-sm">person</span></div>
+          <button className="font-label-sm text-[#c0c0c0] hover:text-[#C8A97E] transition-colors" onClick={logout}>SIGN OUT</button>
         </div>
       </header>
 
-      <main className="pt-32 pb-20 px-6 md:px-20 max-w-[1440px] mx-auto min-h-screen">
+      <main className="pt-32 pb-20 px-6 md:px-20 max-w-[1440px] mx-auto min-h-screen animate-fade-up">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
           <div>
-            <h1 className="font-headline-h1 text-on-background mb-2">Manage Cars</h1>
-            <p className="text-zinc-500 font-body-md">Curate the Mercedes-Benz Pakistan inventory.</p>
+            <h1 className="font-headline-h1 text-on-background mb-2 text-4xl md:text-5xl">Manage Cars</h1>
+            <p className="text-outline font-body-md">Curate the Mercedes-Benz Pakistan inventory with precision.</p>
           </div>
           <div className="flex items-center gap-6">
             <div className="relative">
-              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">search</span>
-              <input className="bg-surface-container-low border border-outline-variant/30 pl-12 pr-6 py-3 text-sm focus:border-primary focus:ring-0 w-72 font-label-sm text-on-background placeholder:text-zinc-600" placeholder="SEARCH MODELS..." value={search} onChange={(e) => setSearch(e.target.value)} />
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+              <input className="bg-surface-container-low border border-outline-variant/30 pl-12 pr-6 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary/20 w-72 font-label-sm text-on-background placeholder:text-outline rounded-sm transition-all" placeholder="SEARCH MODELS..." value={search} onChange={(e) => setSearch(e.target.value)} />
             </div>
-            <button className="bg-primary-container hover:bg-primary text-on-primary-container font-label-sm px-8 py-3 flex items-center gap-3 uppercase tracking-widest">
+            <button className="bg-primary hover:bg-primary/90 text-on-primary font-label-sm px-8 py-3 flex items-center gap-3 uppercase tracking-widest rounded-sm transition-all border border-primary hover:border-primary/80">
               <span className="material-symbols-outlined text-sm">add</span>Add New Car
             </button>
           </div>
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-20"><span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span></div>
+          <div className="flex justify-center py-20">
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin"></div>
+            </div>
+          </div>
         ) : (
           <div className="bg-surface-container-lowest border border-[#C8A97E]/15 overflow-hidden">
             <table className="w-full text-left border-collapse">

@@ -28,43 +28,54 @@ export default function MyServiceHistory() {
 
   return (
     <>
-      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
-        <div className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-[#C8A97E] text-2xl">star</span>
-          <Link to="/" className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</Link>
+      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 glass-nav z-50 border-b border-[#C8A97E]/15">
+        <div className="flex items-center gap-4 group hover:opacity-80 transition-opacity">
+          <span className="material-symbols-outlined text-[#C8A97E] text-2xl star-glow" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+          <Link to="/" className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase hover:text-[#e5c497] transition-colors">Mercedes-Benz</Link>
         </div>
         <nav className="hidden md:flex items-center gap-12">
-          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors text-sm" to="/">Cars</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors text-sm" to="/book-test-drive">Test Drive</Link>
-          <Link className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 text-sm" to="/my-service-history">Service</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] transition-colors text-sm" to="/my-orders">My Orders</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] transition-all text-xs uppercase tracking-wider opacity-70 hover:opacity-100" to="/">Cars</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] transition-all text-xs uppercase tracking-wider opacity-70 hover:opacity-100" to="/book-test-drive">Test Drive</Link>
+          <Link className="text-[#C8A97E] border-b-2 border-[#C8A97E] pb-1 text-xs uppercase tracking-wider" to="/my-service-history">Service</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] transition-all text-xs uppercase tracking-wider opacity-70 hover:opacity-100" to="/my-orders">My Orders</Link>
         </nav>
-        <button className="text-[#C8A97E] hover:bg-[#C8A97E]/10 px-6 py-2 transition-all" onClick={logout}>Sign Out</button>
+        <button className="text-[#C8A97E] hover:bg-[#C8A97E]/10 px-6 py-2 transition-all rounded-sm border border-[#C8A97E]/40 hover:border-[#C8A97E] text-xs uppercase tracking-wider" onClick={logout}>Sign Out</button>
       </header>
 
       <main className="pt-32 pb-40 px-6 md:px-20 max-w-[1440px] mx-auto">
-        <section className="mb-20">
-          <h1 className="font-headline-h1 text-primary-fixed-dim mb-4">Service History</h1>
-          <p className="font-body-lg text-outline max-w-2xl">Maintain the integrity of your Mercedes-Benz with a detailed chronology of all service engagements.</p>
+        <section className="mb-20 animate-fade-up">
+          <div className="inline-block mb-6">
+            <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">🛠 Service Records</span>
+          </div>
+          <h1 className="font-headline-h1 text-on-background mb-6 text-4xl md:text-5xl">Service History</h1>
+          <p className="font-body-lg text-outline max-w-2xl leading-relaxed">Maintain the integrity of your Mercedes-Benz with a detailed chronology of all service engagements. Track maintenance, updates, and repairs.</p>
         </section>
 
-        <div className="flex gap-8 mb-16 border-b border-outline-variant/30">
-          {['All', 'Scheduled', 'Completed'].map(f => (
-            <button key={f} className={`font-label-sm pb-4 transition-colors ${filter === f ? 'text-primary border-b border-primary' : 'text-outline hover:text-primary'}`} onClick={() => setFilter(f)}>{f}</button>
+        <div className="flex gap-8 mb-16 border-b border-outline-variant/30 pb-6">
+          {['All', 'Scheduled', 'Completed'].map((f, idx) => (
+            <button key={f} className={`font-label-sm transition-all duration-300 relative group text-xs uppercase tracking-wider ${filter === f ? 'text-primary' : 'text-[#c0c0c0] hover:text-primary'}`} onClick={() => setFilter(f)}>
+              {f}
+              {filter === f && <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-primary/0 rounded-full"></div>}
+            </button>
           ))}
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-20"><span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span></div>
+          <div className="flex justify-center py-20">
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin"></div>
+            </div>
+          </div>
         ) : (
           <div className="relative">
             <div className="absolute left-8 top-0 bottom-0 w-px hidden md:block" style={{ background: 'linear-gradient(to bottom, transparent, #c8a97e 15%, #c8a97e 85%, transparent)' }}></div>
             <div className="flex flex-col gap-12">
-              {filtered.map(s => {
+              {filtered.map((s, idx) => {
                 const isScheduled = s.status === 'Scheduled'
                 return (
-                  <div key={s.id} className="relative flex flex-col md:flex-row gap-12 group">
-                    <div className={`absolute left-8 -translate-x-1/2 w-4 h-4 rounded-full ring-4 ring-background z-10 hidden md:block ${isScheduled ? 'bg-primary-container' : 'bg-outline-variant'}`}></div>
+                  <div key={s.id} className="relative flex flex-col md:flex-row gap-12 group animate-fade-up" style={{animationDelay: `${idx * 50}ms`}}>
+                    <div className={`absolute left-8 -translate-x-1/2 w-4 h-4 rounded-full ring-4 ring-background z-10 hidden md:block transition-all duration-300 ${isScheduled ? 'bg-primary ring-primary/30' : 'bg-outline-variant ring-outline-variant/30'}`}></div>
                     <div className="md:w-1/4 pt-2">
                       <span className={`font-label-sm tracking-[0.2em] uppercase ${isScheduled ? 'text-primary' : 'text-outline'}`}>{s.date}</span>
                       <div className={`mt-2 inline-flex items-center px-3 py-1 border text-[10px] tracking-widest uppercase rounded-full ${isScheduled ? 'bg-primary/10 border-primary/20 text-primary' : 'bg-outline-variant/10 border-outline-variant/20 text-outline'}`}>{s.status}</div>

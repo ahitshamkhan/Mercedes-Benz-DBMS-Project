@@ -36,84 +36,100 @@ export default function DealershipDetail() {
     fetchData()
   }, [id])
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><span className="material-symbols-outlined text-primary text-5xl animate-spin">progress_activity</span></div>
-  if (!dealer) return <div className="min-h-screen flex flex-col items-center justify-center gap-6"><p className="text-zinc-500">Dealership not found.</p><Link to="/dealerships" className="text-primary font-label-sm">Back</Link></div>
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="relative w-16 h-16">
+        <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
+        <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin"></div>
+      </div>
+    </div>
+  )
+  if (!dealer) return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-background">
+      <p className="text-outline">Dealership not found.</p>
+      <Link to="/dealerships" className="text-primary font-label-sm border border-primary/30 px-6 py-2 hover:bg-primary/10 transition-all rounded-sm">← Back to Dealerships</Link>
+    </div>
+  )
 
   return (
     <>
-      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
-        <Link to="/" className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-[#C8A97E]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-          <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</span>
+      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 glass-nav z-50 border-b border-[#C8A97E]/15">
+        <Link to="/" className="flex items-center gap-4 group hover:opacity-80 transition-opacity">
+          <span className="material-symbols-outlined text-[#C8A97E] text-2xl star-glow" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+          <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase hover:text-[#e5c497] transition-colors">Mercedes-Benz</span>
         </Link>
-        <nav className="hidden md:flex gap-10">
-          <Link className="text-zinc-400 hover:text-[#C8A97E] text-sm uppercase" to="/">Cars</Link>
-          <Link className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 text-sm uppercase" to="/dealerships">Dealerships</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] text-sm uppercase" to="/service-booking">Service</Link>
+        <nav className="hidden md:flex items-center gap-12">
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] transition-all text-xs uppercase tracking-wider opacity-70 hover:opacity-100" to="/">Cars</Link>
+          <Link className="text-[#C8A97E] border-b-2 border-[#C8A97E] pb-1 text-xs uppercase tracking-wider" to="/dealerships">Dealerships</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] transition-all text-xs uppercase tracking-wider opacity-70 hover:opacity-100" to="/service-booking">Service</Link>
         </nav>
         {isLoggedIn
-          ? <button className="text-sm px-6 py-2 border border-[#C8A97E]/40 text-[#C8A97E] hover:bg-[#C8A97E] hover:text-zinc-950 transition-all" onClick={logout}>Sign Out</button>
-          : <Link to="/login" className="text-sm px-6 py-2 border border-[#C8A97E]/40 text-[#C8A97E] hover:bg-[#C8A97E] hover:text-zinc-950 transition-all">Sign In</Link>}
+          ? <button className="text-[#C8A97E] hover:bg-[#C8A97E]/10 px-6 py-2 transition-all rounded-sm border border-[#C8A97E]/40 hover:border-[#C8A97E] text-xs uppercase tracking-wider" onClick={logout}>Sign Out</button>
+          : <Link to="/login" className="text-[#C8A97E] hover:bg-[#C8A97E]/10 px-6 py-2 transition-all rounded-sm border border-[#C8A97E]/40 hover:border-[#C8A97E] text-xs uppercase tracking-wider">Sign In</Link>}
       </header>
 
       <main className="pt-20">
-        <section className="relative h-[500px] md:h-[618px] w-full overflow-hidden">
+        <section className="relative h-[500px] md:h-[618px] w-full overflow-hidden group">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background z-10"></div>
-          <img alt={dealer.name} className="w-full h-full object-cover grayscale-[20%]" src={dealer.heroImg} />
+          <img alt={dealer.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={dealer.heroImg} />
           <div className="absolute bottom-20 left-6 md:left-20 z-20">
             <p className="font-label-sm text-primary mb-4 uppercase">{dealer.tagline}</p>
             <h2 className="font-display-lg text-white max-w-3xl">{dealer.name}</h2>
           </div>
         </section>
 
-        <section className="px-6 md:px-20 py-20 grid grid-cols-1 md:grid-cols-3 gap-16">
+        <section className="px-6 md:px-20 py-20 grid grid-cols-1 md:grid-cols-3 gap-16 animate-fade-up">
           <div className="col-span-2 space-y-12">
             <div>
               <h3 className="font-headline-h2 text-white mb-6">Redefining Excellence</h3>
-              <p className="font-body-lg text-zinc-400 leading-relaxed max-w-2xl">{dealer.desc}</p>
+              <p className="font-body-lg text-outline leading-relaxed max-w-2xl">{dealer.desc}</p>
             </div>
             <div className="grid grid-cols-2 gap-8">
-              <div className="glass-card p-8">
-                <span className="material-symbols-outlined text-primary mb-4">schedule</span>
-                <h4 className="font-label-sm text-white mb-2 uppercase">Operating Hours</h4>
-                <div className="text-zinc-500 text-sm space-y-1">{dealer.hours.map((h,i) => <p key={i}>{h}</p>)}</div>
+              <div className="glass-card p-8 hover:border-primary/40 transition-all duration-300">
+                <span className="material-symbols-outlined text-primary mb-4 text-2xl">schedule</span>
+                <h4 className="font-label-sm text-white mb-4 uppercase tracking-wider">Operating Hours</h4>
+                <div className="text-outline text-sm space-y-2">{dealer.hours.map((h,i) => <p key={i} className="flex items-center gap-2"><span className="w-1 h-1 bg-primary rounded-full"></span>{h}</p>)}</div>
               </div>
-              <div className="glass-card p-8">
-                <span className="material-symbols-outlined text-primary mb-4">location_on</span>
-                <h4 className="font-label-sm text-white mb-2 uppercase">Location</h4>
-                <p className="text-zinc-500 text-sm">{dealer.address}</p>
+              <div className="glass-card p-8 hover:border-primary/40 transition-all duration-300">
+                <span className="material-symbols-outlined text-primary mb-4 text-2xl">location_on</span>
+                <h4 className="font-label-sm text-white mb-4 uppercase tracking-wider">Location</h4>
+                <p className="text-outline text-sm leading-relaxed">{dealer.address}</p>
               </div>
             </div>
           </div>
-          <div className="glass-card p-10 flex flex-col justify-between border-primary/20">
+          <div className="glass-card p-10 flex flex-col justify-between border-primary/20 hover:border-primary/40 transition-all duration-300">
             <div>
               <h4 className="font-headline-h3 text-white mb-8">Inquire Now</h4>
               <div className="space-y-6">
-                <div className="flex items-center gap-4"><span className="material-symbols-outlined text-primary">call</span><span className="text-zinc-300">{dealer.phone}</span></div>
-                <div className="flex items-center gap-4"><span className="material-symbols-outlined text-primary">mail</span><span className="text-zinc-300">{dealer.email}</span></div>
+                <div className="flex items-center gap-4"><span className="material-symbols-outlined text-primary text-xl">call</span><span className="text-outline text-sm hover:text-primary transition-colors cursor-pointer">{dealer.phone}</span></div>
+                <div className="flex items-center gap-4"><span className="material-symbols-outlined text-primary text-xl">mail</span><span className="text-outline text-sm hover:text-primary transition-colors cursor-pointer">{dealer.email}</span></div>
               </div>
             </div>
             <div className="mt-12 space-y-4">
-              <Link to="/book-test-drive" className="w-full py-4 border border-primary text-primary font-label-sm uppercase hover:bg-primary hover:text-background transition-all text-center block">Book Test Drive</Link>
+              <Link to="/book-test-drive" className="w-full py-4 border border-primary/50 text-primary font-label-sm uppercase hover:bg-primary hover:text-on-primary transition-all text-center block rounded-sm text-xs tracking-wider">Book Test Drive</Link>
             </div>
           </div>
         </section>
 
         {dealer.staff && (
-          <section className="bg-[#0D0D14] py-20 px-6 md:px-20">
+          <section className="bg-gradient-to-b from-[#0D0D14] to-[#050508] py-20 px-6 md:px-20 animate-fade-up">
             <div className="mb-16">
-              <p className="font-label-sm text-primary mb-4 uppercase">The Experts</p>
-              <h3 className="font-headline-h2 text-white">Our Dedicated Team</h3>
+              <div className="inline-block mb-4">
+                <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm text-xs">👥 Meet the Team</span>
+              </div>
+              <h3 className="font-headline-h2 text-white text-3xl md:text-4xl">Our Dedicated Experts</h3>
+              <p className="text-outline mt-4 max-w-2xl">Highly trained specialists committed to delivering unparalleled service and expertise.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {dealer.staff.map((s, i) => (
-                <div key={i} className="group">
-                  <div className="aspect-[3/4] overflow-hidden mb-6 glass-card border-none">
-                    <img alt={s.role} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" src={s.img} />
+                <div key={i} className="group animate-fade-up" style={{animationDelay: `${i * 100}ms`}}>
+                  <div className="aspect-[3/4] overflow-hidden mb-6 glass-card border-none relative">
+                    <img alt={s.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" src={s.img} />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
-                  <span className="px-3 py-1 border border-zinc-700 font-label-sm text-[10px] uppercase rounded-full text-zinc-300">{s.role}</span>
-                  <h5 className="font-headline-h3 text-xl text-white mt-4">{s.name}</h5>
-                  <p className="text-zinc-500 text-sm">{s.subtitle}</p>
+                  <span className="px-3 py-1 border border-primary/30 bg-primary/10 font-label-sm text-[10px] uppercase rounded-full text-primary tracking-wider">{s.role}</span>
+                  <h5 className="font-headline-h3 text-lg text-white mt-4 group-hover:text-primary transition-colors">{s.name}</h5>
+                  <p className="text-outline text-sm">{s.subtitle}</p>
                 </div>
               ))}
             </div>
@@ -121,26 +137,29 @@ export default function DealershipDetail() {
         )}
 
         {dealer.inventory && (
-          <section className="py-20 px-6 md:px-20">
+          <section className="py-20 px-6 md:px-20 animate-fade-up">
             <div className="flex justify-between items-end mb-16">
               <div>
-                <p className="font-label-sm text-primary mb-4 uppercase">Showroom Inventory</p>
-                <h3 className="font-headline-h2 text-white">Available Models</h3>
+                <div className="inline-block mb-4">
+                  <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm text-xs">🏎 Inventory</span>
+                </div>
+                <h3 className="font-headline-h2 text-white text-3xl md:text-4xl">Available Models</h3>
+                <p className="text-outline mt-4">Exclusive selection from our premium inventory</p>
               </div>
             </div>
             <div className="grid grid-cols-1 gap-6">
               {dealer.inventory.map((v, i) => (
-                <div key={i} className="glass-card flex flex-col md:flex-row items-center p-6 gap-8">
-                  <div className="w-full md:w-48 h-32 overflow-hidden flex-shrink-0">
-                    <img alt={v.model} className="w-full h-full object-cover" src={v.img} />
+                <div key={i} className="glass-card flex flex-col md:flex-row items-center p-8 gap-8 hover:border-primary/40 transition-all duration-300 group animate-fade-up" style={{animationDelay: `${i * 100}ms`}}>
+                  <div className="w-full md:w-48 h-40 overflow-hidden flex-shrink-0 rounded">
+                    <img alt={v.model} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src={v.img} />
                   </div>
                   <div className="flex-grow">
-                    <h4 className="font-headline-h3 text-white">{v.model}</h4>
-                    <p className="text-zinc-500 text-sm">{v.desc}</p>
+                    <h4 className="font-headline-h3 text-white text-xl group-hover:text-primary transition-colors">{v.model}</h4>
+                    <p className="text-outline text-sm mt-2">{v.desc}</p>
                   </div>
-                  <div className="text-right flex flex-col items-end gap-2">
-                    <span className="px-2 py-1 border border-zinc-700 text-[10px] font-label-sm uppercase text-zinc-400">{v.status}</span>
-                    <p className="font-headline-h3 text-primary">{v.price}</p>
+                  <div className="text-right flex flex-col items-end gap-3">
+                    <span className="px-3 py-1 border border-primary/30 bg-primary/10 text-[10px] font-label-sm uppercase text-primary rounded-sm tracking-wider">{v.status}</span>
+                    <p className="font-headline-h3 text-primary text-2xl">{v.price}</p>
                   </div>
                 </div>
               ))}
