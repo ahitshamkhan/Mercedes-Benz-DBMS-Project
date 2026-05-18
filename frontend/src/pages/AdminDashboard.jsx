@@ -50,41 +50,42 @@ export default function AdminDashboard() {
     fetch()
   }, [])
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#050508]"><span className="material-symbols-outlined text-primary text-5xl animate-spin">progress_activity</span></div>
+  if (loading) return <div className="min-h-screen flex items-center justify-center bg-[#050508]"><span className="material-symbols-outlined text-[#C8A97E] text-5xl animate-spin">progress_activity</span></div>
   const d = data
 
   return (
     <>
-      <header className="bg-zinc-950/90 backdrop-blur-md fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 z-50 border-b border-[#C8A97E]/15">
-        <Link to="/" className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-[#C8A97E]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+      <header className="glass-nav fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 z-50 border-b border-[#C8A97E]/15">
+        <Link to="/" className="flex items-center gap-4 group hover:opacity-80 transition-opacity">
+          <span className="material-symbols-outlined text-[#C8A97E] star-glow" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
           <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</span>
         </Link>
-        <nav className="hidden md:flex gap-10">
-          <Link className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-label-sm uppercase" to="/admin">Dashboard</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] font-label-sm uppercase" to="/admin/cars">Inventory</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] font-label-sm uppercase" to="/admin/customers">Customers</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] font-label-sm uppercase" to="/admin/chat">Chat</Link>
+        <nav className="hidden md:flex gap-12">
+          <Link className="text-[#C8A97E] border-b-2 border-[#C8A97E] pb-1 font-label-sm uppercase text-xs tracking-wider" to="/admin">Dashboard</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] font-label-sm uppercase text-xs tracking-wider opacity-70 hover:opacity-100 transition-all" to="/admin/cars">Inventory</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] font-label-sm uppercase text-xs tracking-wider opacity-70 hover:opacity-100 transition-all" to="/admin/customers">Customers</Link>
+          <Link className="text-[#c0c0c0] hover:text-[#C8A97E] font-label-sm uppercase text-xs tracking-wider opacity-70 hover:opacity-100 transition-all" to="/admin/chat">Chat</Link>
         </nav>
         <div className="flex items-center gap-6">
-          <span className="material-symbols-outlined text-zinc-400 hover:text-[#C8A97E] cursor-pointer">notifications</span>
-          <button className="bg-[#C8A97E]/10 px-4 py-2 border border-[#C8A97E]/30 text-[#C8A97E] font-label-sm uppercase hover:bg-[#C8A97E] hover:text-black transition-all" onClick={logout}>Log Out</button>
+          <span className="material-symbols-outlined text-[#c0c0c0] hover:text-[#C8A97E] cursor-pointer transition-all hover:scale-110 duration-300">notifications</span>
+          <button className="bg-[#C8A97E]/10 hover:bg-[#C8A97E] px-4 py-2 border-2 border-[#C8A97E]/40 hover:border-[#C8A97E] text-[#C8A97E] hover:text-black font-label-sm uppercase transition-all text-xs tracking-wider rounded-sm" onClick={logout}>Log Out</button>
         </div>
       </header>
 
       <main className="pt-32 pb-20 px-6 md:px-20 max-w-[1440px] mx-auto min-h-screen">
-        <div className="mb-12">
-          <h2 className="font-headline-h1 text-[#C8A97E] mb-2">Executive Overview</h2>
-          <p className="font-body-lg text-zinc-500">Global Sales &amp; Logistics Administrative Suite</p>
+        <div className="mb-12 animate-fade-up">
+          <h2 className="font-headline-h1 text-white mb-2 text-4xl md:text-5xl">Executive Overview</h2>
+          <p className="font-body-lg text-[#c0c0c0] opacity-80">Global Sales &amp; Logistics Administrative Suite</p>
+          <div className="w-16 h-1 bg-gradient-to-r from-[#c8a97e] to-[#e5c497] mt-4"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
           {d.kpis.map((k, i) => (
-            <div key={i} className="glass-card p-8 flex flex-col gap-2 relative overflow-hidden">
-              <div className="absolute right-0 top-0 p-4 opacity-10"><span className="material-symbols-outlined text-6xl">{k.icon}</span></div>
-              <span className="font-label-sm text-zinc-500 uppercase">{k.label}</span>
-              <span className="font-headline-h2 text-white">{k.value}</span>
-              <span className={`text-sm font-label-sm flex items-center gap-1 ${k.up ? 'text-emerald-500' : 'text-zinc-500'}`}>
+            <div key={i} className="glass-card p-8 flex flex-col gap-3 relative overflow-hidden hover:shadow-glow-lg transition-all duration-300 group animate-fade-up stagger-{i+1}">
+              <div className="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity duration-300"><span className="material-symbols-outlined text-6xl">{k.icon}</span></div>
+              <span className="font-label-sm text-[#c0c0c0] uppercase text-xs opacity-70">{k.label}</span>
+              <span className="font-headline-h2 text-white text-3xl">{k.value}</span>
+              <span className={`text-xs font-label-sm flex items-center gap-1 tracking-wider ${k.up ? 'text-green-400' : 'text-[#c0c0c0]'}`}>
                 <span className="material-symbols-outlined text-xs">{k.up ? 'trending_up' : 'remove'}</span>{k.trend}
               </span>
             </div>

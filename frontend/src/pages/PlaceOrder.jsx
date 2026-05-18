@@ -50,9 +50,12 @@ export default function PlaceOrder() {
       </nav>
 
       <main className="pt-32 pb-40 px-6 md:px-20 max-w-[1440px] mx-auto">
-        <header className="mb-16">
-          <h1 className="font-headline-h1 text-on-surface mb-4">Complete Your Order</h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl">Finalize your configuration and select your preferred acquisition method.</p>
+        <header className="mb-16 animate-fade-up">
+          <div className="inline-block mb-6">
+            <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">🎯 Final Step</span>
+          </div>
+          <h1 className="font-headline-h1 text-on-surface mb-6 text-4xl md:text-5xl">Complete Your Order</h1>
+          <p className="font-body-lg text-on-surface-variant max-w-2xl leading-relaxed">Finalize your configuration and select your preferred acquisition method. Our specialists will guide you through the next steps.</p>
         </header>
 
         {error && (
@@ -64,20 +67,23 @@ export default function PlaceOrder() {
 
         <div className="grid grid-cols-12 gap-8 lg:gap-16">
           <div className="col-span-12 lg:col-span-8 space-y-12">
-            <section>
-              <h3 className="font-headline-h3 text-on-surface mb-8">Payment Method</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {PAYMENTS.map(p => (
-                  <label key={p.id} className={`relative flex items-center p-6 bg-[#111118] gold-border cursor-pointer hover:bg-[#111118]/80 transition-all ${paymentMethod === p.id ? 'border-[#C8A97E]/60' : ''}`} onClick={() => setPaymentMethod(p.id)}>
+            <section className="animate-fade-up">
+              <h3 className="font-headline-h3 text-on-surface mb-8 flex items-center gap-3">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold text-sm">1</span>
+                Payment Method
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {PAYMENTS.map((p, idx) => (
+                  <label key={p.id} className={`relative flex items-center p-8 bg-[#111118] gold-border cursor-pointer transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 group animate-fade-up ${paymentMethod === p.id ? 'border-[#C8A97E]/60 bg-primary/5' : ''}`} onClick={() => setPaymentMethod(p.id)} style={{animationDelay: `${idx * 50}ms`}}>
                     <div className="flex flex-col w-full">
                       <div className="flex justify-between items-center mb-4">
-                        <span className={`material-symbols-outlined text-3xl ${paymentMethod === p.id ? 'text-[#C8A97E]' : 'text-zinc-600'}`}>{p.icon}</span>
-                        <div className="h-4 w-4 rounded-full border border-[#C8A97E] flex items-center justify-center">
-                          {paymentMethod === p.id && <div className="h-2 w-2 rounded-full bg-[#C8A97E]"></div>}
+                        <span className={`material-symbols-outlined text-3xl transition-colors duration-300 ${paymentMethod === p.id ? 'text-primary' : 'text-zinc-600 group-hover:text-primary'}`}>{p.icon}</span>
+                        <div className="h-5 w-5 rounded-full border-2 border-primary/40 flex items-center justify-center transition-all duration-300 group-hover:border-primary">
+                          {paymentMethod === p.id && <div className="h-3 w-3 rounded-full bg-primary scale-100 transition-transform"></div>}
                         </div>
                       </div>
-                      <span className={`font-body-md font-bold uppercase tracking-wider ${paymentMethod === p.id ? 'text-white' : 'text-zinc-400'}`}>{p.label}</span>
-                      <span className="text-zinc-500 text-xs mt-1">{p.sub}</span>
+                      <span className={`font-body-md font-bold uppercase tracking-wider transition-colors duration-300 ${paymentMethod === p.id ? 'text-white' : 'text-zinc-400'}`}>{p.label}</span>
+                      <span className="text-zinc-500 text-xs mt-2 group-hover:text-zinc-400 transition-colors">{p.sub}</span>
                     </div>
                   </label>
                 ))}
@@ -86,16 +92,32 @@ export default function PlaceOrder() {
           </div>
 
           <div className="col-span-12 lg:col-span-4">
-            <div className="sticky top-32 bg-[#111118] gold-border p-10">
-              <h3 className="font-headline-h3 text-white mb-8 border-b border-[#C8A97E]/10 pb-6">Order Summary</h3>
+            <div className="sticky top-32 bg-[#111118] gold-border p-10 animate-fade-up rounded-lg hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300">
+              <h3 className="font-headline-h3 text-white mb-8 border-b border-primary/10 pb-6">Order Summary</h3>
               <div className="space-y-6 mb-10">
-                <div className="flex justify-between"><span className="text-zinc-500 font-label-sm uppercase">Car ID</span><span className="text-white font-body-md">{carId || 'N/A'}</span></div>
-                <div className="flex justify-between"><span className="text-zinc-500 font-label-sm uppercase">Payment</span><span className="text-white font-body-md capitalize">{paymentMethod}</span></div>
+                <div className="flex justify-between items-center p-4 bg-primary/5 rounded border border-primary/10">
+                  <span className="text-zinc-500 font-label-sm uppercase text-xs">Car ID</span>
+                  <span className="text-primary font-body-md font-semibold">{carId || 'N/A'}</span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-primary/5 rounded border border-primary/10">
+                  <span className="text-zinc-500 font-label-sm uppercase text-xs">Payment Method</span>
+                  <span className="text-primary font-body-md font-semibold capitalize">{paymentMethod}</span>
+                </div>
               </div>
-              <button className="w-full bg-transparent border border-[#C8A97E] py-5 text-white font-label-sm uppercase tracking-widest hover:bg-[#C8A97E] hover:text-black transition-all duration-300 disabled:opacity-50" onClick={handleConfirm} disabled={loading}>
-                {loading ? 'Processing...' : 'Confirm Order'}
+              <button className="w-full bg-primary text-on-primary py-5 font-label-sm uppercase tracking-widest hover:bg-primary/90 transition-all duration-300 disabled:opacity-50 group flex items-center justify-center gap-2" onClick={handleConfirm} disabled={loading}>
+                {loading ? (
+                  <>
+                    <span>Processing...</span>
+                    <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                  </>
+                ) : (
+                  <>
+                    Confirm Order
+                    <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  </>
+                )}
               </button>
-              <p className="text-center text-zinc-600 text-[10px] mt-6 leading-relaxed">By clicking confirm, you agree to our Terms of Service. A specialist will contact you within 24 hours.</p>
+              <p className="text-center text-zinc-600 text-[11px] mt-6 leading-relaxed">By clicking confirm, you agree to our Terms of Service. A specialist will contact you within 24 hours to complete the process.</p>
             </div>
           </div>
         </div>

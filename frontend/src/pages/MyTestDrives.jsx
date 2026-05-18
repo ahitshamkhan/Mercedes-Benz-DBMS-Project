@@ -59,23 +59,35 @@ export default function MyTestDrives() {
       </nav>
 
       <main className="min-h-screen pt-40 pb-section-gap px-6 md:px-20 max-w-[1440px] mx-auto">
-        <header className="mb-20">
-          <h1 className="font-headline-h1 text-on-background mb-4">Your Test Drive History</h1>
-          <p className="font-body-lg text-outline max-w-2xl">Manage and track your upcoming and past experiences.</p>
+        <header className="mb-20 animate-fade-up">
+          <div className="inline-block mb-6">
+            <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">🏁 Test Drive Bookings</span>
+          </div>
+          <h1 className="font-headline-h1 text-on-background mb-6 text-4xl md:text-5xl">Your Test Drive History</h1>
+          <p className="font-body-lg text-outline max-w-2xl leading-relaxed">Manage and track your upcoming and past experiences. Book your next driving experience at your convenience.</p>
         </header>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin"></div>
+            </div>
           </div>
         ) : drives.length === 0 ? (
-          <section className="flex flex-col items-center justify-center py-40 text-center">
-            <div className="w-24 h-24 rounded-full border border-primary/20 flex items-center justify-center mb-8">
-              <span className="material-symbols-outlined text-4xl text-primary/40">car_rental</span>
+          <section className="flex flex-col items-center justify-center py-40 text-center animate-fade-up">
+            <div className="relative inline-block mb-8">
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl scale-125"></div>
+              <div className="w-24 h-24 rounded-full border border-primary/40 flex items-center justify-center relative">
+                <span className="material-symbols-outlined text-4xl text-primary/60">car_rental</span>
+              </div>
             </div>
-            <h2 className="font-headline-h2 mb-4">No test drives scheduled</h2>
-            <p className="font-body-lg text-outline mb-12 max-w-md mx-auto">Experience the pinnacle of automotive excellence. Book your personal test drive today.</p>
-            <Link to="/book-test-drive" className="px-12 py-4 border border-primary text-primary hover:bg-primary hover:text-background transition-all font-label-sm tracking-widest uppercase">Explore Inventory</Link>
+            <h2 className="font-headline-h2 mb-4 text-2xl">No test drives scheduled</h2>
+            <p className="font-body-lg text-outline mb-12 max-w-md mx-auto leading-relaxed">Experience the pinnacle of automotive excellence. Book your personal test drive today and feel the precision engineering firsthand.</p>
+            <Link to="/book-test-drive" className="inline-flex items-center gap-2 px-12 py-4 bg-primary text-on-primary hover:bg-primary/90 transition-all font-label-sm tracking-widest uppercase group">
+              Book Test Drive Now
+              <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </Link>
           </section>
         ) : (
           <section className="relative">

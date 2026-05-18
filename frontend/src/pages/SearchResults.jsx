@@ -54,43 +54,55 @@ export default function SearchResults() {
       </header>
 
       <main className="pt-32 pb-20 px-6 md:px-20 max-w-[1440px] mx-auto min-h-screen">
-        <div className="mb-16 flex flex-col gap-4">
-          <p className="text-primary font-label-sm uppercase tracking-[0.2em]">Exquisite Inventory</p>
+        <div className="mb-16 flex flex-col gap-4 animate-fade-up">
+          <div className="inline-block w-fit">
+            <p className="text-primary font-label-sm uppercase tracking-[0.2em] px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm">🔍 Exquisite Inventory</p>
+          </div>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <h2 className="font-headline-h1 leading-none">{query ? `Results for "${query}"` : 'Search Results'}</h2>
-            <span className="font-body-lg text-surface-container-highest italic pb-2">{loading ? 'Searching...' : `${results.length} masterpieces found`}</span>
+            <h2 className="font-headline-h1 leading-none text-4xl md:text-5xl">{query ? `Results for "${query}"` : 'Search Results'}</h2>
+            <span className="font-body-lg text-surface-container-highest italic pb-2 transition-all duration-500">{loading ? 'Searching...' : `${results.length} masterpiece${results.length !== 1 ? 's' : ''} found`}</span>
           </div>
         </div>
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {loading ? (
             <div className="col-span-2 flex justify-center py-20">
-              <span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+              <div className="relative w-16 h-16">
+                <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
+                <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin"></div>
+              </div>
             </div>
           ) : results.length === 0 ? (
-            <div className="col-span-2 flex flex-col items-center py-40 gap-8">
-              <span className="material-symbols-outlined text-8xl text-primary/30">search</span>
-              <h3 className="font-headline-h3">No Matches Found</h3>
-              <p className="text-on-surface/50 max-w-md text-center">Try a different search term.</p>
-              <Link to="/" className="px-12 py-4 border border-primary/30 text-primary font-label-sm uppercase hover:bg-primary/10 transition-all">Browse All</Link>
+            <div className="col-span-2 flex flex-col items-center py-40 gap-8 animate-fade-up">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full"></div>
+                <span className="material-symbols-outlined text-8xl text-primary/40 relative">search</span>
+              </div>
+              <h3 className="font-headline-h3 text-2xl">No Matches Found</h3>
+              <p className="text-on-surface/50 max-w-md text-center">Try a different search term or explore our full collection.</p>
+              <Link to="/" className="px-12 py-4 border border-primary/30 text-primary font-label-sm uppercase hover:bg-primary/10 hover:border-primary/60 transition-all duration-300">Browse All Models</Link>
             </div>
-          ) : results.map(car => (
-            <Link key={car.id} to={`/car/${car.id}`} className="group bg-[#111118] border border-primary/15 overflow-hidden transition-all duration-500 hover:border-primary/40">
+          ) : results.map((car, idx) => (
+            <Link key={car.id} to={`/car/${car.id}`} className="group bg-[#111118] border border-primary/15 overflow-hidden transition-all duration-500 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/20 animate-fade-up" style={{animationDelay: `${idx * 50}ms`}}>
               <div className="h-[400px] overflow-hidden relative">
                 <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src={car.image} alt={car.name} />
-                {car.badge && <div className="absolute top-6 left-6 px-4 py-1 glass-panel text-[10px] uppercase tracking-[0.2em] text-primary">{car.badge}</div>}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                {car.badge && <div className="absolute top-6 left-6 px-4 py-1 glass-panel text-[10px] uppercase tracking-[0.2em] text-primary group-hover:translate-x-2 transition-transform duration-300">{car.badge}</div>}
+                <div className="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-primary/10 group-hover:bg-primary/30 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <span className="material-symbols-outlined text-primary">arrow_outward</span>
+                </div>
               </div>
               <div className="p-10 flex flex-col gap-4">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-headline-h3 text-on-background">{car.name}</h3>
-                    <p className="text-surface-container-highest font-label-sm text-[11px] uppercase tracking-widest">{car.subtitle}</p>
+                    <h3 className="font-headline-h3 text-on-background group-hover:text-primary transition-colors duration-300">{car.name}</h3>
+                    <p className="text-surface-container-highest font-label-sm text-[11px] uppercase tracking-widest group-hover:text-primary/70 transition-colors duration-300">{car.subtitle}</p>
                   </div>
                   <span className="text-primary font-headline-h3">{car.price}</span>
                 </div>
                 <div className="flex gap-6 mt-4 pt-6 border-t border-primary/10">
-                  <div className="flex flex-col"><span className="text-[10px] text-surface-container-highest uppercase">Performance</span><span className="text-sm">{car.s1}</span></div>
-                  <div className="flex flex-col"><span className="text-[10px] text-surface-container-highest uppercase">Spec</span><span className="text-sm">{car.s2}</span></div>
+                  <div className="flex flex-col group-hover:text-primary transition-colors duration-300"><span className="text-[10px] text-surface-container-highest uppercase">Performance</span><span className="text-sm font-semibold">{car.s1}</span></div>
+                  <div className="flex flex-col group-hover:text-primary transition-colors duration-300"><span className="text-[10px] text-surface-container-highest uppercase">Spec</span><span className="text-sm font-semibold">{car.s2}</span></div>
                 </div>
               </div>
             </Link>

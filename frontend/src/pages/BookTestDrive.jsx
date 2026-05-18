@@ -49,12 +49,20 @@ export default function BookTestDrive() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-[#050508] flex items-center justify-center px-6">
-        <div className="bg-[#0D0D14] gold-border max-w-lg w-full p-12 text-center">
-          <span className="material-symbols-outlined text-[#C8A97E] text-6xl mb-6 block">task_alt</span>
-          <h2 className="font-headline-h2 text-white mb-4">Test Drive Booked!</h2>
-          <p className="text-zinc-400 font-body-md mb-10">Your appointment has been confirmed. We'll send a confirmation to your email.</p>
-          <button className="w-full bg-[#C8A97E] py-4 text-black font-label-sm uppercase tracking-widest hover:bg-[#e2c195] transition-colors" onClick={() => navigate('/my-test-drives')}>View My Bookings</button>
+      <div className="min-h-screen bg-[#050508] flex items-center justify-center px-6 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
+        <div className="bg-[#0D0D14] gold-border max-w-lg w-full p-12 text-center relative z-10 animate-fade-up">
+          <div className="relative mb-6 inline-block">
+            <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl"></div>
+            <span className="material-symbols-outlined text-[#C8A97E] text-6xl block relative">task_alt</span>
+          </div>
+          <h2 className="font-headline-h2 text-white mb-4 text-3xl">Test Drive Booked!</h2>
+          <p className="text-zinc-400 font-body-md mb-10 leading-relaxed">Your appointment has been confirmed. We'll send a confirmation email within minutes. Get ready for an unforgettable driving experience.</p>
+          <button className="w-full bg-primary text-on-primary py-4 font-label-sm uppercase tracking-widest hover:bg-primary/90 transition-all duration-300 group flex items-center justify-center gap-2" onClick={() => navigate('/my-test-drives')}>
+            View My Bookings
+            <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </button>
         </div>
       </div>
     )
@@ -71,9 +79,12 @@ export default function BookTestDrive() {
       </header>
 
       <main className="min-h-screen pt-32 pb-40 px-6 md:px-20 flex flex-col items-center">
-        <div className="max-w-4xl w-full text-center mb-16">
-          <h1 className="font-headline-h1 mb-4 text-white">Experience Excellence</h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto">Book your exclusive test drive experience.</p>
+        <div className="max-w-4xl w-full text-center mb-16 animate-fade-up">
+          <div className="inline-block mb-6">
+            <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">🏁 Premium Experience</span>
+          </div>
+          <h1 className="font-headline-h1 mb-6 text-white text-4xl md:text-5xl">Experience Excellence</h1>
+          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">Book your exclusive test drive experience and feel the precision engineering of Mercedes-Benz firsthand.</p>
         </div>
 
         <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-12 gap-12">

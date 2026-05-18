@@ -47,27 +47,32 @@ export default function Wishlist() {
       </header>
 
       <main className="pt-40 pb-section-gap px-6 md:px-20 max-w-[1440px] mx-auto min-h-screen">
-        <header className="mb-20">
-          <div className="flex items-baseline gap-4 mb-4">
-            <span className="text-primary font-label-sm tracking-[0.2em] uppercase">Private Collection</span>
-            <div className="h-px bg-primary/20 flex-grow"></div>
+        <header className="mb-20 animate-fade-up">
+          <div className="inline-block mb-6">
+            <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">❤️ Wishlist</span>
           </div>
-          <h2 className="font-headline-h1 text-on-surface">Your Saved Vehicles</h2>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mt-6">Manage your preferred configurations and proceed to consultation.</p>
+          <h2 className="font-headline-h1 text-on-surface mb-6 text-4xl md:text-5xl">Your Saved Vehicles</h2>
+          <p className="font-body-lg text-on-surface-variant max-w-2xl leading-relaxed">Manage your preferred configurations and proceed to consultation. Compare and personalize your selections.</p>
         </header>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin"></div>
+            </div>
           </div>
         ) : items.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-32 text-center border border-dashed border-primary/20">
-            <span className="material-symbols-outlined text-6xl text-primary/30 mb-8">car_tag</span>
-            <h3 className="font-headline-h2 mb-4">Your wishlist is empty.</h3>
-            <p className="font-body-md text-on-surface-variant mb-10 max-w-sm">Discover our latest models and save your favorites.</p>
-            <Link className="group flex items-center gap-4 text-primary font-label-sm uppercase tracking-widest border border-primary px-10 py-4 hover:bg-primary hover:text-on-primary transition-all" to="/">
-              Start exploring
-              <span className="material-symbols-outlined transition-transform group-hover:translate-x-2">trending_flat</span>
+          <div className="flex flex-col items-center justify-center py-32 text-center border border-dashed border-primary/20 rounded-lg animate-fade-up">
+            <div className="relative inline-block mb-8">
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl scale-125"></div>
+              <span className="material-symbols-outlined text-6xl text-primary/40 relative">car_tag</span>
+            </div>
+            <h3 className="font-headline-h2 mb-4 text-2xl">Your wishlist is empty.</h3>
+            <p className="font-body-md text-on-surface-variant mb-10 max-w-sm leading-relaxed">Discover our latest models and save your favorites for easy comparison and reference.</p>
+            <Link className="group flex items-center gap-4 text-on-primary font-label-sm uppercase tracking-widest bg-primary hover:bg-primary/90 px-10 py-4 transition-all duration-300" to="/">
+              Start Exploring
+              <span className="material-symbols-outlined transition-transform group-hover:translate-x-2">arrow_forward</span>
             </Link>
           </div>
         ) : (

@@ -123,20 +123,26 @@ export default function CarDetail() {
         <section className="relative h-[795px] w-full flex items-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img className="w-full h-full object-cover" src={car.hero_image} alt={car.name} />
-            <div className="absolute inset-0 bg-gradient-to-r from-surface-dim via-surface-dim/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-surface-dim via-surface-dim/50 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
           </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent"></div>
           <div className="relative z-10 px-6 md:px-20 max-w-4xl stagger-in" style={{ animationDelay: '0.2s' }}>
-            <span className="font-label-sm text-primary uppercase tracking-[0.3em] mb-6 block">{car.tagline}</span>
-            <h1 className="font-display-lg text-white mb-8 leading-tight">{car.headline}</h1>
-            <div className="flex gap-6">
+            <div className="inline-block mb-6">
+              <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">{car.tagline}</span>
+            </div>
+            <h1 className="font-display-lg text-white mb-8 leading-tight text-5xl md:text-7xl">{car.headline}</h1>
+            <p className="text-on-surface-variant max-w-2xl font-body-lg mb-10 leading-relaxed">Experience the pinnacle of automotive engineering with our {car.name}. A masterpiece crafted for those who demand excellence.</p>
+            <div className="flex gap-4 flex-wrap">
               <button
-                className="border border-primary-container text-primary-container px-10 py-4 uppercase font-label-sm tracking-[0.2em] hover:bg-primary-container hover:text-on-primary transition-all duration-300 glow-hover"
+                className="bg-primary text-on-primary px-10 py-4 uppercase font-label-sm tracking-[0.2em] hover:bg-primary/90 transition-all duration-300 group flex items-center gap-2"
                 onClick={handleOrder}
               >
                 Order This Car
+                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </button>
               <button
-                className="bg-white/5 backdrop-blur-sm border border-white/10 text-white px-10 py-4 uppercase font-label-sm tracking-[0.2em] hover:bg-white/10 transition-all duration-300"
+                className="bg-white/5 backdrop-blur-sm border border-white/20 text-white px-10 py-4 uppercase font-label-sm tracking-[0.2em] hover:bg-white/10 hover:border-white/40 transition-all duration-300"
                 onClick={handleTestDrive}
               >
                 Book a Test Drive

@@ -62,18 +62,20 @@ export default function OrderTracking() {
       </header>
 
       <main className="pt-40 pb-24 px-6 md:px-20 max-w-[1440px] mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20 border-b border-outline-variant pb-12">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-20 border-b border-outline-variant pb-12 animate-fade-up">
           <div>
-            <span className="font-label-sm text-primary uppercase mb-4 block">Order Details</span>
-            <h1 className="font-headline-h1 text-on-background mb-2">{order.name}</h1>
-            <div className="flex items-center gap-4">
-              <span className="px-4 py-1 rounded-full bg-surface-container-high border border-outline-variant text-label-sm text-secondary uppercase">{order.variant}</span>
-              <span className="text-secondary/60 font-body-md">Order ID: <span className="text-on-background">{order.orderId}</span></span>
+            <div className="inline-block mb-4">
+              <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">📍 Tracking</span>
+            </div>
+            <h1 className="font-headline-h1 text-on-background mb-4 text-3xl md:text-4xl">{order.name}</h1>
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-4">
+              <span className="px-4 py-2 rounded-full bg-primary/10 border border-primary/30 text-label-sm text-primary uppercase tracking-wider">{order.variant}</span>
+              <span className="text-secondary/60 font-body-md">Order ID: <span className="text-primary font-semibold">{order.orderId}</span></span>
             </div>
           </div>
-          <div className="text-right">
-            <span className="text-secondary/60 text-label-sm uppercase block mb-1">Estimated Arrival</span>
-            <span className="font-headline-h3 text-primary">{order.estimatedArrival}</span>
+          <div className="text-left md:text-right">
+            <span className="text-secondary/60 text-label-sm uppercase block mb-2 tracking-wider">Estimated Arrival</span>
+            <span className="font-headline-h3 text-primary text-2xl">{order.estimatedArrival}</span>
           </div>
         </div>
 

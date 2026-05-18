@@ -54,21 +54,33 @@ export default function MyOrders() {
       </header>
 
       <main className="min-h-screen pt-40 pb-20 px-6 md:px-20 max-w-7xl mx-auto">
-        <div className="mb-20 text-center">
-          <h1 className="font-headline-h1 text-on-surface mb-4">Your Mercedes Journey</h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto opacity-70">Tracing the path of precision engineering as your bespoke vehicle makes its way to you.</p>
+        <div className="mb-20 text-center animate-fade-up">
+          <div className="inline-block mb-6">
+            <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">📦 Order History</span>
+          </div>
+          <h1 className="font-headline-h1 text-on-surface mb-6 text-4xl md:text-5xl">Your Mercedes Journey</h1>
+          <p className="font-body-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">Tracing the path of precision engineering as your bespoke vehicle makes its way to you. Stay updated on every milestone of your order.</p>
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin"></div>
+            </div>
           </div>
         ) : orders.length === 0 ? (
-          <div className="text-center py-20">
-            <span className="material-symbols-outlined text-zinc-600 text-6xl mb-4">shopping_bag</span>
-            <h3 className="font-headline-h3 mb-2">No orders yet.</h3>
-            <p className="text-on-surface-variant mb-6">Browse our collection to find your perfect Mercedes-Benz.</p>
-            <Link to="/" className="text-primary font-label-sm uppercase">Explore Cars →</Link>
+          <div className="text-center py-20 animate-fade-up">
+            <div className="relative inline-block mb-8">
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl scale-125"></div>
+              <span className="material-symbols-outlined text-zinc-600 text-6xl relative">shopping_bag</span>
+            </div>
+            <h3 className="font-headline-h3 mb-4 text-2xl">No orders yet.</h3>
+            <p className="text-on-surface-variant mb-8 max-w-md mx-auto leading-relaxed">Start your Mercedes-Benz journey today. Browse our exclusive collection and find the perfect vehicle for you.</p>
+            <Link to="/" className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-on-primary font-label-sm uppercase tracking-widest hover:bg-primary/90 transition-all duration-300 group">
+              Explore Cars
+              <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </Link>
           </div>
         ) : (
           <div className="relative">

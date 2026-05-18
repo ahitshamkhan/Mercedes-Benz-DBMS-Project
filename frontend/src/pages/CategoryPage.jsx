@@ -76,13 +76,23 @@ export default function CategoryPage() {
       <main className="pt-20">
         <section className="relative h-[618px] w-full overflow-hidden flex items-center px-6 md:px-20">
           <div className="absolute inset-0 z-0">
-            <img className="w-full h-full object-cover brightness-[0.4]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEzXbaidFGbExyh1xYw6cQ-n7aRGHfS4BMz-Yt-nSkt8T0fJNbR-F5s0KH7TXwjlGxljEOjgvIleuColDS1w3sAWGh-SxXAECwJQ2Vr_cHLk1Grlv2XH3uSFyFCbvrL-0G3LcXAYCFNg0xTSkzIFnU3KgAhbqzeeiqxpGfRVV_oQpx1igcQbJuHK6XHPK_hmTmA7gVZutarLTAFwX9JKa8O8JwwybSprUtqPWD4Oh5cnY8F6UMxOgfBAK_pgs3Gc1tmp1hfWv1GXk" alt={info.title} />
-            <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+            <img className="w-full h-full object-cover brightness-[0.35]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEzXbaidFGbExyh1xYw6cQ-n7aRGHfS4BMz-Yt-nSkt8T0fJNbR-F5s0KH7TXwjlGxljEOjgvIleuColDS1w3sAWGh-SxXAECwJQ2Vr_cHLk1Grlv2XH3uSFyFCbvrL-0G3LcXAYCFNg0xTSkzIFnU3KgAhbqzeeiqxpGfRVV_oQpx1igcQbJuHK6XHPK_hmTmA7gVZutarLTAFwX9JKa8O8JwwybSprUtqPWD4Oh5cnY8F6UMxOgfBAK_pgs3Gc1tmp1hfWv1GXk" alt={info.title} />
+            <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-black/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
           </div>
           <div className="relative z-10 max-w-4xl animate-fade-up">
-            <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.3em] mb-4 block">{info.subtitle}</span>
-            <h1 className="font-display-lg text-display-lg text-on-background mb-6">{info.title}</h1>
-            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">{info.desc}</p>
+            <div className="inline-block mb-6">
+              <span className="font-label-sm text-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm">{info.subtitle}</span>
+            </div>
+            <h1 className="font-display-lg text-display-lg text-on-background mb-6 text-5xl md:text-6xl">{info.title}</h1>
+            <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">{info.desc}</p>
+            <div className="mt-8 flex gap-4">
+              <button className="px-8 py-3 bg-primary text-on-primary font-label-sm uppercase tracking-widest hover:bg-primary/90 transition-all duration-300 flex items-center gap-2 group">
+                <span>Explore Models</span>
+                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </button>
+              <button className="px-8 py-3 border border-primary/40 text-primary font-label-sm uppercase tracking-widest hover:bg-primary/10 transition-all duration-300">Learn More</button>
+            </div>
           </div>
         </section>
 
@@ -114,37 +124,44 @@ export default function CategoryPage() {
         <section className="px-6 md:px-20 py-24">
           {loading ? (
             <div className="flex justify-center items-center py-20">
-              <span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span>
+              <div className="relative w-16 h-16">
+                <div className="absolute inset-0 rounded-full border-2 border-primary/20"></div>
+                <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-primary animate-spin"></div>
+              </div>
             </div>
           ) : sortedCars.length === 0 ? (
             <div className="text-center py-20">
               <span className="material-symbols-outlined text-zinc-600 text-6xl mb-4">search_off</span>
               <p className="text-zinc-500 font-body-lg">No models found in this category.</p>
-              <Link to="/" className="text-primary font-label-sm uppercase mt-6 inline-block">Browse All Cars</Link>
+              <Link to="/" className="text-primary font-label-sm uppercase mt-6 inline-block hover:text-primary/80 transition-colors">Browse All Cars</Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
               {sortedCars.map((car, index) => (
-                <div key={car.id || index} className={`group animate-fade-up ${index === 3 ? 'lg:col-span-2' : ''}`}>
+                <div key={car.id || index} className={`group animate-fade-up hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 ${index === 3 ? 'lg:col-span-2' : ''}`} style={{animationDelay: `${index * 50}ms`}}>
                   <Link to={`/car/${car.id}`}>
-                    <div className="relative aspect-[16/10] overflow-hidden border border-[#C8A97E]/15 bg-surface-container mb-6">
+                    <div className="relative aspect-[16/10] overflow-hidden border border-[#C8A97E]/15 bg-surface-container mb-6 group-hover:border-[#C8A97E]/40 transition-all duration-500">
                       <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src={car.image} alt={car.name} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                       {car.badge && (
-                        <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-background font-label-sm text-[10px] uppercase tracking-tighter">{car.badge}</div>
+                        <div className="absolute top-4 right-4 px-3 py-1 bg-primary text-background font-label-sm text-[10px] uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-300">{car.badge}</div>
                       )}
+                      <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-primary/10 group-hover:bg-primary/30 transition-all duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span className="material-symbols-outlined text-primary text-lg">arrow_outward</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-headline-h3 text-headline-h3 text-on-background">{car.name}</h3>
-                      <span className="font-label-sm text-label-sm text-primary">Starting at {car.price}</span>
+                    <div className="flex justify-between items-start mb-2 group-hover:text-primary transition-colors duration-300">
+                      <h3 className="font-headline-h3 text-headline-h3 text-on-background group-hover:text-primary transition-colors duration-300">{car.name}</h3>
+                      <span className="font-label-sm text-label-sm text-primary">{car.price}</span>
                     </div>
                   </Link>
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-6 mt-4 pt-4 border-t border-primary/10">
+                    <div className="flex items-center gap-2 group-hover:text-primary transition-colors duration-300">
                       <span className="material-symbols-outlined text-primary text-sm">speed</span>
                       <span className="font-label-sm text-[10px] text-on-surface-variant">{car.hp}</span>
                     </div>
                     {car.spec2Value && (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 group-hover:text-primary transition-colors duration-300">
                         <span className="material-symbols-outlined text-primary text-sm">auto_awesome</span>
                         <span className="font-label-sm text-[10px] text-on-surface-variant">{car.spec2Value}</span>
                       </div>

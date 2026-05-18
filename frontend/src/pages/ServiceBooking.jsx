@@ -37,12 +37,20 @@ export default function ServiceBooking() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-[#050508] flex items-center justify-center px-6">
-        <div className="bg-[#0D0D14] gold-border max-w-lg w-full p-12 text-center">
-          <span className="material-symbols-outlined text-[#C8A97E] text-6xl mb-6 block">task_alt</span>
-          <h2 className="font-headline-h2 text-white mb-4">Service Booked!</h2>
-          <p className="text-zinc-400 font-body-md mb-10">A service advisor will contact you within 2 business hours to confirm.</p>
-          <button className="w-full bg-[#C8A97E] py-4 text-black font-label-sm uppercase tracking-widest hover:bg-[#e2c195] transition-colors" onClick={() => navigate('/my-service-history')}>View Service History</button>
+      <div className="min-h-screen bg-[#050508] flex items-center justify-center px-6 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -ml-48 -mb-48"></div>
+        <div className="bg-[#0D0D14] gold-border max-w-lg w-full p-12 text-center relative z-10 animate-fade-up rounded-lg">
+          <div className="relative mb-6 inline-block">
+            <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl"></div>
+            <span className="material-symbols-outlined text-primary text-6xl block relative">task_alt</span>
+          </div>
+          <h2 className="font-headline-h2 text-white mb-4 text-3xl">Service Booked!</h2>
+          <p className="text-zinc-400 font-body-md mb-10 leading-relaxed">A service advisor will contact you within 2 business hours to confirm your appointment and discuss any special requirements.</p>
+          <button className="w-full bg-primary text-on-primary py-4 font-label-sm uppercase tracking-widest hover:bg-primary/90 transition-all duration-300 group flex items-center justify-center gap-2" onClick={() => navigate('/my-service-history')}>
+            View Service History
+            <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+          </button>
         </div>
       </div>
     )
@@ -64,20 +72,26 @@ export default function ServiceBooking() {
       </nav>
 
       <main className="pt-32 pb-40 px-6 md:px-20 max-w-7xl mx-auto">
-        <header className="mb-16">
-          <h1 className="font-headline-h1 text-[#C8A97E] mb-4">Mercedes Care — Service Appointment</h1>
-          <p className="font-body-lg text-on-surface-variant max-w-2xl">Precision engineering deserves specialized care. Secure your appointment with our master technicians.</p>
+        <header className="mb-16 animate-fade-up">
+          <div className="inline-block mb-6">
+            <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">🛠️ Expert Care</span>
+          </div>
+          <h1 className="font-headline-h1 text-on-background mb-6 text-4xl md:text-5xl">Mercedes Care — Service Appointment</h1>
+          <p className="font-body-lg text-on-surface-variant max-w-2xl leading-relaxed">Precision engineering deserves specialized care. Secure your appointment with our master technicians who know your vehicle inside and out.</p>
         </header>
 
         <form className="space-y-20" onSubmit={handleSubmit}>
-          <section>
-            <h2 className="font-headline-h3 text-white mb-8 flex items-center gap-3"><span className="text-[#C8A97E]">01</span> Select Service Type</h2>
+          <section className="animate-fade-up">
+            <h2 className="font-headline-h3 text-white mb-8 flex items-center gap-3">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary font-bold text-sm">1</span>
+              Select Service Type
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {SERVICE_TYPES.map(s => (
-                <button key={s.id} type="button" className={`glass-card flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300 hover:border-[#C8A97E]/50 group h-full ${serviceType === s.id ? 'border-[#C8A97E]/60 bg-[#C8A97E]/5' : ''}`} onClick={() => setServiceType(s.id)}>
-                  <span className={`material-symbols-outlined text-4xl mb-4 transition-colors ${serviceType === s.id ? 'text-[#C8A97E]' : 'text-zinc-500 group-hover:text-[#C8A97E]'}`}>{s.icon}</span>
-                  <span className="font-label-sm uppercase mb-2">{s.label}</span>
-                  <p className="text-center text-xs text-zinc-500 leading-tight">{s.desc}</p>
+              {SERVICE_TYPES.map((s, idx) => (
+                <button key={s.id} type="button" className={`glass-card flex flex-col items-center justify-center p-8 cursor-pointer transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 group h-full border border-primary/10 hover:border-primary/40 animate-fade-up ${serviceType === s.id ? 'border-primary/60 bg-primary/5' : ''}`} onClick={() => setServiceType(s.id)} style={{animationDelay: `${idx * 50}ms`}}>
+                  <span className={`material-symbols-outlined text-4xl mb-4 transition-colors duration-300 ${serviceType === s.id ? 'text-primary' : 'text-zinc-500 group-hover:text-primary'}`}>{s.icon}</span>
+                  <span className={`font-label-sm uppercase mb-2 transition-colors duration-300 ${serviceType === s.id ? 'text-white' : 'text-zinc-400'}`}>{s.label}</span>
+                  <p className="text-center text-xs text-zinc-500 group-hover:text-zinc-400 leading-tight transition-colors duration-300">{s.desc}</p>
                 </button>
               ))}
             </div>

@@ -45,22 +45,27 @@ export default function MyProfile() {
       </header>
 
       <main className="pt-40 pb-20 px-6 md:px-20 max-w-[1440px] mx-auto min-h-screen">
-        <div className="mb-20">
-          <h1 className="font-headline-h1 text-headline-h1 text-primary-fixed-dim">Your Profile</h1>
-          <div className="h-px w-32 bg-primary-container mt-4"></div>
+        <div className="mb-20 animate-fade-up">
+          <div className="inline-block mb-6">
+            <span className="font-label-sm text-primary uppercase tracking-[0.3em] px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">👤 Account Settings</span>
+          </div>
+          <h1 className="font-headline-h1 text-headline-h1 text-on-background mb-6 text-4xl md:text-5xl">Your Profile</h1>
+          <p className="text-on-surface-variant font-body-lg max-w-2xl leading-relaxed">Manage your account information and personal preferences. Keep your details up to date for a seamless experience.</p>
+          <div className="h-1 w-32 bg-gradient-to-r from-primary to-primary/0 rounded-full mt-6"></div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          <section className="lg:col-span-4 flex flex-col items-center text-center p-12 bg-surface-container-lowest hairline-border rounded-lg shadow-2xl">
+          <section className="lg:col-span-4 flex flex-col items-center text-center p-12 bg-surface-container-lowest hairline-border rounded-lg shadow-2xl hover:shadow-3xl hover:shadow-primary/20 transition-all duration-300 animate-fade-up">
             <div className="relative mb-8">
-              <div className="w-40 h-40 rounded-full border-2 border-primary-container p-1 flex items-center justify-center">
-                <div className="w-full h-full rounded-full bg-surface-container-high flex items-center justify-center">
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl scale-110"></div>
+              <div className="w-40 h-40 rounded-full border-2 border-primary/40 p-1 flex items-center justify-center relative">
+                <div className="w-full h-full rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center">
                   <span className="text-display-lg font-display-lg text-primary">{initials}</span>
                 </div>
               </div>
             </div>
-            <h2 className="font-headline-h3 text-on-background mb-1">{user?.name || 'Guest'}</h2>
-            <p className="text-zinc-500 font-body-md mb-6">{user?.email || ''}</p>
+            <h2 className="font-headline-h3 text-on-background mb-1 text-2xl">{user?.name || 'Guest'}</h2>
+            <p className="text-zinc-500 font-body-md mb-6 break-all text-sm">{user?.email || ''}</p>
             <div className="w-full pt-6 border-t border-[#C8A97E]/10 flex flex-col gap-4 text-left">
               <div className="flex justify-between items-center">
                 <span className="text-zinc-500 text-sm font-label-sm uppercase tracking-widest">Role</span>
