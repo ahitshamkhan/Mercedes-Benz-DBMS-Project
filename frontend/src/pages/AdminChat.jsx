@@ -38,33 +38,33 @@ export default function AdminChat() {
   const filteredConvos = CONVERSATIONS.filter(c => c.name.toLowerCase().includes(searchConvo.toLowerCase()))
 
   return (
-    <div className="bg-[#050508] text-on-background font-body-md min-h-screen flex flex-col overflow-hidden">
+    <div className="bg-zinc-950 text-white text-sm min-h-screen flex flex-col overflow-hidden">
       <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
         <Link to="/" className="flex items-center gap-4">
           <span className="material-symbols-outlined text-[#C8A97E] text-xl">star</span>
           <span className="text-xl font-bold text-[#C8A97E] font-['Playfair_Display'] tracking-widest uppercase">Mercedes-Benz</span>
         </Link>
         <nav className="hidden md:flex items-center gap-10">
-          <Link className="text-zinc-400 hover:text-[#C8A97E] font-label-sm" to="/admin">Dashboard</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] font-label-sm" to="/admin/cars">Cars</Link>
-          <Link className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 font-label-sm" to="/admin/chat">Chat</Link>
+          <Link className="text-zinc-400 hover:text-amber-400 text-xs uppercase tracking-widest" to="/admin">Dashboard</Link>
+          <Link className="text-zinc-400 hover:text-amber-400 text-xs uppercase tracking-widest" to="/admin/cars">Cars</Link>
+          <Link className="text-amber-400 border-b border-amber-400 pb-1 text-xs uppercase tracking-widest" to="/admin/chat">Chat</Link>
         </nav>
         <div className="flex items-center gap-6">
-          <span className="text-[#C8A97E] font-label-sm">Admin Panel</span>
-          <button className="text-zinc-400 hover:text-white font-label-sm" onClick={logout}>Sign Out</button>
+          <span className="text-amber-400 text-xs uppercase tracking-widest">Admin Panel</span>
+          <button className="text-zinc-400 hover:text-white text-xs" onClick={logout}>Sign Out</button>
         </div>
       </header>
 
       <main className="flex-grow pt-20 flex overflow-hidden" style={{ height: 'calc(100vh - 80px)' }}>
-        <aside className="w-full md:w-[400px] bg-surface-container-lowest border-r border-[#C8A97E]/10 flex flex-col flex-shrink-0">
+        <aside className="w-full md:w-[400px] bg-zinc-950 border-r border-amber-400/10 flex flex-col flex-shrink-0">
           <div className="p-6 border-b border-[#C8A97E]/10">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="font-headline-h3 text-[#C8A97E] text-2xl">Concierge</h2>
+              <h2 className="font-bold text-amber-400 text-xl tracking-wide">Concierge</h2>
               <span className="bg-[#C8A97E]/20 text-[#C8A97E] text-[10px] px-2 py-0.5 rounded-full font-bold tracking-widest">LIVE</span>
             </div>
             <div className="relative">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">search</span>
-              <input className="w-full bg-[#0D0D14] border border-[#C8A97E]/15 py-2 pl-10 pr-4 text-sm text-on-background focus:ring-0 focus:border-[#C8A97E] placeholder:text-zinc-600" placeholder="Search conversations..." value={searchConvo} onChange={(e) => setSearchConvo(e.target.value)} />
+              <input className="w-full bg-[#0D0D14] border border-[#C8A97E]/15 py-2 pl-10 pr-4 text-sm text-white focus:ring-0 focus:border-[#C8A97E] placeholder:text-zinc-600" placeholder="Search conversations..." value={searchConvo} onChange={(e) => setSearchConvo(e.target.value)} />
             </div>
           </div>
           <div className="flex-grow overflow-y-auto">
@@ -96,18 +96,18 @@ export default function AdminChat() {
         </aside>
 
         <section className="flex-grow flex flex-col bg-[#050508]">
-          <div className="h-20 px-8 flex justify-between items-center border-b border-[#C8A97E]/10 glass-panel z-10">
+          <div className="h-20 px-8 flex justify-between items-center border-b border-amber-400/10 bg-zinc-950/80 backdrop-blur z-10">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-sm border border-[#C8A97E]/20 overflow-hidden"><img className="w-full h-full object-cover" src={activeCustomer?.img} alt="" /></div>
               <div><h3 className="font-bold text-white text-sm">{activeCustomer?.name}</h3><p className="text-[10px] text-[#C8A97E] tracking-widest uppercase">Verified Member</p></div>
             </div>
             <div className="flex items-center gap-4">
-              <button className="flex items-center gap-2 px-4 py-2 border border-[#C8A97E]/30 text-[#C8A97E] font-label-sm hover:bg-[#C8A97E] hover:text-black transition-all"><span className="material-symbols-outlined text-sm">history</span>LOGS</button>
+              <button className="flex items-center gap-2 px-4 py-2 border border-amber-400/30 text-amber-400 text-xs uppercase tracking-widest hover:bg-amber-400 hover:text-black transition-all">LOGS</button>
             </div>
           </div>
 
           <div className="flex-grow overflow-y-auto p-12 space-y-8">
-            <div className="flex justify-center"><span className="text-[10px] font-label-sm text-zinc-600 uppercase tracking-widest px-4 py-1 border border-zinc-800/50 rounded-full">Today</span></div>
+            <div className="flex justify-center"><span className="text-[10px] text-zinc-600 uppercase tracking-widest px-4 py-1 border border-zinc-800/50 rounded-full">Today</span></div>
             {messages.map(msg => msg.sender === 'customer' ? (
               <div key={msg.id} className="flex gap-4 max-w-2xl">
                 <div className="flex-shrink-0 w-8 h-8 rounded-sm overflow-hidden border border-zinc-800"><img className="w-full h-full object-cover" src={activeCustomer?.img} alt="" /></div>
@@ -122,17 +122,17 @@ export default function AdminChat() {
             <div ref={bottomRef} />
           </div>
 
-          <div className="p-8 border-t border-[#C8A97E]/10 glass-panel">
+          <div className="p-8 border-t border-amber-400/10 bg-zinc-950/80 backdrop-blur">
             <div className="bg-[#0D0D14] border border-[#C8A97E]/20 overflow-hidden focus-within:border-[#C8A97E] transition-all">
               <div className="flex items-center px-4 py-2 border-b border-[#C8A97E]/10 gap-4">
                 <button className="text-zinc-500 hover:text-[#C8A97E]"><span className="material-symbols-outlined text-lg">format_bold</span></button>
                 <button className="text-zinc-500 hover:text-[#C8A97E]"><span className="material-symbols-outlined text-lg">attach_file</span></button>
                 <button className="text-zinc-500 hover:text-[#C8A97E]"><span className="material-symbols-outlined text-lg">image</span></button>
               </div>
-              <textarea className="w-full bg-transparent border-none focus:ring-0 text-sm text-on-background p-4 min-h-[80px] resize-none placeholder:text-zinc-700" placeholder={`Type your message to ${activeCustomer?.name}...`} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown}></textarea>
+              <textarea className="w-full bg-transparent border-none focus:ring-0 text-sm text-white p-4 min-h-[80px] resize-none placeholder:text-zinc-700" placeholder={`Type your message to ${activeCustomer?.name}...`} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown}></textarea>
               <div className="flex justify-between items-center p-4 bg-[#111118]">
-                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#C8A97E]"></span><span className="text-[10px] text-zinc-500 uppercase tracking-widest font-label-sm">Concierge Mode Active</span></div>
-                <button className="bg-[#C8A97E] text-black px-8 py-2 font-label-sm uppercase hover:bg-white transition-all" onClick={handleSend}>SEND</button>
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-amber-400"></span><span className="text-[10px] text-zinc-500 uppercase tracking-widest">Concierge Mode Active</span></div>
+                <button className="bg-amber-400 text-black px-8 py-2 text-xs font-bold uppercase hover:bg-white transition-all" onClick={handleSend}>SEND</button>
               </div>
             </div>
           </div>

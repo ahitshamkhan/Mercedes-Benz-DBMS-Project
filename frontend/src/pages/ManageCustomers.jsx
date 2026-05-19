@@ -2,27 +2,39 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { getAllCustomers, deleteCustomer } from '../api/admin'
+import { Search, UserX, LogOut, Users } from 'lucide-react'
 
 const FALLBACK = [
-  { id: 1, name: 'Maximilian von Weber', tier: 'Platinum Tier', tierColor: 'text-primary', email: 'm.weber@executive.de', phone: '+49 172 902 4432', since: 'Oct 14, 2021', orders: '08', status: 'Active', statusStyle: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBDwsR2bwmDgIOHBPZfjkKUv6VIsD0zuL9ktfMAC8uoMvb4ySTLaC2GfLWTHBuPg8u_lPloYnHpnoi8pPIlMcf1dopOtaVciDtHSBHxKA519CrLw0JHske2f9y4Ce4NgVXR21n2i0w5zMvnLZw7GeNVOvDTojX1NMtBaPSO_J8QIAqiDOnjOYrKU1VHk5Q6B_FdaVTAInCiGUxWgpQqViphX3VpPXJ5pTF5q327kZVIHm38TaoF7GVOsy_JbsCgSn65Mu1YlYLMvng' },
-  { id: 2, name: 'Elena Rodriguez', tier: 'Standard Tier', tierColor: 'text-zinc-500', email: 'elena.rod@techfoundry.io', phone: '+1 (555) 012-9983', since: 'Jan 02, 2024', orders: '01', status: 'Inactive', statusStyle: 'bg-zinc-500/10 text-zinc-500 border-zinc-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBaU6hmi-fBCmm6-a23KA6jQSOL-vAKWJFjPCVOqYDVqsFkagZgFuhkl9xId_1KYbmx-6PKBf6fRIrQFrL0PrINRLhlbnmA5v-YwC1_D-7Cil0ERBRIx7lyCukg2bocsVlF1OIIokTxA3dL5weC8Ok3VWw9K0F5eN46uau8E25Zh5acRuFf-6GoVX8thFVEVIs7go2AqV4kEanhG0aEA69dFm_5rX50Wd4KR6c2P1V_YSVVztS9Wmf7Wlt86PwKDhCrl38AjFqBNCI' },
-  { id: 3, name: 'Jameson Sterling', tier: 'VIP Collector', tierColor: 'text-[#C8A97E]', email: 'j.sterling@sterling-holdings.com', phone: '+44 20 7946 0958', since: 'Mar 22, 2019', orders: '24', status: 'Active', statusStyle: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA75-EV1Kq1wJKUIcmCL8bRjgpqvDmwfuedCrQ9gfcq49qjxuJuy2jgeO__nyDHVXwitOcw70R1PuhxG9AE2df4krOl8-phjd81cdMrvRCyJ-qqrwhf9TWKhVgbKkXcAEYRZqdUs7F6AE6XIIpLOuI17LI9ZCwcPez27K2JbctaWGDdp9nFWOCeXnq3SYFB9G0AlleXWiRyLqMXQ5kLe0AJvrew86DGbbZ-X8X_iGKhgPuqeSwvDVwgMnLStXyE83eoVlM0QlkyFYM' },
+  { id: 1, name: 'Ahmed Khan', email: 'ahmed@gmail.com', phone: '03001234567', role: 'customer', created_at: '2024-01-10' },
+  { id: 2, name: 'Zainab Malik', email: 'zainab@yahoo.com', phone: '03111234567', role: 'customer', created_at: '2024-02-15' },
 ]
+
+const AdminNav = ({ active, logout }) => (
+  <header className="fixed top-0 w-full z-50 bg-zinc-950/95 backdrop-blur-md border-b border-amber-400/15 h-16 flex items-center px-6 md:px-12 justify-between">
+    <Link to="/" className="flex items-center gap-3">
+      <span className="text-amber-400">★</span>
+      <span className="text-amber-400 font-bold tracking-widest uppercase text-sm">Mercedes-Benz</span>
+      <span className="text-zinc-600 text-xs ml-1">Admin</span>
+    </Link>
+    <nav className="hidden md:flex gap-8">
+      {[{to:'/admin',label:'Dashboard'},{to:'/admin/cars',label:'Inventory'},{to:'/admin/orders',label:'Orders'},{to:'/admin/customers',label:'Customers'},{to:'/admin/chat',label:'Chat'}].map(({to,label})=>(
+        <Link key={to} to={to} className={`text-xs uppercase tracking-widest font-medium transition-colors ${active===label?'text-amber-400 border-b border-amber-400 pb-0.5':'text-zinc-400 hover:text-amber-400'}`}>{label}</Link>
+      ))}
+    </nav>
+    <button onClick={logout} className="flex items-center gap-2 text-xs text-zinc-400 hover:text-red-400 transition-colors">
+      <LogOut className="h-4 w-4" /> Sign Out
+    </button>
+  </header>
+)
 
 export default function ManageCustomers() {
   const { logout } = useAuth()
   const [customers, setCustomers] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [expandedId, setExpandedId] = useState(null)
 
   useEffect(() => {
-    const fetchData = async () => {
-      try { const res = await getAllCustomers(); setCustomers(res.data) }
-      catch { setCustomers(FALLBACK) }
-      finally { setLoading(false) }
-    }
-    fetchData()
+    getAllCustomers().then(r => setCustomers(r.data || FALLBACK)).catch(() => setCustomers(FALLBACK)).finally(() => setLoading(false))
   }, [])
 
   const handleDelete = async (id) => {
@@ -31,102 +43,91 @@ export default function ManageCustomers() {
     setCustomers(prev => prev.filter(c => c.id !== id))
   }
 
-  const filtered = customers.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || c.email.toLowerCase().includes(search.toLowerCase()))
-
-  const stats = [
-    { label: 'Total Clients', value: String(customers.length), badge: '+12%', badgeColor: 'text-emerald-500' },
-    { label: 'Active', value: String(customers.filter(c => c.status === 'Active').length), badge: 'Live', badgeColor: 'text-zinc-500' },
-    { label: 'Inactive', value: String(customers.filter(c => c.status === 'Inactive').length), badge: 'Review', badgeColor: 'text-primary' },
-  ]
+  const filtered = customers.filter(c =>
+    (c.name || '').toLowerCase().includes(search.toLowerCase()) ||
+    (c.email || '').toLowerCase().includes(search.toLowerCase())
+  )
 
   return (
-    <>
-      <header className="fixed top-0 w-full flex justify-between items-center px-6 md:px-20 h-20 bg-zinc-950/90 backdrop-blur-md z-50 border-b border-[#C8A97E]/15">
-        <Link to="/" className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-[#C8A97E]">star</span>
-          <span className="font-['Playfair_Display'] tracking-widest uppercase text-xl font-bold text-[#C8A97E]">Mercedes-Benz</span>
-        </Link>
-        <nav className="hidden md:flex gap-12">
-          <Link className="text-zinc-400 hover:text-[#C8A97E] text-sm" to="/admin">Dashboard</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] text-sm" to="/admin/cars">Cars</Link>
-          <Link className="text-zinc-400 hover:text-[#C8A97E] text-sm" to="/admin/orders">Orders</Link>
-          <Link className="text-[#C8A97E] border-b border-[#C8A97E] pb-1 text-sm" to="/admin/customers">Customers</Link>
-          <button className="ml-4 px-6 py-2 border border-[#C8A97E] text-[#C8A97E] font-label-sm uppercase hover:bg-[#C8A97E] hover:text-black transition-all" onClick={logout}>Sign Out</button>
-        </nav>
-      </header>
-
-      <main className="pt-32 pb-40 px-6 md:px-20 max-w-[1440px] mx-auto min-h-screen">
-        <div className="mb-16 flex flex-col md:flex-row justify-between items-end gap-8">
-          <div className="space-y-4">
-            <p className="text-primary font-label-sm uppercase tracking-widest">Administrative Control</p>
-            <h2 className="font-headline-h1 text-on-background">Customer Directory</h2>
-            <p className="text-zinc-500 font-body-lg max-w-xl">Manage the global database of distinguished owners.</p>
-          </div>
-          <div className="w-full md:w-96 relative">
-            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">search</span>
-            <input className="w-full bg-surface-container-lowest border border-outline-variant/30 px-12 py-4 focus:ring-1 focus:ring-primary outline-none text-on-surface" placeholder="Search by name or email..." value={search} onChange={(e) => setSearch(e.target.value)} />
-          </div>
+    <div className="min-h-screen bg-black text-white">
+      <AdminNav active="Customers" logout={logout} />
+      <main className="pt-24 pb-20 px-6 md:px-12 max-w-screen-xl mx-auto">
+        <div className="mb-8">
+          <p className="text-amber-400 text-xs font-mono tracking-widest uppercase mb-1">Admin</p>
+          <h1 className="text-3xl font-bold text-white tracking-tight">Customer Directory</h1>
+          <p className="text-zinc-500 text-sm mt-1">Manage registered customers.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {stats.map((s, i) => (
-            <div key={i} className="glass-panel p-8 flex flex-col justify-between">
-              <span className="text-zinc-500 font-label-sm uppercase">{s.label}</span>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-4xl font-headline-h2 text-on-background">{s.value}</span>
-                <span className={`font-label-sm text-xs ${s.badgeColor}`}>{s.badge}</span>
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          {[
+            {label:'Total',value:customers.length},
+            {label:'Customers',value:customers.filter(c=>c.role!=='admin').length},
+            {label:'Admins',value:customers.filter(c=>c.role==='admin').length},
+          ].map((s,i)=>(
+            <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex items-center gap-3">
+              <Users className="h-5 w-5 text-amber-400" />
+              <div>
+                <p className="text-zinc-500 text-xs uppercase">{s.label}</p>
+                <p className="text-2xl font-bold">{s.value}</p>
               </div>
             </div>
           ))}
         </div>
 
+        <div className="mb-5">
+          <div className="relative w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+            <input className="w-full bg-zinc-900 border border-zinc-700 pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-zinc-600 rounded-lg focus:outline-none focus:border-amber-400" placeholder="Search..." value={search} onChange={e=>setSearch(e.target.value)} />
+          </div>
+        </div>
+
         {loading ? (
-          <div className="flex justify-center py-20"><span className="material-symbols-outlined text-primary text-4xl animate-spin">progress_activity</span></div>
+          <div className="flex justify-center py-16"><div className="h-8 w-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" /></div>
         ) : (
-          <div className="glass-panel overflow-hidden">
-            <table className="w-full text-left border-collapse">
-              <thead><tr className="bg-surface-container-lowest/50 border-b border-outline-variant/20">
-                <th className="px-8 py-6 font-label-sm uppercase text-zinc-500">Client</th>
-                <th className="px-8 py-6 font-label-sm uppercase text-zinc-500">Contact</th>
-                <th className="px-8 py-6 font-label-sm uppercase text-zinc-500">Since</th>
-                <th className="px-8 py-6 font-label-sm uppercase text-zinc-500 text-center">Orders</th>
-                <th className="px-8 py-6 font-label-sm uppercase text-zinc-500">Status</th>
-                <th className="px-8 py-6 font-label-sm uppercase text-zinc-500 text-right">Actions</th>
-              </tr></thead>
-              <tbody className="divide-y divide-outline-variant/10">
-                {filtered.map(c => (
-                  <tr key={c.id} className="hover:bg-primary/5 transition-colors group cursor-pointer" onClick={() => setExpandedId(expandedId === c.id ? null : c.id)}>
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full overflow-hidden border border-primary/20"><img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" src={c.img} alt={c.name} /></div>
-                        <div><div className="font-headline-h3 text-lg text-on-background">{c.name}</div><div className={`text-xs uppercase ${c.tierColor}`}>{c.tier}</div></div>
-                      </div>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+            <table className="w-full text-sm text-left">
+              <thead>
+                <tr className="text-[11px] text-zinc-500 uppercase tracking-wider border-b border-zinc-800">
+                  <th className="px-6 py-4">#</th>
+                  <th className="px-6 py-4">Customer</th>
+                  <th className="px-6 py-4">Phone</th>
+                  <th className="px-6 py-4">Role</th>
+                  <th className="px-6 py-4">Joined</th>
+                  <th className="px-6 py-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.length===0 ? (
+                  <tr><td colSpan={6} className="px-6 py-10 text-center text-zinc-500">No customers found.</td></tr>
+                ) : filtered.map((c,i)=>(
+                  <tr key={c.id} className="border-b border-zinc-800/50 hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-4 text-zinc-600 font-mono text-xs">{i+1}</td>
+                    <td className="px-6 py-4">
+                      <p className="font-semibold text-white">{c.name}</p>
+                      <p className="text-zinc-500 text-xs">{c.email}</p>
                     </td>
-                    <td className="px-8 py-6"><div className="space-y-1"><div className="text-sm text-zinc-300">{c.email}</div><div className="text-sm text-zinc-500">{c.phone}</div></div></td>
-                    <td className="px-8 py-6 text-zinc-400">{c.since}</td>
-                    <td className="px-8 py-6 text-center"><span className="bg-surface-container-high px-3 py-1 rounded text-on-surface">{c.orders}</span></td>
-                    <td className="px-8 py-6"><span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase border ${c.statusStyle}`}>{c.status}</span></td>
-                    <td className="px-8 py-6 text-right" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex justify-end gap-4">
-                        <button className="text-zinc-500 hover:text-primary transition-colors"><span className="material-symbols-outlined">edit</span></button>
-                        <button className="text-zinc-500 hover:text-error transition-colors" onClick={() => handleDelete(c.id)}><span className="material-symbols-outlined">block</span></button>
-                      </div>
+                    <td className="px-6 py-4 text-zinc-400">{c.phone||'—'}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-medium uppercase ${c.role==='admin'?'bg-amber-400/10 text-amber-400':'bg-zinc-700/50 text-zinc-400'}`}>{c.role}</span>
+                    </td>
+                    <td className="px-6 py-4 text-zinc-500 text-xs">{c.created_at?new Date(c.created_at).toLocaleDateString():'—'}</td>
+                    <td className="px-6 py-4 text-right">
+                      <button className="text-zinc-500 hover:text-red-400 transition-colors" onClick={()=>handleDelete(c.id)}><UserX className="h-4 w-4" /></button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div className="px-8 py-6 border-t border-outline-variant/20 flex items-center justify-between">
-              <p className="text-zinc-500 font-label-sm text-xs">Showing {filtered.length} entries</p>
+            <div className="px-6 py-3 border-t border-zinc-800">
+              <span className="text-xs text-zinc-500">Showing {filtered.length} of {customers.length} customers</span>
             </div>
           </div>
         )}
       </main>
-
-      <footer className="bg-[#050508] w-full py-12 px-6 md:px-20 border-t border-[#C8A97E]/10 flex justify-between items-center">
-        <Link to="/" className="text-white font-['Playfair_Display']">Mercedes-Benz</Link>
-        <p className="text-zinc-600 text-xs">© 2024 Mercedes-Benz Pakistan.</p>
+      <footer className="border-t border-zinc-900 py-6 px-12 flex justify-between">
+        <span className="text-zinc-600 text-xs">Mercedes-Benz Admin</span>
+        <span className="text-zinc-700 text-xs">© 2024</span>
       </footer>
-    </>
-  );
+    </div>
+  )
 }
